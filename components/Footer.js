@@ -1,20 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useStore } from "./StoreContext";
+import EmailForm from "./EmailForm";
 
 export default function Footer() {
-  const { showToast } = useStore();
-
-  function onSubscribe(e) {
-    e.preventDefault();
-    const input = e.currentTarget.querySelector("input");
-    if (input && input.value) {
-      input.value = "";
-      showToast("Thank you for subscribing!");
-    }
-  }
-
   return (
     <footer className="site-footer" id="site-footer">
       <div className="container">
@@ -48,10 +37,7 @@ export default function Footer() {
           <div className="footer-newsletter">
             <h4 className="footer-heading">Stay Updated</h4>
             <p>Join our community for exclusive offers and clean beauty insights.</p>
-            <form className="newsletter-form" onSubmit={onSubscribe}>
-              <input type="email" placeholder="Your email" required aria-label="Email address" />
-              <button type="submit">Join</button>
-            </form>
+            <EmailForm className="newsletter-form" buttonLabel="Join" />
           </div>
         </div>
 
