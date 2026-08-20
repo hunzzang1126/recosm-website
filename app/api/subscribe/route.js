@@ -2,8 +2,8 @@
 // Server-side call, so the browser never sees the form endpoint and CORS is a non-issue.
 
 const FORM_RESPONSE_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSfFMh5mlVV7C_vX9riQUP3mhRglJ6u9LpSQAFtUvtVQvPT0IQ/formResponse";
-const EMAIL_ENTRY = "entry.13438981";
+  "https://docs.google.com/forms/d/e/1FAIpQLSf1qyF7gEFvxGTmaikqxC4G0Qh4auhFokr_noBfBT3Qlz6MCA/formResponse";
+const EMAIL_ENTRY = "entry.459132320";
 
 export async function POST(request) {
   let payload;
