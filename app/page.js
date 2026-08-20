@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import EmailForm from "@/components/EmailForm";
+import TubeIllustration from "@/components/TubeIllustration";
 
 export default function HomePage() {
   return (
@@ -20,8 +21,8 @@ export default function HomePage() {
             </div>
           </div>
           <div className="hero-image reveal-right delay-2">
-            <div className="img-placeholder" style={{ aspectRatio: "3/4", borderRadius: 12, maxWidth: 480, width: "100%" }}>
-              <span>Product Hero Image</span>
+            <div style={{ maxWidth: 480, width: "100%" }}>
+              <TubeIllustration ratio="3/4" />
             </div>
             <div className="hero-badge">
               <span className="dot"></span>
@@ -60,9 +61,7 @@ export default function HomePage() {
         <div className="container">
           <div className="highlight-grid">
             <div className="highlight-image reveal-left">
-              <div className="img-placeholder" style={{ aspectRatio: 1, borderRadius: 12 }}>
-                <span>Product Close-up</span>
-              </div>
+              <TubeIllustration ratio="1" />
             </div>
             <div className="highlight-content">
               <p className="text-overline highlight-overline reveal">The Science</p>
@@ -109,7 +108,7 @@ export default function HomePage() {
             ].map((step) => (
               <div className={`step-card reveal delay-${step.n}`} key={step.n}>
                 <div className="step-image">
-                  <div className="img-placeholder" style={{ aspectRatio: 1, borderRadius: 12 }}>
+                  <div className="img-placeholder" style={{ aspectRatio: 1, borderRadius: "var(--radius-lg)" }}>
                     <span>Step {step.n}</span>
                   </div>
                 </div>

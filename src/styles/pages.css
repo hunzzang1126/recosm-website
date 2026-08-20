@@ -493,17 +493,21 @@
 }
 
 .hero-overline::before {
-  content: '';
-  width: 32px;
-  height: 1px;
-  background: var(--color-primary);
+  content: ':';
+  font-family: var(--font-display);
+  font-size: 1.5em;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--color-primary);
+  transform: translateY(-0.08em);
 }
 
 .hero-title {
+  font-family: var(--font-display);
   font-size: clamp(3rem, 6vw, 5.5rem);
-  font-weight: 200;
-  line-height: 1.0;
-  letter-spacing: -0.04em;
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
   color: var(--color-text-primary);
   margin-bottom: var(--space-8);
 }
@@ -511,7 +515,7 @@
 .hero-title em {
   font-style: normal;
   color: var(--color-primary);
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .hero-description {
@@ -667,10 +671,13 @@
 }
 
 .highlight-overline::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--color-primary);
+  content: ':';
+  font-family: var(--font-display);
+  font-size: 1.5em;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--color-primary);
+  transform: translateY(-0.08em);
 }
 
 .highlight-title {
@@ -946,11 +953,22 @@
   margin-bottom: var(--space-5);
 }
 
+.section-overline::before {
+  content: ':';
+  font-family: var(--font-display);
+  font-size: 1.6em;
+  line-height: 1;
+  font-weight: 500;
+  margin-right: 0.4em;
+  vertical-align: -0.08em;
+}
+
 .section-title {
+  font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  font-weight: 200;
+  font-weight: 300;
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   color: var(--color-text-primary);
   margin-bottom: var(--space-4);
 }
@@ -1031,9 +1049,10 @@
 }
 
 .product-name {
+  font-family: var(--font-display);
   font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 200;
-  letter-spacing: -0.02em;
+  font-weight: 300;
+  letter-spacing: -0.01em;
   color: var(--color-text-primary);
   margin-bottom: var(--space-2);
 }

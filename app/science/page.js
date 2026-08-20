@@ -27,7 +27,7 @@ export default function SciencePage() {
         <div className="container">
           <div className="science-grid">
             <div className="science-image reveal-left">
-              <div className="img-placeholder" style={{ aspectRatio: "4/3", borderRadius: 12 }}>
+              <div className="img-placeholder" style={{ aspectRatio: "4/3", borderRadius: "var(--radius-lg)" }}>
                 <span>Brand Story Image</span>
               </div>
             </div>
@@ -72,7 +72,7 @@ export default function SciencePage() {
               </div>
             </div>
             <div className="science-image reveal-right" style={{ order: 2 }}>
-              <div className="img-placeholder" style={{ aspectRatio: "4/3", borderRadius: 12 }}>
+              <div className="img-placeholder" style={{ aspectRatio: "4/3", borderRadius: "var(--radius-lg)" }}>
                 <span>Kolmar Korea Facility</span>
               </div>
             </div>

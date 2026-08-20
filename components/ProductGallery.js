@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import TubeIllustration from "./TubeIllustration";
 
 const VIEWS = [
   { key: "Front View", thumb: "Front" },
@@ -15,9 +16,13 @@ export default function ProductGallery() {
   return (
     <div className="product-gallery reveal-left">
       <div className="gallery-main">
-        <div className="img-placeholder" style={{ aspectRatio: "3/4", borderRadius: 8 }}>
-          <span>Product — {VIEWS[active].key}</span>
-        </div>
+        {active === 0 ? (
+          <TubeIllustration ratio="3/4" />
+        ) : (
+          <div className="img-placeholder" style={{ aspectRatio: "3/4", borderRadius: "var(--radius-md)" }}>
+            <span>Product — {VIEWS[active].key}</span>
+          </div>
+        )}
       </div>
       <div className="gallery-thumbs">
         {VIEWS.map((view, i) => (
