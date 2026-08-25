@@ -1,60 +1,65 @@
 /* ============================================
    Re:Cosm — Design System Variables
-   Derived from the physical carton (Kolmar S-13320):
-   Pantone 468 C sand · Pantone 1655 C orange · Process Black K · matt CCP 350g
+   Maison direction: porcelain light, hairline black,
+   champagne warmth. One quiet signature: the orange colon.
    ============================================ */
 
 :root {
-  /* === Brand Colors (carton spec) === */
-  --color-sand: #DDCBA4;        /* Pantone 468 C — printed ground */
-  --color-sand-deep: #CFB98A;   /* fold shadow / pressed board */
-  --color-paper: #F4EDDE;       /* unprinted CCP paper */
-  --color-orange: #FC4C02;      /* Pantone 1655 C */
-  --color-orange-deep: #D63F00;
-  --color-ink: #1B1611;         /* Process Black K, matt */
-  --color-ink-soft: #5C4F3F;
+  /* === Brand Colors === */
+  --color-ivory: #FAF8F2;       /* page ground */
+  --color-porcelain: #FFFFFF;
+  --color-champagne: #E9DFC9;   /* softened Pantone 468 C */
+  --color-champagne-deep: #C6B48D;
+  --color-gold: #A8925E;        /* hairline warmth */
+  --color-ink: #121212;
+  --color-accent: #C94B16;      /* the colon — refined 1655 C, small doses only */
 
   /* Legacy aliases (used across page styles) */
-  --color-primary: var(--color-orange);
-  --color-primary-dark: var(--color-orange-deep);
-  --color-primary-light: #FF7A3D;
-  --color-secondary: #B39A6B;
-  --color-secondary-light: var(--color-sand-deep);
+  --color-primary: var(--color-ink);
+  --color-primary-dark: #000000;
+  --color-primary-light: #333333;
+  --color-secondary: var(--color-gold);
+  --color-secondary-light: var(--color-champagne);
+  --color-orange: var(--color-accent);
+  --color-orange-deep: #A83D10;
+  --color-sand: var(--color-champagne);
+  --color-sand-deep: var(--color-champagne-deep);
+  --color-paper: var(--color-ivory);
 
   /* === Backgrounds === */
-  --color-bg-cream: var(--color-sand);
-  --color-bg-warm: var(--color-paper);
-  --color-bg-white: var(--color-paper);
-  --color-bg-dark: var(--color-ink);
-  --color-bg-black: var(--color-ink);
+  --color-bg-cream: var(--color-ivory);
+  --color-bg-warm: #F3EFE5;
+  --color-bg-white: var(--color-porcelain);
+  --color-bg-dark: #0E0E0E;
+  --color-bg-black: #000000;
 
   /* === Text === */
   --color-text-primary: var(--color-ink);
-  --color-text-body: #3A322A;
-  --color-text-secondary: var(--color-ink-soft);
-  --color-text-light: #8A7A63;
-  --color-text-inverse: var(--color-sand);
+  --color-text-body: #3C3A36;
+  --color-text-secondary: #77726A;
+  --color-text-light: #A39D92;
+  --color-text-inverse: #F5F2EA;
 
   /* === UI === */
-  --color-border: rgba(27, 22, 17, 0.35);       /* score line on sand */
-  --color-border-light: rgba(27, 22, 17, 0.16);
+  --color-border: #D8D2C4;
+  --color-border-light: #E9E4D8;
   --color-success: #4A7C59;
   --color-error: #B3261E;
-  --color-overlay: rgba(27, 22, 17, 0.5);
+  --color-overlay: rgba(18, 18, 18, 0.45);
 
   /* === Typography ===
-     One grotesque, two widths: Expanded carries the wordmark voice,
-     normal width carries the reading voice. Mono is the spec-sheet voice. */
-  --font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-  --font-display: 'Archivo', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
-  --display-stretch: 125%;
-  --font-weight-light: 400;
+     Didone serif carries the maison voice; a quiet grotesque
+     carries reading text; uppercase tracking carries labels. */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Bodoni Moda', 'Didot', Georgia, serif;
+  --font-mono: var(--font-family);
+  --display-stretch: 100%;
+  --font-weight-light: 300;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  --font-weight-black: 900;
+  --font-weight-black: 700;
 
   /* Font sizes */
   --text-xs: 0.6875rem;     /* 11px */
@@ -64,24 +69,24 @@
   --text-lg: 1.125rem;      /* 18px */
   --text-xl: 1.375rem;      /* 22px */
   --text-2xl: 1.75rem;      /* 28px */
-  --text-3xl: 2.5rem;       /* 40px */
-  --text-4xl: 3.25rem;      /* 52px */
-  --text-5xl: 4.25rem;      /* 68px */
-  --text-6xl: 5.5rem;       /* 88px */
+  --text-3xl: 2.25rem;      /* 36px */
+  --text-4xl: 3rem;         /* 48px */
+  --text-5xl: 3.75rem;      /* 60px */
+  --text-6xl: 4.5rem;       /* 72px */
 
   /* Line heights */
-  --leading-tight: 0.98;
-  --leading-snug: 1.15;
+  --leading-tight: 1.08;
+  --leading-snug: 1.2;
   --leading-normal: 1.5;
-  --leading-relaxed: 1.7;
+  --leading-relaxed: 1.75;
 
   /* Letter spacing */
-  --tracking-tighter: -0.035em;
-  --tracking-tight: -0.02em;
+  --tracking-tighter: -0.015em;
+  --tracking-tight: -0.005em;
   --tracking-normal: 0;
-  --tracking-wide: 0.05em;
-  --tracking-wider: 0.08em;
-  --tracking-widest: 0.14em;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.18em;
+  --tracking-widest: 0.3em;
 
   /* === Spacing === */
   --space-1: 0.25rem;
@@ -99,26 +104,24 @@
   --space-32: 8rem;
 
   /* === Layout === */
-  --container-max: 1360px;
+  --container-max: 1280px;
   --container-narrow: 960px;
   --container-text: 720px;
   --header-height: 64px;
   --header-height-scrolled: 56px;
 
-  /* === Borders ===
-     Zero radius everywhere — a folded carton has no rounded corners. */
+  /* === Borders === */
   --radius-sm: 0;
   --radius-md: 0;
   --radius-lg: 0;
   --radius-xl: 0;
   --radius-full: 9999px;
 
-  /* === Shadows ===
-     Matt board casts flat shade, not glow — offset blocks, minimal blur. */
-  --shadow-sm: 0 1px 0 rgba(27, 22, 17, 0.12);
-  --shadow-md: 4px 4px 0 rgba(27, 22, 17, 0.1);
-  --shadow-lg: 8px 8px 0 rgba(27, 22, 17, 0.1);
-  --shadow-xl: 12px 12px 0 rgba(27, 22, 17, 0.12);
+  /* === Shadows — barely-there, like glass on marble === */
+  --shadow-sm: 0 1px 2px rgba(18, 18, 18, 0.04);
+  --shadow-md: 0 6px 24px rgba(18, 18, 18, 0.06);
+  --shadow-lg: 0 12px 40px rgba(18, 18, 18, 0.08);
+  --shadow-xl: 0 20px 60px rgba(18, 18, 18, 0.1);
 
   /* === Transitions === */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

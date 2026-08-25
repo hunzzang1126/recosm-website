@@ -1,6 +1,5 @@
-// Product stand-in until real photography arrives — the tube drawn to the
-// actual carton spec (Kolmar S-13320): Pantone 468 C sand, 1655 C orange,
-// matt finish, 19 × 116 mm slim profile, Net 10 mL.
+// Product stand-in until real photography arrives — the serum drawn as a
+// slim atelier object: ivory body, ink cap, hairline gold, tracked caps.
 
 export default function TubeIllustration({ ratio = "3/4" }) {
   return (
@@ -13,56 +12,56 @@ export default function TubeIllustration({ ratio = "3/4" }) {
         justifyContent: "center",
       }}
     >
-      <svg viewBox="0 0 400 520" width="100%" style={{ maxHeight: "100%" }} role="img" aria-label="Re:Cosm Lash Conditioning Serum — slim sand tube with orange cap">
-        {/* flat matt shadow — board, not glow */}
-        <rect x="172" y="470" width="64" height="8" fill="#1B1611" opacity="0.14" />
+      <svg viewBox="0 0 400 520" width="100%" style={{ maxHeight: "100%" }} role="img" aria-label="Re:Cosm Lash Conditioning Serum — slim ivory tube with black cap">
+        <defs>
+          <linearGradient id="tubeBody" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#FFFFFF" />
+            <stop offset="0.6" stopColor="#F7F3E9" />
+            <stop offset="1" stopColor="#EDE6D6" />
+          </linearGradient>
+          <linearGradient id="capSheen" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#FFFFFF" stopOpacity="0.35" />
+            <stop offset="0.35" stopColor="#FFFFFF" stopOpacity="0" />
+          </linearGradient>
+        </defs>
 
-        {/* cap — Pantone 1655 C, matt */}
-        <rect x="168" y="42" width="64" height="112" fill="#FC4C02" />
-        <rect x="168" y="42" width="10" height="112" fill="#FFFFFF" opacity="0.14" />
-        <rect x="222" y="42" width="10" height="112" fill="#1B1611" opacity="0.10" />
+        {/* soft ground shadow */}
+        <ellipse cx="200" cy="474" rx="70" ry="7" fill="#121212" opacity="0.08" />
 
-        {/* collar */}
-        <rect x="168" y="154" width="64" height="6" fill="#D63F00" />
+        {/* cap — ink lacquer */}
+        <rect x="172" y="46" width="56" height="108" fill="#121212" />
+        <rect x="172" y="46" width="56" height="108" fill="url(#capSheen)" />
 
-        {/* tube body — unprinted CCP paper */}
-        <rect x="168" y="160" width="64" height="308" fill="#F4EDDE" />
-        <rect x="168" y="160" width="10" height="308" fill="#FFFFFF" opacity="0.5" />
-        <rect x="222" y="160" width="10" height="308" fill="#1B1611" opacity="0.06" />
+        {/* gold collar */}
+        <rect x="172" y="154" width="56" height="4" fill="#A8925E" />
 
-        {/* wordmark — reading upward, as printed on slim tubes */}
+        {/* tube body */}
+        <rect x="172" y="158" width="56" height="310" fill="url(#tubeBody)" stroke="#D8D2C4" strokeWidth="1" />
+
+        {/* wordmark — tracked caps reading upward */}
         <text
-          transform="rotate(-90 200 315)"
+          transform="rotate(-90 200 300)"
           x="200"
-          y="315"
+          y="300"
           textAnchor="middle"
           style={{
-            fontFamily: "var(--font-display)",
-            fontStretch: "125%",
-            fontWeight: 900,
-            fontSize: 42,
-            letterSpacing: "-0.03em",
-            fill: "#FC4C02",
+            fontFamily: "var(--font-family)",
+            fontWeight: 500,
+            fontSize: 15,
+            letterSpacing: "0.38em",
+            fill: "#121212",
           }}
         >
-          Re<tspan fill="#1B1611">:</tspan>Cosm
+          RE<tspan fill="#C94B16">:</tspan>COSM
         </text>
 
-        {/* spec block at the foot */}
+        {/* foot spec */}
+        <line x1="186" y1="428" x2="214" y2="428" stroke="#A8925E" strokeWidth="0.75" />
         <text
           x="200"
-          y="426"
+          y="446"
           textAnchor="middle"
-          style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.14em", fill: "#5C4F3F" }}
-        >
-          LASH SERUM
-        </text>
-        <line x1="184" y1="436" x2="216" y2="436" stroke="#1B1611" strokeWidth="1" opacity="0.4" />
-        <text
-          x="200"
-          y="452"
-          textAnchor="middle"
-          style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.14em", fill: "#5C4F3F" }}
+          style={{ fontFamily: "var(--font-family)", fontSize: 8.5, letterSpacing: "0.22em", fill: "#A39D92" }}
         >
           10 mL
         </text>
