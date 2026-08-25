@@ -29,7 +29,7 @@ export default function SciencePage() {
           <div className="science-grid">
             <div className="science-image reveal-left reveal-mask reveal">
               <Image
-                src="/images/portrait-soft.jpg"
+                src="/images/serum-v2.jpg"
                 alt="Portrait highlighting healthy natural lashes"
                 width={900}
                 height={1125}
@@ -79,7 +79,7 @@ export default function SciencePage() {
             </div>
             <div className="science-image reveal-right reveal-mask reveal" style={{ order: 2 }}>
               <Image
-                src="/images/smile-orange.jpg"
+                src="/images/gallery-v2.jpg"
                 alt="Smiling woman holding a bright orange book in a cream studio"
                 width={880}
                 height={1170}

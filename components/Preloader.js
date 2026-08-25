@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 const DURATION = 2100;
 
 export default function Preloader() {
-  const [state, setState] = useState("pending"); // pending | counting | done
+  const [state, setState] = useState("pending"); // pending | counting | done | hidden
   const [count, setCount] = useState(0);
   const raf = useRef(null);
 
@@ -25,7 +25,7 @@ export default function Preloader() {
     };
 
     if (seen || reduced) {
-      setState("done");
+      setState("hidden");
       announce();
       return;
     }
@@ -48,6 +48,9 @@ export default function Preloader() {
         document.documentElement.style.overflow = "";
         setState("done");
         announce();
+        // remove the overlay entirely once the fade is over (setTimeout still
+        // fires in throttled/background tabs where transitions freeze)
+        setTimeout(() => setState("hidden"), 1000);
       }
     };
 
@@ -58,7 +61,7 @@ export default function Preloader() {
     };
   }, []);
 
-  if (state === "pending") return null;
+  if (state === "pending" || state === "hidden") return null;
 
   return (
     <div className={`preloader${state === "done" ? " is-done" : ""}`} aria-hidden="true">

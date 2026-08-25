@@ -18,7 +18,7 @@ const GUIDES = [
     title: "Prostaglandin-free lash serums: what it means & why it matters",
     desc: "The side effects behind prostaglandin analogs, what Health Canada prohibits, and how to check any serum's label yourself.",
     date: "Aug 2026",
-    image: "/images/portrait-soft.jpg",
+    image: "/images/serum-v2.jpg",
     alt: "Close portrait showing healthy natural lashes",
     position: "50% 30%",
   },
@@ -28,17 +28,17 @@ const GUIDES = [
     desc: "Capixyl™, biotin, panthenol, centella — what each one actually does.",
     date: "Aug 2026",
     image: "/images/oranges.jpg",
-    alt: "Fresh oranges with green leaves on a bright table",
-    position: "50% 60%",
+    alt: "Fresh oranges with green leaves and a curl of peel on a cream table",
+    position: "50% 55%",
   },
   {
     slug: "lash-serums-with-extensions",
     title: "Can you use a lash serum with extensions or a lift?",
     desc: "Conditioning natural lashes under extensions, safely.",
     date: "Aug 2026",
-    image: "/images/hero-lashes.jpg",
-    alt: "Eyes with long dramatic lash extensions",
-    position: "50% 38%",
+    image: "/images/hero-v2.jpg",
+    alt: "Closed eyes with long dramatic lashes",
+    position: "50% 40%",
   },
 ];
 
@@ -55,12 +55,12 @@ export default function HomePage() {
       <section className="hero" id="home-hero">
         <div className="hero-media">
           <Image
-            src="/images/hero-away.jpg"
-            alt="Editorial beauty portrait on a warm pink backdrop, gazing away"
+            src="/images/hero-v2.jpg"
+            alt="Serene close-up with eyes closed and long dark lashes on a warm peach backdrop"
             fill
             priority
             sizes="100vw"
-            style={{ objectFit: "cover", objectPosition: "center 24%" }}
+            style={{ objectFit: "cover", objectPosition: "center 30%" }}
           />
         </div>
 
@@ -92,10 +92,10 @@ export default function HomePage() {
         <div className="pillars-scene">
           <div className="pillars-ellipse">
             <Image
-              src="/images/portrait-warm.jpg"
-              alt="Editorial portrait with defined natural lashes on a warm pink backdrop"
-              width={1600}
-              height={2400}
+              src="/images/ellipse-v2.jpg"
+              alt="Laughing model framing her face with her hands on a dusty-pink backdrop"
+              width={1262}
+              height={2000}
               sizes="(max-width: 880px) 140vw, 75vw"
             />
           </div>
@@ -140,11 +140,11 @@ export default function HomePage() {
         <div className="collection-media">
           <div className="collection-media-inner">
             <Image
-              src="/images/model-lash.jpg"
-              alt="Close editorial portrait with defined lashes, chin resting on hand"
+              src="/images/serum-v2.jpg"
+              alt="Glowing macro beauty portrait with soft freckles and defined lashes"
               fill
               sizes="(max-width: 880px) 100vw, 50vw"
-              style={{ objectFit: "cover", objectPosition: "50% 24%" }}
+              style={{ objectFit: "cover", objectPosition: "50% 32%" }}
             />
           </div>
         </div>
@@ -228,11 +228,11 @@ export default function HomePage() {
         <div className="collection-media">
           <div className="collection-media-inner">
             <Image
-              src="/images/model-tilt.jpg"
-              alt="Relaxed editorial portrait with tilted head in warm light"
+              src="/images/ritual-v2.jpg"
+              alt="Editorial beauty portrait in sunlight against colorful architecture"
               fill
               sizes="(max-width: 880px) 100vw, 50vw"
-              style={{ objectFit: "cover", objectPosition: "50% 30%" }}
+              style={{ objectFit: "cover", objectPosition: "50% 28%" }}
             />
           </div>
         </div>
@@ -364,10 +364,10 @@ export default function HomePage() {
       <section className="gallery-strip" id="home-toronto">
         <div className="gallery-center">
           <Image
-            src="/images/smile-orange.jpg"
-            alt="Smiling model in a cream studio holding a bright orange book"
-            width={1600}
-            height={2400}
+            src="/images/gallery-v2.jpg"
+            alt="Smiling model framing her face with her hands on a warm beige backdrop"
+            width={1262}
+            height={2000}
             sizes="(max-width: 880px) 86vw, 46vw"
           />
         </div>

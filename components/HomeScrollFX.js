@@ -71,6 +71,11 @@ export default function HomeScrollFX() {
       } else {
         window.addEventListener("recosm:ready", () => heroIntro.play(), { once: true });
       }
+      // Background tabs throttle rAF and can freeze the intro mid-flight —
+      // guarantee the hero ends fully revealed.
+      setTimeout(() => {
+        if (heroIntro.progress() < 1) heroIntro.progress(1);
+      }, 4500);
 
       gsap.to(".hero-inner", {
         y: -140,
