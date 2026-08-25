@@ -256,10 +256,8 @@
 }
 
 .collection-media-inner {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100dvh;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
 }
 
@@ -450,6 +448,7 @@
 
   .collection-media-inner {
     position: relative;
+    inset: auto;
     height: 62vw;
     min-height: 300px;
   }
