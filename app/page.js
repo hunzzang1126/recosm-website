@@ -1,50 +1,57 @@
-import Image from"next/image";
-import Link from"next/link";
-import Icon from"@/components/Icon";
-import EmailForm from"@/components/EmailForm";
-import TubeIllustration from"@/components/TubeIllustration";
-import HomeScrollFX from"@/components/HomeScrollFX";
+import Image from "next/image";
+import Link from "next/link";
+import Icon from "@/components/Icon";
+import EmailForm from "@/components/EmailForm";
+import TubeIllustration from "@/components/TubeIllustration";
+import HomeScrollFX from "@/components/HomeScrollFX";
 
-const MARQUEE_ITEMS = [
- "Prostaglandin-Free",
- "Peptide-Powered",
- "Made in Korea",
- "Fragrance-Free",
- "Ophthalmologist-Minded",
+const RITUAL_STEPS = [
+  { n: "01", title: "Cleanse", desc: "Remove all makeup. Lashes clean and completely dry." },
+  { n: "02", title: "Apply", desc: "A thin line of serum along the upper lash line, close to the roots." },
+  { n: "03", title: "Brush", desc: "Flip to the spoolie side and brush from root to tip." },
+  { n: "04", title: "Nightly", desc: "Every evening before bed. Fuller-looking lashes in 4–6 weeks." },
 ];
 
 const GUIDES = [
   {
-    slug:"prostaglandin-free-lash-serums",
-    title:"Prostaglandin-free lash serums: what it means & why it matters",
-    desc:"The side effects behind prostaglandin analogs, and how to check any serum's label yourself.",
-    image:"/images/portrait-soft.jpg",
-    alt:"Close portrait showing healthy natural lashes",
-    position:"50% 30%",
+    slug: "prostaglandin-free-lash-serums",
+    title: "Prostaglandin-free lash serums: what it means & why it matters",
+    desc: "The side effects behind prostaglandin analogs, what Health Canada prohibits, and how to check any serum's label yourself.",
+    date: "Aug 2026",
+    image: "/images/portrait-soft.jpg",
+    alt: "Close portrait showing healthy natural lashes",
+    position: "50% 30%",
   },
   {
-    slug:"lash-serum-ingredients",
-    title:"Lash serum ingredients, explained",
-    desc:"Capixyl™, biotin, panthenol, centella — what each one actually does, in plain language.",
-    image:"/images/oranges.jpg",
-    alt:"Fresh oranges with green leaves on a bright table",
-    position:"50% 60%",
+    slug: "lash-serum-ingredients",
+    title: "Lash serum ingredients, explained",
+    desc: "Capixyl™, biotin, panthenol, centella — what each one actually does.",
+    date: "Aug 2026",
+    image: "/images/oranges.jpg",
+    alt: "Fresh oranges with green leaves on a bright table",
+    position: "50% 60%",
   },
   {
-    slug:"lash-serums-with-extensions",
-    title:"Can you use a lash serum with extensions or a lift?",
-    desc:"How to condition natural lashes under extensions, and when to resume after a lift.",
-    image:"/images/hero-lashes.jpg",
-    alt:"Eyes with long dramatic lash extensions",
-    position:"50% 38%",
+    slug: "lash-serums-with-extensions",
+    title: "Can you use a lash serum with extensions or a lift?",
+    desc: "Conditioning natural lashes under extensions, safely.",
+    date: "Aug 2026",
+    image: "/images/hero-lashes.jpg",
+    alt: "Eyes with long dramatic lash extensions",
+    position: "50% 38%",
   },
 ];
+
+const ArrowIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12" /><polyline points="13 5 20 12 13 19" /></svg>
+);
 
 export default function HomePage() {
   return (
     <>
       <HomeScrollFX />
-      {/* Hero */}
+
+      {/* 01 — Hero */}
       <section className="hero" id="home-hero">
         <div className="hero-media">
           <Image
@@ -53,7 +60,7 @@ export default function HomePage() {
             fill
             priority
             sizes="100vw"
-            style={{ objectFit:"cover", objectPosition:"center 32%" }}
+            style={{ objectFit: "cover", objectPosition: "center 32%" }}
           />
         </div>
 
@@ -63,233 +70,316 @@ export default function HomePage() {
             <em>True</em> to your eyes,<br />kind to your <em>lashes</em>
           </h1>
           <p className="hero-description">
-            A peptide-powered lash conditioning serum with zero prostaglandins.
-            Clinically minded, made in Korea by Kolmar — no exceptions.
+            Unreservedly honest lash care that truly works — peptide-powered,
+            prostaglandin-free, no exceptions.
           </p>
         </div>
 
         <div className="hero-cta">
           <Link href="/product" className="cta-pill">
             Discover the serum
-            <span className="cta-arrow" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><line x1="4" y1="12" x2="20" y2="12" /><polyline points="13 5 20 12 13 19" /></svg>
-            </span>
+            <span className="cta-arrow" aria-hidden="true"><ArrowIcon /></span>
           </Link>
         </div>
       </section>
 
-      {/* Marquee */}
-      <div className="marquee" aria-hidden="true">
-        <div className="marquee-track">
-          {[0, 1].map((half) => (
-            <div key={half} style={{ display:"flex" }}>
-              {MARQUEE_ITEMS.map((item, i) => (
-                <span className="marquee-item" key={`${half}-${i}`}>
-                  <em>{item}</em>
-                  <span className="marquee-dot"></span>
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Pillars */}
+      {/* 02 — Pillars: diagonal ellipse + floating cards */}
       <section className="pillars" id="home-pillars">
         <h2 className="pillars-heading">
           Clean, conscious, <em>performance</em> lash care.
         </h2>
 
-        <div className="pillars-stage">
-          <div className="pillars-col pillars-col-left">
-            <div className="pillar-card">
-              <div className="pillar-icon"><Icon name="shield" /></div>
-              <h3>Prostaglandin-free, beyond reproach</h3>
-              <p>No prostaglandin analogs — the ingredient class linked to iris darkening and orbital fat loss. Ever.</p>
-            </div>
-            <div className="pillar-card">
-              <div className="pillar-icon"><Icon name="molecule" /></div>
-              <h3>Peptide performance</h3>
-              <p>Acetyl Tetrapeptide-3 (Capixyl™) with biotin and panthenol conditions lashes at the root line.</p>
-            </div>
-          </div>
-
-          <div className="pillars-portrait">
+        <div className="pillars-scene">
+          <div className="pillars-ellipse">
             <Image
               src="/images/portrait-warm.jpg"
-              alt="Portrait of a woman with defined natural lashes"
-              width={920}
-              height={1150}
-              sizes="(max-width: 980px) 80vw, 460px"
+              alt="Editorial portrait with defined natural lashes on a warm pink backdrop"
+              width={1600}
+              height={2400}
+              sizes="(max-width: 880px) 140vw, 75vw"
             />
           </div>
 
-          <div className="pillars-col pillars-col-right">
-            <div className="pillar-card">
-              <div className="pillar-icon"><Icon name="flag" /></div>
-              <h3>Made in Korea, by Kolmar</h3>
-              <p>Formulated and manufactured by Kolmar Korea — the lab behind the world&apos;s leading K-beauty brands.</p>
-            </div>
-            <div className="pillar-card">
-              <div className="pillar-icon"><Icon name="leaf" /></div>
-              <h3>Kind by default</h3>
-              <p>Fragrance-free and formulated for sensitive eyes and contact lens wearers. Radical transparency, full formula disclosed.</p>
-            </div>
+          <svg className="pillars-arrow" viewBox="0 0 220 140" fill="none" aria-hidden="true">
+            <path className="pillars-arrow-path" d="M204 8C170 84 96 122 18 108" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <path d="M30 96l-14 11 17 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          </svg>
+
+          <div className="pillars-orange" aria-hidden="true">
+            <Image src="/images/oranges.jpg" alt="" width={340} height={340} sizes="180px" />
+          </div>
+
+          <div className="pillar-card pillar-card-1">
+            <div className="pillar-icon"><Icon name="shield" /></div>
+            <h3>Prostaglandin-free, beyond reproach</h3>
+            <p>No prostaglandin analogs — the ingredient class linked to iris darkening and orbital fat loss. Ever.</p>
+          </div>
+
+          <div className="pillar-card pillar-card-2">
+            <div className="pillar-icon"><Icon name="molecule" /></div>
+            <h3>Radical transparency</h3>
+            <p>No black boxes, nothing to hide — we disclose our full formula, so you never have to guess what&apos;s in it.</p>
+          </div>
+
+          <div className="pillar-card pillar-card-3">
+            <div className="pillar-icon"><Icon name="flag" /></div>
+            <h3>Made in Korea, by Kolmar</h3>
+            <p>Formulated and manufactured by Kolmar Korea — the lab behind the world&apos;s leading K-beauty brands.</p>
+          </div>
+
+          <div className="pillar-card pillar-card-4">
+            <div className="pillar-icon"><Icon name="leaf" /></div>
+            <h3>Kind &amp; conscious</h3>
+            <p>Fragrance-free, formulated for sensitive eyes and contact lens wearers. Responsible packaging.</p>
           </div>
         </div>
       </section>
 
-      {/* Product highlight */}
-      <section className="product-highlight section-white" id="home-highlight">
-        <div className="container">
-          <div className="highlight-grid">
-            <div className="highlight-image">
-              <div className="oval-frame">
-                <Image
-                  src="/images/portrait-soft.jpg"
-                  alt="Soft-focus portrait highlighting the eye area"
-                  width={900}
-                  height={1125}
-                  sizes="(max-width: 880px) 90vw, 560px"
-                  style={{ objectPosition:"50% 26%" }}
-                />
-              </div>
-              <div className="tube-float float-a">
+      {/* 03 — Collection: The Serum (split, sticky media left) */}
+      <section className="collection" id="home-serum">
+        <div className="collection-media">
+          <div className="collection-media-inner">
+            <Image
+              src="/images/portrait-soft.jpg"
+              alt="Soft studio portrait highlighting the eye area"
+              fill
+              sizes="(max-width: 880px) 100vw, 50vw"
+              style={{ objectFit: "cover", objectPosition: "50% 30%" }}
+            />
+          </div>
+        </div>
+
+        <div className="collection-body">
+          <div className="collection-head">
+            <h2 className="collection-title">The<br /><em>Serum</em></h2>
+            <Link href="/product" className="collection-arrow" aria-label="View the serum">
+              <ArrowIcon />
+            </Link>
+          </div>
+
+          <div className="collection-track">
+            <Link href="/product" className="collection-card tint-orange">
+              <span className="collection-chip">The Serum</span>
+              <span className="collection-bag" aria-hidden="true"><Icon name="cart" /></span>
+              <div className="collection-card-visual">
                 <TubeIllustration ratio="3/4" />
               </div>
-            </div>
+              <div className="collection-card-meta">
+                <span className="collection-card-name">Lash Conditioning Serum</span>
+                <span className="collection-card-price">$55.00 CAD</span>
+              </div>
+            </Link>
 
-            <div className="highlight-content">
-              <p className="text-overline highlight-overline">The Science</p>
-              <h2 className="heading-2 highlight-title">
-                Powered by <em>peptides</em>,<br />not side effects
-              </h2>
-              <p className="text-body-lg highlight-text">
-                Unlike prostaglandin-based serums that can cause irritation, discoloration,
-                and orbital fat loss, Re:Cosm&apos;s formula uses Acetyl Tetrapeptide-3 (Capixyl™)
-                to condition and care for lashes gently.
-              </p>
-              <div className="ingredients-grid">
-                <div className="ingredient-card">
-                  <div className="ingredient-name">Acetyl Tetrapeptide-3</div>
-                  <div className="ingredient-desc">Conditions and fortifies the look of lashes at the lash line</div>
+            <Link href="/science" className="collection-card tint-cream">
+              <span className="collection-chip">The Formula</span>
+              <div className="collection-card-visual">
+                <div className="collection-card-icon"><Icon name="molecule" /></div>
+              </div>
+              <div className="collection-card-meta">
+                <span className="collection-card-name">Capixyl™ peptide complex</span>
+                <span className="collection-card-price">Biotin · Panthenol · Centella</span>
+              </div>
+            </Link>
+
+            <Link href="/guides/prostaglandin-free-lash-serums" className="collection-card tint-orange">
+              <span className="collection-chip">The Standard</span>
+              <div className="collection-card-visual">
+                <div className="collection-card-icon"><Icon name="shield" /></div>
+              </div>
+              <div className="collection-card-meta">
+                <span className="collection-card-name">Zero prostaglandins</span>
+                <span className="collection-card-price">Health Canada compliant</span>
+              </div>
+            </Link>
+          </div>
+
+          <p className="collection-caption">Healthy-looking lashes without having to think about it.</p>
+        </div>
+      </section>
+
+      {/* 04 — Collection: The Ritual (split, sticky media right) */}
+      <section className="collection collection--flip" id="home-ritual">
+        <div className="collection-body">
+          <div className="collection-head">
+            <h2 className="collection-title">The<br /><em>Ritual</em></h2>
+            <Link href="/product" className="collection-arrow" aria-label="How to use">
+              <ArrowIcon />
+            </Link>
+          </div>
+
+          <div className="collection-track">
+            {RITUAL_STEPS.map((s) => (
+              <div className="collection-card tint-cream" key={s.n}>
+                <span className="collection-chip">Step {s.n}</span>
+                <div className="collection-card-visual">
+                  <span className="collection-step-number">{s.n}</span>
                 </div>
-                <div className="ingredient-card">
-                  <div className="ingredient-name">Biotin</div>
-                  <div className="ingredient-desc">Essential B-vitamin, a building block of keratin-rich lashes</div>
-                </div>
-                <div className="ingredient-card">
-                  <div className="ingredient-name">Panthenol</div>
-                  <div className="ingredient-desc">Pro-Vitamin B5 hydrates and improves lash flexibility</div>
-                </div>
-                <div className="ingredient-card">
-                  <div className="ingredient-name">Centella Asiatica</div>
-                  <div className="ingredient-desc">Calming botanical for the sensitive lash line</div>
+                <div className="collection-card-meta">
+                  <span className="collection-card-name">{s.title}</span>
+                  <span className="collection-card-price">{s.desc}</span>
                 </div>
               </div>
-              <div className="highlight-cta" style={{ marginTop:"var(--space-6)" }}>
-                <Link href="/science" className="link-arrow">
-                  Explore our science
-                  <span className="cta-arrow" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><line x1="4" y1="12" x2="20" y2="12" /><polyline points="13 5 20 12 13 19" /></svg>
-                  </span>
-                </Link>
-              </div>
-            </div>
+            ))}
+          </div>
+
+          <p className="collection-caption">One minute a night. That&apos;s the whole routine.</p>
+        </div>
+
+        <div className="collection-media">
+          <div className="collection-media-inner">
+            <Image
+              src="/images/model-lash.jpg"
+              alt="Close editorial portrait resting chin on hand, lashes defined"
+              fill
+              sizes="(max-width: 880px) 100vw, 50vw"
+              style={{ objectFit: "cover", objectPosition: "50% 20%" }}
+            />
           </div>
         </div>
       </section>
 
-      {/* Ethos */}
+      {/* 05 — Ethos: oversized display type */}
       <section className="ethos" id="home-ethos">
         <div className="container">
-          <div className="ethos-inner">
-            <div>
-              <p className="text-overline" style={{ color:"var(--color-primary-light)", marginBottom:"var(--space-5)" }}>Our Ethos</p>
-              <h2 className="ethos-statement">
-                No black boxes. <em>Nothing</em> to hide.
-              </h2>
-              <div className="ethos-copy" style={{ marginTop:"var(--space-6)" }}>
-                <p>
-                  We disclose our full formula — every ingredient, every concentration decision —
-                  so you never have to guess what&apos;s next to your eyes.
-                </p>
-                <p>
-                  Health Canada&apos;s cosmetic hotlist prohibits prostaglandin analogs.
-                  We agree, and we went further: fragrance-free, sensitive-eye tested thinking,
-                  and a formula built by Korea&apos;s most trusted manufacturer.
-                </p>
-                <Link href="/faq" className="link-arrow" style={{ color:"var(--color-text-inverse)" }}>
-                  Read the FAQ
-                  <span className="cta-arrow" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><line x1="4" y1="12" x2="20" y2="12" /><polyline points="13 5 20 12 13 19" /></svg>
-                  </span>
-                </Link>
-              </div>
-            </div>
+          <span className="ethos-chip">Ethos</span>
+          <div className="ethos-display" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
+            <span className="ethos-line ethos-line-1">No prosta&shy;glandins.</span>
+            <span className="ethos-line ethos-line-2">No black boxes.</span>
+            <span className="ethos-line ethos-line-3"><em>Nothing</em> to hide.</span>
+          </div>
 
-            <div className="ethos-image">
-              <Image
-                src="/images/smile-orange.jpg"
-                alt="Smiling woman in cream studio holding a bright orange book"
-                width={880}
-                height={1170}
-                sizes="(max-width: 880px) 80vw, 420px"
-              />
+          <div className="ethos-float" aria-hidden="true">
+            <Image src="/images/oranges.jpg" alt="" width={520} height={720} sizes="300px" />
+          </div>
+
+          <div className="ethos-features">
+            <div className="ethos-feature">
+              <span className="ethos-feature-icon"><Icon name="check" /></span>
+              <h3 className="ethos-feature-title">100% transparent formula</h3>
+              <p className="ethos-feature-desc">
+                We disclose every ingredient — formulated to the highest standards of efficacy
+                and safety, in bio-compatible bases, free from over 1,800 questionable ingredients.
+              </p>
+            </div>
+            <div className="ethos-feature">
+              <span className="ethos-feature-icon"><Icon name="molecule" /></span>
+              <h3 className="ethos-feature-title">Only verified ingredients</h3>
+              <p className="ethos-feature-desc">
+                Lash care packed with peptides, vitamins and calming botanicals at stable pH levels
+                that don&apos;t promise miracles — but deliver real results.
+              </p>
+            </div>
+            <div className="ethos-feature">
+              <span className="ethos-feature-icon"><Icon name="leaf" /></span>
+              <h3 className="ethos-feature-title">Kind to sensitive eyes</h3>
+              <p className="ethos-feature-desc">
+                Fragrance-free and prostaglandin-free, designed for the delicate eye area —
+                suitable for contact lens wearers and lash extensions.
+              </p>
             </div>
           </div>
         </div>
-        <div className="ethos-orange float-b" aria-hidden="true">
-          <Image src="/images/oranges.jpg" alt="" width={520} height={780} sizes="260px" />
+      </section>
+
+      {/* 06 — Quality + waitlist panel */}
+      <section className="quality" id="home-waitlist">
+        <div className="quality-copy">
+          <span className="ethos-chip">Quality</span>
+          <h2 className="quality-title">
+            Only proven ingredients, quality over quantity — <em>always.</em>
+          </h2>
+          <p className="quality-sub">
+            It&apos;s about what we don&apos;t put in. A squeaky-clean formula,
+            made by Korea&apos;s most trusted manufacturer.
+          </p>
+          <svg className="quality-arrow" viewBox="0 0 220 120" fill="none" aria-hidden="true">
+            <path className="quality-arrow-path" d="M12 20c48 64 128 82 192 44" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <path d="M190 56l16 6-8 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          </svg>
+        </div>
+
+        <div className="waitlist-panel">
+          <p className="waitlist-overline">Launching November 2026</p>
+          <h3 className="waitlist-title">Be first <em>in line</em></h3>
+          <EmailForm className="email-form waitlist-form" buttonLabel="Join" />
+          <div className="waitlist-divider" aria-hidden="true"></div>
+          <p className="waitlist-fine">
+            No spam, only early access and honest lash care insights.
+            You can opt out anytime.
+          </p>
         </div>
       </section>
 
-      {/* Journal */}
+      {/* 07 — Journal: featured + side cards */}
       <section className="journal" id="home-journal">
         <div className="container">
           <div className="section-header">
             <p className="section-overline">Lash Care Journal</p>
             <h2 className="section-title">Honest answers, <em>no hype</em></h2>
-            <p className="section-desc">
-              Plain-language guides to lash serums, ingredients, and eye-area safety.
-            </p>
           </div>
 
-          <div className="journal-grid">
-            {GUIDES.map((g, i) => (
-              <Link href={`/guides/${g.slug}`} className="journal-card" key={g.slug}>
-                <div className="journal-card-image">
-                  <Image
-                    src={g.image}
-                    alt={g.alt}
-                    width={640}
-                    height={400}
-                    sizes="(max-width: 880px) 90vw, 420px"
-                    style={{ objectPosition: g.position }}
-                  />
+          <div className="journal-feature-grid">
+            <Link href={`/guides/${GUIDES[0].slug}`} className="journal-card journal-card--feature">
+              <div className="journal-card-image">
+                <Image src={GUIDES[0].image} alt={GUIDES[0].alt} width={980} height={620} sizes="(max-width: 880px) 92vw, 56vw" style={{ objectPosition: GUIDES[0].position }} />
+              </div>
+              <div className="journal-card-body">
+                <h3 className="journal-card-title">{GUIDES[0].title}</h3>
+                <p className="journal-card-desc">{GUIDES[0].desc}</p>
+                <div className="journal-card-foot">
+                  <span className="journal-card-date">{GUIDES[0].date}</span>
+                  <span className="journal-card-link">Read more</span>
                 </div>
-                <div className="journal-card-body">
-                  <h3 className="journal-card-title">{g.title}</h3>
-                  <p className="journal-card-desc">{g.desc}</p>
-                  <span className="journal-card-link">Read the guide</span>
-                </div>
-              </Link>
-            ))}
+              </div>
+            </Link>
+
+            <div className="journal-side">
+              {GUIDES.slice(1).map((g) => (
+                <Link href={`/guides/${g.slug}`} className="journal-card" key={g.slug}>
+                  <div className="journal-card-image">
+                    <Image src={g.image} alt={g.alt} width={640} height={400} sizes="(max-width: 880px) 92vw, 34vw" style={{ objectPosition: g.position }} />
+                  </div>
+                  <div className="journal-card-body">
+                    <h3 className="journal-card-title">{g.title}</h3>
+                    <div className="journal-card-foot">
+                      <span className="journal-card-date">{g.date}</span>
+                      <span className="journal-card-link">Read more</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="journal-seeall">
+            <Link href="/guides" className="seeall-circle" aria-label="See all guides">
+              <ArrowIcon />
+            </Link>
+            <Link href="/guides" className="seeall-label">See all</Link>
           </div>
         </div>
       </section>
 
-      {/* Waitlist */}
-      <section className="container" id="home-waitlist">
-        <div className="email-cta">
-          <h2>Launching <em>November 2026</em></h2>
-          <p>
-            Be first in line when Re:Cosm arrives in Canada — early access,
-            launch pricing, and honest lash care insights.
-          </p>
-          <EmailForm buttonLabel="Join the waitlist" />
-          <p className="fine-print">No spam, ever. Unsubscribe anytime.</p>
+      {/* 08 — Find us in Toronto (gallery) */}
+      <section className="gallery-strip" id="home-toronto">
+        <div className="gallery-center">
+          <Image
+            src="/images/smile-orange.jpg"
+            alt="Smiling model in a cream studio holding a bright orange book"
+            width={1600}
+            height={2400}
+            sizes="(max-width: 880px) 86vw, 46vw"
+          />
         </div>
+        <div className="gallery-side" aria-hidden="true">
+          <Image src="/images/oranges.jpg" alt="" width={420} height={560} sizes="240px" />
+        </div>
+        <h2 className="gallery-heading">find us <em>in Toronto</em></h2>
+        <p className="gallery-note">Lash studios and curated retailers across the GTA. Wholesale inquiries welcome.</p>
+        <Link href="/stockists" className="cta-pill gallery-pill">
+          Stockists
+          <span className="cta-arrow" aria-hidden="true"><ArrowIcon /></span>
+        </Link>
       </section>
     </>
   );

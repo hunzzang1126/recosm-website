@@ -273,21 +273,9 @@ a, button {
 .email-form button:disabled,
 .newsletter-form button:disabled { opacity: 0.6; cursor: wait; }
 
-/* Dark-surface variant (footer / ethos) */
-.site-footer .newsletter-form,
-.section-dark .email-form {
-  background: rgba(253, 251, 248, 0.07);
-  border-color: rgba(253, 251, 248, 0.16);
-}
-
-.site-footer .newsletter-form input[type="email"],
-.section-dark .email-form input[type="email"] { color: var(--color-text-inverse); }
-
-.site-footer .newsletter-form button,
-.section-dark .email-form button { background: var(--color-primary); }
-
-.site-footer .newsletter-form button:hover,
-.section-dark .email-form button:hover { background: var(--color-primary-light); }
+/* Footer newsletter (light) */
+.site-footer .newsletter-form button { background: var(--color-primary); }
+.site-footer .newsletter-form button:hover { background: var(--color-primary-dark); }
 
 /* ============ Accordion ============ */
 
