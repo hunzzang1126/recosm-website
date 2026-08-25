@@ -1,39 +1,44 @@
 /* ============================================
-   Re:Cosm — Design System Variables
+   Re:Cosm — Design Tokens
+   Truekind-inspired: porcelain cream + brand
+   orange + charcoal, mixed serif/sans display
    ============================================ */
 
 :root {
   /* === Brand Colors === */
-  --color-primary: #E8593C;
-  --color-primary-dark: #C94A2F;
+  --color-primary: #E8593C;        /* Kolmar case spec — Pantone 1655C family */
+  --color-primary-dark: #C4441F;
+  --color-primary-deep: #A03518;
   --color-primary-light: #F07A62;
+  --color-primary-tint: #FBEAE3;   /* washed orange for surfaces */
   --color-secondary: #C9A96E;
   --color-secondary-light: #D4BC8E;
 
   /* === Backgrounds === */
-  --color-bg-cream: #F7F0E8;
-  --color-bg-warm: #F0E8DD;
-  --color-bg-white: #FFFFFF;
-  --color-bg-dark: #000000;
-  --color-bg-black: #000000;
+  --color-bg-cream: #F4EFE8;       /* porcelain page ground */
+  --color-bg-warm: #EDE5DA;        /* slightly deeper cream */
+  --color-bg-white: #FDFBF8;       /* warm white for cards */
+  --color-bg-dark: #262523;        /* charcoal — preloader, footer, ethos */
+  --color-bg-black: #1B1A18;
 
   /* === Text === */
-  --color-text-primary: #000000;
-  --color-text-body: #333333;
-  --color-text-secondary: #6B6B6B;
-  --color-text-light: #999999;
-  --color-text-inverse: #FFFFFF;
+  --color-text-primary: #201E1B;
+  --color-text-body: #3E3A34;
+  --color-text-secondary: #797166;
+  --color-text-light: #A39A8D;
+  --color-text-inverse: #F4EFE8;
 
   /* === UI === */
-  --color-border: #D9CFC3;
-  --color-border-light: #E8DFD5;
+  --color-border: #DDD3C5;
+  --color-border-light: #EAE2D6;
   --color-success: #4A7C59;
-  --color-error: #C44B3F;
-  --color-overlay: rgba(0, 0, 0, 0.4);
+  --color-error: #C4441F;
+  --color-overlay: rgba(32, 30, 27, 0.42);
 
   /* === Typography === */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Instrument Sans', -apple-system, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-weight-light: 300;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -41,82 +46,79 @@
   --font-weight-bold: 700;
 
   /* Font sizes */
-  --text-xs: 0.6875rem;     /* 11px */
-  --text-sm: 0.8125rem;     /* 13px */
-  --text-base: 0.9375rem;   /* 15px */
-  --text-md: 1rem;           /* 16px */
-  --text-lg: 1.125rem;      /* 18px */
-  --text-xl: 1.375rem;      /* 22px */
-  --text-2xl: 1.75rem;      /* 28px */
-  --text-3xl: 2.25rem;      /* 36px */
-  --text-4xl: 3rem;         /* 48px */
-  --text-5xl: 3.75rem;      /* 60px */
-  --text-6xl: 4.5rem;       /* 72px */
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 4.5rem;
+
+  /* Display scale — truekind-style oversized headlines */
+  --display-xl: clamp(3rem, 8.5vw, 7.5rem);
+  --display-lg: clamp(2.5rem, 6.5vw, 5.5rem);
+  --display-md: clamp(2rem, 4.5vw, 3.75rem);
+  --display-sm: clamp(1.5rem, 3vw, 2.5rem);
 
   /* Line heights */
-  --leading-tight: 1.1;
-  --leading-snug: 1.25;
+  --leading-tight: 1.04;
+  --leading-snug: 1.2;
   --leading-normal: 1.5;
   --leading-relaxed: 1.7;
 
   /* Letter spacing */
-  --tracking-tight: -0.02em;
+  --tracking-tight: -0.03em;
   --tracking-normal: 0;
-  --tracking-wide: 0.05em;
-  --tracking-wider: 0.1em;
-  --tracking-widest: 0.15em;
+  --tracking-wide: 0.14em;
+  --tracking-wider: 0.22em;
 
   /* === Spacing === */
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-5: 1.25rem;   /* 20px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-10: 2.5rem;   /* 40px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
-  --space-20: 5rem;     /* 80px */
-  --space-24: 6rem;     /* 96px */
-  --space-32: 8rem;     /* 128px */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --section-pad: clamp(4.5rem, 10vw, 8.5rem);
 
   /* === Layout === */
-  --container-max: 1280px;
-  --container-narrow: 960px;
-  --container-text: 720px;
-  --header-height: 64px;
-  --header-height-scrolled: 56px;
+  --container-max: 1360px;
+  --container-narrow: 820px;
+  --container-pad: clamp(1.25rem, 4vw, 3rem);
+  --header-height: 76px;
 
-  /* === Borders === */
-  /* Tight radii on purpose — premium beauty reads sharp, not rounded */
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
-  --radius-full: 9999px;
+  /* === Radii — truekind pills & soft cards === */
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 44px;
+  --radius-pill: 999px;
 
-  /* === Shadows === */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 16px 50px rgba(0, 0, 0, 0.12);
+  /* === Shadows — warm-tinted, single light source === */
+  --shadow-sm: 0 1px 2px rgba(63, 51, 38, 0.06);
+  --shadow-md: 0 6px 24px -8px rgba(63, 51, 38, 0.14);
+  --shadow-lg: 0 24px 60px -20px rgba(63, 51, 38, 0.22);
+  --shadow-card: 0 2px 6px rgba(63, 51, 38, 0.04), 0 18px 40px -18px rgba(63, 51, 38, 0.12);
 
-  /* === Transitions === */
+  /* === Motion === */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
-  --duration-slower: 800ms;
+  --duration-fast: 200ms;
+  --duration-base: 320ms;
+  --duration-slow: 700ms;
+  --duration-reveal: 1100ms;
 
-  /* === Z-index === */
-  --z-base: 1;
-  --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-header: 300;
-  --z-overlay: 400;
-  --z-modal: 500;
-  --z-toast: 600;
+  /* === Z-index scale === */
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-toast: 300;
+  --z-preloader: 400;
 }

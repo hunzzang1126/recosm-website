@@ -6,6 +6,8 @@ import CartDrawer from "@/components/CartDrawer";
 import CookieConsent from "@/components/CookieConsent";
 import Toast from "@/components/Toast";
 import Reveals from "@/components/Reveals";
+import Preloader from "@/components/Preloader";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const BASE_URL = "https://www.recosm.co";
 
@@ -43,6 +45,10 @@ export const metadata = {
   icons: { icon: "/images/favicon.svg" },
 };
 
+export const viewport = {
+  themeColor: "#F4EFE8",
+};
+
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -70,15 +76,18 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap"
           rel="stylesheet"
         />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
       </head>
       <body>
         <StoreProvider>
+          <a href="#main-content" className="skip-link">Skip to content</a>
+          <Preloader />
+          <SmoothScroll />
           <Header />
-          <main className="page-content page-active">{children}</main>
+          <main className="page-content page-active" id="main-content">{children}</main>
           <Footer />
           <CartDrawer />
           <CookieConsent />

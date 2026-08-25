@@ -1,110 +1,83 @@
 /* ============================================
    Re:Cosm — Typography
+   Sans display with italic-serif emphasis,
+   truekind-style mixed headlines
    ============================================ */
 
-.heading-display {
+body {
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-body);
+  background-color: var(--color-bg-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-size: var(--text-5xl);
-  font-weight: var(--font-weight-light);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
   line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+/* Italic serif emphasis inside headlines — the signature move */
+h1 em, h2 em, h3 em,
+.heading-2 em, .heading-3 em,
+.display em, .serif-em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
   letter-spacing: -0.01em;
-  color: var(--color-text-primary);
 }
 
-.heading-1 {
-  font-family: var(--font-display);
-  font-size: var(--text-4xl);
-  font-weight: var(--font-weight-light);
-  line-height: var(--leading-tight);
-  letter-spacing: -0.01em;
-  color: var(--color-text-primary);
-}
-
-.heading-2 {
-  font-family: var(--font-display);
-  font-size: var(--text-3xl);
-  font-weight: var(--font-weight-light);
-  line-height: var(--leading-snug);
-  color: var(--color-text-primary);
-}
-
-.heading-3 {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  font-weight: var(--font-weight-light);
-  line-height: var(--leading-snug);
-  color: var(--color-text-primary);
-}
-
+.heading-1 { font-size: var(--display-lg); }
+.heading-2 { font-size: var(--display-md); }
+.heading-3 { font-size: var(--display-sm); line-height: 1.14; }
 .heading-4 {
   font-size: var(--text-xl);
-  font-weight: var(--font-weight-medium);
   line-height: var(--leading-snug);
-  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
 }
 
-.heading-5 {
-  font-size: var(--text-lg);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--leading-snug);
-  color: var(--color-text-primary);
-}
+p { text-wrap: pretty; }
 
 .text-body {
   font-size: var(--text-base);
   line-height: var(--leading-relaxed);
   color: var(--color-text-body);
+  max-width: 62ch;
 }
 
 .text-body-lg {
   font-size: var(--text-lg);
   line-height: var(--leading-relaxed);
   color: var(--color-text-body);
-}
-
-.text-small {
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
-  color: var(--color-text-secondary);
-}
-
-.text-caption {
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-widest);
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
+  max-width: 58ch;
 }
 
 .text-overline {
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
   color: var(--color-primary);
 }
 
-/* Responsive typography */
-@media (max-width: 768px) {
-  .heading-display {
-    font-size: var(--text-4xl);
-  }
-  .heading-1 {
-    font-size: var(--text-3xl);
-  }
-  .heading-2 {
-    font-size: var(--text-2xl);
-  }
-  .heading-3 {
-    font-size: var(--text-xl);
-  }
+.text-center { text-align: center; }
+.text-center .text-body,
+.text-center .text-body-lg { margin-inline: auto; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
 }
 
-@media (max-width: 480px) {
-  .heading-display {
-    font-size: var(--text-3xl);
-  }
-  .heading-1 {
-    font-size: var(--text-2xl);
-  }
+::selection {
+  background: var(--color-primary);
+  color: var(--color-bg-white);
 }

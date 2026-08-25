@@ -7,10 +7,14 @@ export default function Footer() {
   return (
     <footer className="site-footer" id="site-footer">
       <div className="container">
+        <p className="footer-tagline">
+          Honest lash care, <em>made kind</em> to sensitive eyes.
+        </p>
+
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="footer-logo">Re<span>:</span>Cosm</div>
-            <p>Korean beauty science meets Canadian clean beauty standards. Peptide-powered lash care, made responsibly.</p>
+            <p>Korean beauty science meets Canadian clean beauty standards. Peptide-powered lash care, made responsibly by Kolmar Korea.</p>
           </div>
 
           <div className="footer-col">
@@ -36,7 +40,7 @@ export default function Footer() {
 
           <div className="footer-newsletter">
             <h4 className="footer-heading">Stay Updated</h4>
-            <p>Join our community for exclusive offers and clean beauty insights.</p>
+            <p>Join the waitlist for launch news and clean beauty insights.</p>
             <EmailForm className="newsletter-form" buttonLabel="Join" />
           </div>
         </div>
@@ -44,9 +48,9 @@ export default function Footer() {
         <div className="footer-bottom">
           <p>&copy; {new Date().getFullYear()} Re:Cosm. All rights reserved. Made in Korea 🇰🇷 · Toronto, Canada</p>
           <div className="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Accessibility</a>
+            <Link href="/faq">Privacy Policy</Link>
+            <Link href="/faq">Terms of Service</Link>
+            <Link href="/contact">Accessibility</Link>
           </div>
         </div>
       </div>

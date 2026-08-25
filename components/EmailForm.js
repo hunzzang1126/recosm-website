@@ -38,7 +38,7 @@ export default function EmailForm({ className = "email-form", buttonLabel = "Sub
 
   return (
     <form className={className} onSubmit={onSubmit}>
-      <input type="email" placeholder="Enter your email" required aria-label="Email address" />
+      <input type="email" name="email" placeholder="you@email.com" required aria-label="Email address" autoComplete="email" spellCheck={false} />
       {/* Honeypot — hidden from people, tempting for bots */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, width: 0, opacity: 0 }} />
       <button type="submit" disabled={busy}>{busy ? "…" : buttonLabel}</button>

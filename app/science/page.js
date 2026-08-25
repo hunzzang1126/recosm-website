@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Icon from "@/components/Icon";
 
 export const metadata = {
@@ -26,10 +27,15 @@ export default function SciencePage() {
       <section className="science-section section-white">
         <div className="container">
           <div className="science-grid">
-            <div className="science-image reveal-left">
-              <div className="img-placeholder" style={{ aspectRatio: "4/3", borderRadius: "var(--radius-lg)" }}>
-                <span>Brand Story Image</span>
-              </div>
+            <div className="science-image reveal-left reveal-mask reveal">
+              <Image
+                src="/images/portrait-soft.jpg"
+                alt="Portrait highlighting healthy natural lashes"
+                width={900}
+                height={1125}
+                sizes="(max-width: 880px) 90vw, 560px"
+                style={{ objectPosition: "50% 24%" }}
+              />
             </div>
             <div className="science-content reveal-right">
               <p className="text-overline" style={{ marginBottom: "var(--space-4)" }}>The Story</p>
@@ -71,10 +77,14 @@ export default function SciencePage() {
                 ))}
               </div>
             </div>
-            <div className="science-image reveal-right" style={{ order: 2 }}>
-              <div className="img-placeholder" style={{ aspectRatio: "4/3", borderRadius: "var(--radius-lg)" }}>
-                <span>Kolmar Korea Facility</span>
-              </div>
+            <div className="science-image reveal-right reveal-mask reveal" style={{ order: 2 }}>
+              <Image
+                src="/images/smile-orange.jpg"
+                alt="Smiling woman holding a bright orange book in a cream studio"
+                width={880}
+                height={1170}
+                sizes="(max-width: 880px) 90vw, 560px"
+              />
             </div>
           </div>
         </div>
