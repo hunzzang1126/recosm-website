@@ -242,9 +242,10 @@ export default function HomePage() {
       <section className="ethos" id="home-ethos">
         <div className="container">
           <span className="ethos-chip">Ethos</span>
-          <div className="ethos-display" aria-label="No prostaglandins. No black boxes.">
+          <div className="ethos-display" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
             <span className="ethos-line ethos-line-1">No prostaglandins.</span>
             <span className="ethos-line ethos-line-2">No black boxes.</span>
+            <span className="ethos-line ethos-line-3"><em>Nothing</em> to hide.</span>
           </div>
 
           <div className="ethos-float" aria-hidden="true">
