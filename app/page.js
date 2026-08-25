@@ -8,37 +8,32 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="hero" id="home-hero">
-        <div className="hero-frame">
-          <div className="hero-main">
-            <div className="hero-content">
-              <p className="hero-eyebrow reveal">Korean Clean Beauty · Toronto</p>
-              <h1 className="hero-title">
-                <span className="line reveal">Re<em>:</em>define</span>
-                <span className="line reveal delay-1">your lashes.</span>
-              </h1>
-              <p className="hero-description reveal delay-2">
-                A peptide lash serum with no prostaglandins — clinically minded care built on
-                Acetyl Tetrapeptide-3, formulated and made in Korea by Kolmar.
-              </p>
-              <div className="hero-cta-group reveal delay-3">
-                <Link href="/product" className="btn btn-dark btn-lg">Discover the Serum</Link>
-                <Link href="/science" className="btn btn-ghost">Our Science</Link>
-              </div>
+        <div className="hero-inner">
+          <div className="hero-content">
+            <p className="hero-overline reveal">Korean Clean Beauty</p>
+            <h1 className="hero-title reveal delay-1">Re<em>:</em>define<br />your lashes.</h1>
+            <p className="hero-description reveal delay-2">
+              Clinically formulated with Acetyl Tetrapeptide-3. Prostaglandin-free. Made in Korea by Kolmar.
+            </p>
+            <div className="hero-cta-group reveal delay-3">
+              <Link href="/product" className="btn btn-dark btn-lg">Discover</Link>
+              <Link href="/science" className="btn btn-ghost">Our Science →</Link>
             </div>
-            <div className="hero-product reveal-right delay-2">
+          </div>
+          <div className="hero-image reveal-right delay-2">
+            <div style={{ maxWidth: 480, width: "100%" }}>
               <TubeIllustration ratio="3/4" />
-              <div className="hero-product-caption">
-                <span>Lash Conditioning Serum</span>
-                <span>·</span>
-                <span>10 mL</span>
-              </div>
+            </div>
+            <div className="hero-badge">
+              <span className="dot"></span>
+              Made in Korea
             </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits strip */}
-      <section className="benefits-strip" aria-label="Product assurances">
+      {/* Benefits Strip */}
+      <section className="benefits-strip">
         <div className="container">
           <div className="benefits-grid">
             <div className="benefit-item reveal delay-1">
@@ -61,22 +56,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* The formula */}
+      {/* Product Highlight */}
       <section className="product-highlight" id="home-highlight">
         <div className="container">
           <div className="highlight-grid">
             <div className="highlight-image reveal-left">
-              <TubeIllustration ratio="4/5" />
+              <TubeIllustration ratio="1" />
             </div>
             <div className="highlight-content">
-              <p className="text-overline highlight-overline reveal">The Formula</p>
-              <h2 className="section-title highlight-title reveal delay-1" style={{ textAlign: "left" }}>
-                Powered by peptides,<br />not side effects
-              </h2>
+              <p className="text-overline highlight-overline reveal">The Science</p>
+              <h2 className="heading-2 highlight-title reveal delay-1">Powered by peptides,<br />not side effects</h2>
               <p className="text-body-lg highlight-text reveal delay-2">
-                Prostaglandin-based serums can cause irritation, iris discoloration, and orbital
-                fat loss. Re:Cosm conditions lashes with Acetyl Tetrapeptide-3 (Capixyl™)
-                instead — gentle enough for the lash line, refined enough to see.
+                Unlike prostaglandin-based serums that can cause irritation, discoloration, and orbital fat loss, Re:Cosm&apos;s formula uses Acetyl Tetrapeptide-3 (Capixyl™) to condition and care for lashes gently.
               </p>
               <div className="ingredients-grid reveal delay-3">
                 <div className="ingredient-card">
@@ -89,11 +80,11 @@ export default function HomePage() {
                 </div>
                 <div className="ingredient-card">
                   <div className="ingredient-name">Panthenol</div>
-                  <div className="ingredient-desc">Pro-vitamin B5 for deep hydration and flexibility</div>
+                  <div className="ingredient-desc">Pro-vitamin B5 for deep hydration &amp; flexibility</div>
                 </div>
                 <div className="ingredient-card">
                   <div className="ingredient-name">Centella Asiatica</div>
-                  <div className="ingredient-desc">Soothes and protects the delicate lash line</div>
+                  <div className="ingredient-desc">Soothes &amp; protects the delicate lash line</div>
                 </div>
               </div>
             </div>
@@ -105,19 +96,22 @@ export default function HomePage() {
       <section className="how-to-use" id="home-howto">
         <div className="container">
           <div className="section-header">
-            <p className="section-overline reveal">The Ritual</p>
+            <p className="section-overline reveal">How to Use</p>
             <h2 className="section-title reveal delay-1">Three simple steps</h2>
-            <p className="section-desc reveal delay-2">
-              Apply nightly for best results. Each tube lasts approximately three months.
-            </p>
+            <p className="section-desc reveal delay-2">Apply nightly for best results. Each tube lasts approximately 3 months.</p>
           </div>
           <div className="steps-grid">
             {[
-              { n: "1", title: "Cleanse", desc: "Remove all makeup and ensure lashes are clean and dry." },
-              { n: "2", title: "Apply", desc: "Use the rounded applicator tip to apply serum along the upper lash line." },
-              { n: "3", title: "Brush", desc: "Use the spoolie brush to coat individual lashes from root to tip." },
-            ].map((step, i) => (
-              <div className={`step-card reveal delay-${i + 1}`} key={step.n}>
+              { n: 1, title: "Cleanse", desc: "Remove all makeup and ensure lashes are clean and dry." },
+              { n: 2, title: "Apply", desc: "Use the rounded applicator tip to apply serum along the upper lash line." },
+              { n: 3, title: "Brush", desc: "Use the spoolie brush to coat individual lashes from root to tip." },
+            ].map((step) => (
+              <div className={`step-card reveal delay-${step.n}`} key={step.n}>
+                <div className="step-image">
+                  <div className="img-placeholder" style={{ aspectRatio: 1, borderRadius: "var(--radius-lg)" }}>
+                    <span>Step {step.n}</span>
+                  </div>
+                </div>
                 <span className="step-number">{step.n}</span>
                 <h3 className="step-title">{step.title}</h3>
                 <p className="step-desc">{step.desc}</p>
@@ -131,7 +125,7 @@ export default function HomePage() {
       <section className="reviews-section" id="home-stockists">
         <div className="container">
           <div className="section-header">
-            <p className="section-overline reveal">Points of Sale</p>
+            <p className="section-overline reveal">Find Us in Toronto</p>
             <h2 className="section-title reveal delay-1">Stocked at Jacob &amp; Sebastian</h2>
             <p className="section-desc reveal delay-2">
               Re:Cosm is carried by Jacob &amp; Sebastian, Toronto&apos;s curated destination for niche and cult beauty.
@@ -140,17 +134,17 @@ export default function HomePage() {
           <div className="reviews-grid">
             <div className="review-card reveal delay-1">
               <div className="review-author">Queen West</div>
-              <p className="review-text">622 Queen Street West</p>
+              <p className="review-text">622 Queen Street West, Toronto</p>
               <div className="review-meta">Boutique apothecary in the heart of Queen West</div>
             </div>
             <div className="review-card reveal delay-2">
               <div className="review-author">Financial District</div>
-              <p className="review-text">Commerce Court, 199 Bay Street</p>
+              <p className="review-text">Commerce Court Concourse, 199 Bay Street</p>
               <div className="review-meta">Weekday destination in downtown Toronto</div>
             </div>
             <div className="review-card reveal delay-3">
               <div className="review-author">Online</div>
-              <p className="review-text">recosm.co — November 2026</p>
+              <p className="review-text">Launching November 2026 at recosm.co</p>
               <div className="review-meta">Free shipping across Canada — join the waitlist below</div>
             </div>
           </div>
@@ -160,14 +154,12 @@ export default function HomePage() {
       {/* Email CTA */}
       <section className="email-cta" id="home-cta">
         <div className="container">
-          <div className="section-header">
-            <p className="section-overline reveal">The Waitlist</p>
-            <h2 className="section-title reveal delay-1">Be first in line</h2>
-            <p className="section-desc reveal delay-2">
-              Launch news, early access, and clean beauty insights. No noise.
-            </p>
-          </div>
-          <EmailForm className="email-form reveal delay-3" buttonLabel="Join the waitlist" />
+          <p className="section-overline reveal" style={{ color: "rgba(255,255,255,0.7)" }}>Stay in the Loop</p>
+          <h2 className="section-title reveal delay-1" style={{ color: "white" }}>Join the Re:Cosm community</h2>
+          <p className="section-desc reveal delay-2" style={{ color: "rgba(255,255,255,0.8)" }}>
+            Be the first to know about our launch, exclusive offers, and clean beauty insights.
+          </p>
+          <EmailForm className="email-form reveal delay-3" />
         </div>
       </section>
     </>

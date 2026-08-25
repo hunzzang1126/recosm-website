@@ -1,5 +1,5 @@
-// Product stand-in until real photography arrives — the serum drawn as a
-// slim atelier object: ivory body, ink cap, hairline gold, tracked caps.
+// Product stand-in until real photography arrives — a drawn serum tube
+// using only brand palette tokens, so the page reads finished, not pending.
 
 export default function TubeIllustration({ ratio = "3/4" }) {
   return (
@@ -10,60 +10,68 @@ export default function TubeIllustration({ ratio = "3/4" }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        background: "radial-gradient(120% 90% at 50% 20%, #FFFFFF 0%, #F7F0E8 45%, #F0E8DD 100%)",
+        border: "1px solid var(--color-border-light)",
+        borderRadius: "var(--radius-lg)",
+        overflow: "hidden",
       }}
     >
-      <svg viewBox="0 0 400 520" width="100%" style={{ maxHeight: "100%" }} role="img" aria-label="Re:Cosm Lash Conditioning Serum — slim ivory tube with black cap">
+      <svg viewBox="0 0 400 500" width="70%" style={{ maxHeight: "82%" }} role="img" aria-label="Re:Cosm Lash Conditioning Serum tube">
         <defs>
           <linearGradient id="tubeBody" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#FFFFFF" />
-            <stop offset="0.6" stopColor="#F7F3E9" />
-            <stop offset="1" stopColor="#EDE6D6" />
+            <stop offset="0.55" stopColor="#F7F0E8" />
+            <stop offset="1" stopColor="#EADFCF" />
           </linearGradient>
-          <linearGradient id="capSheen" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stopColor="#FFFFFF" stopOpacity="0.35" />
-            <stop offset="0.35" stopColor="#FFFFFF" stopOpacity="0" />
+          <linearGradient id="tubeShine" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#FFFFFF" stopOpacity="0.9" />
+            <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
           </linearGradient>
         </defs>
 
-        {/* soft ground shadow */}
-        <ellipse cx="200" cy="474" rx="70" ry="7" fill="#121212" opacity="0.08" />
+        {/* ground shadow */}
+        <ellipse cx="200" cy="452" rx="88" ry="10" fill="#D9CFC3" opacity="0.45" />
 
-        {/* cap — ink lacquer */}
-        <rect x="172" y="46" width="56" height="108" fill="#121212" />
-        <rect x="172" y="46" width="56" height="108" fill="url(#capSheen)" />
+        {/* applicator wand cap */}
+        <rect x="178" y="48" width="44" height="86" rx="4" fill="#E8593C" />
+        <rect x="178" y="48" width="12" height="86" rx="4" fill="#F07A62" opacity="0.6" />
 
-        {/* gold collar */}
-        <rect x="172" y="154" width="56" height="4" fill="#A8925E" />
+        {/* neck */}
+        <rect x="188" y="134" width="24" height="16" fill="#C9A96E" />
 
         {/* tube body */}
-        <rect x="172" y="158" width="56" height="310" fill="url(#tubeBody)" stroke="#D8D2C4" strokeWidth="1" />
+        <rect x="152" y="150" width="96" height="296" rx="10" fill="url(#tubeBody)" stroke="#C9A96E" strokeWidth="1.25" />
+        {/* shine */}
+        <rect x="160" y="162" width="14" height="272" rx="7" fill="url(#tubeShine)" />
 
-        {/* wordmark — tracked caps reading upward */}
+        {/* label rule + wordmark */}
+        <line x1="166" y1="216" x2="234" y2="216" stroke="#C9A96E" strokeWidth="1" />
         <text
-          transform="rotate(-90 200 300)"
           x="200"
-          y="300"
+          y="266"
           textAnchor="middle"
-          style={{
-            fontFamily: "var(--font-family)",
-            fontWeight: 500,
-            fontSize: 15,
-            letterSpacing: "0.38em",
-            fill: "#121212",
-          }}
+          style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 400, fill: "#000000" }}
         >
-          RE<tspan fill="#C94B16">:</tspan>COSM
+          Re<tspan style={{ fill: "#E8593C", fontWeight: 500 }}>:</tspan>
         </text>
-
-        {/* foot spec */}
-        <line x1="186" y1="428" x2="214" y2="428" stroke="#A8925E" strokeWidth="0.75" />
         <text
           x="200"
-          y="446"
+          y="292"
           textAnchor="middle"
-          style={{ fontFamily: "var(--font-family)", fontSize: 8.5, letterSpacing: "0.22em", fill: "#A39D92" }}
+          style={{ fontFamily: "var(--font-family)", fontSize: 11.5, letterSpacing: "0.22em", fill: "#6B6B6B" }}
         >
-          10 mL
+          LASH SERUM
+        </text>
+        <line x1="166" y1="316" x2="234" y2="316" stroke="#C9A96E" strokeWidth="1" />
+
+        {/* bottom facts */}
+        <text
+          x="200"
+          y="424"
+          textAnchor="middle"
+          style={{ fontFamily: "var(--font-family)", fontSize: 10, letterSpacing: "0.18em", fill: "#999999" }}
+        >
+          7 mL · SEOUL
         </text>
       </svg>
     </div>

@@ -42,7 +42,7 @@ const categories = [
       },
       {
         q: "How long does one tube last?",
-        a: "One 10 mL tube of Re:Cosm Lash Conditioning Serum lasts approximately 3 months with nightly use on both eyes. A small amount goes a long way — you only need a thin line along the upper lash line.",
+        a: "One 7 mL tube of Re:Cosm Lash Conditioning Serum lasts approximately 3 months with nightly use on both eyes. A small amount goes a long way — you only need a thin line along the upper lash line.",
       },
       {
         q: "What happens if I stop using it?",
