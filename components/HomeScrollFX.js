@@ -60,7 +60,6 @@ export default function HomeScrollFX() {
       const heroWords = splitWords(document.querySelector(".hero-title"));
       const heroIntro = gsap
         .timeline({ paused: true, defaults: { ease: "power3.out" } })
-        .fromTo(".hero-media img", { scale: 1.16 }, { scale: 1, duration: 2.4, ease: "power2.out" }, 0)
         .from(".hero-overline", { y: 34, opacity: 0, duration: 0.9 }, 0.2)
         .from(heroWords, { yPercent: 118, rotate: 4, duration: 1.1, stagger: 0.06, ease: "power4.out" }, 0.35)
         .from(".hero-description", { y: 40, opacity: 0, duration: 0.9 }, 0.9)
@@ -184,10 +183,9 @@ export default function HomeScrollFX() {
         if (media) {
           gsap.fromTo(
             media,
-            { yPercent: -9, scale: 1.2 },
+            { yPercent: -11 },
             {
-              yPercent: 9,
-              scale: 1.2,
+              yPercent: 0,
               ease: "none",
               scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: 0.6 },
             }
@@ -316,10 +314,9 @@ export default function HomeScrollFX() {
       /* ---------- 08 Gallery finale ---------- */
       gsap.fromTo(
         ".gallery-center img",
-        { yPercent: -10, scale: 1.22 },
+        { yPercent: -9 },
         {
-          yPercent: 10,
-          scale: 1.22,
+          yPercent: 0,
           ease: "none",
           scrollTrigger: { trigger: ".gallery-strip", start: "top bottom", end: "bottom top", scrub: 0.6 },
         }

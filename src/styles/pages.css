@@ -6,6 +6,7 @@
 
 .hero {
   position: relative;
+  min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   align-items: center;
@@ -256,11 +257,15 @@
 .collection-media-inner {
   position: sticky;
   top: 0;
+  height: 100vh;
   height: 100dvh;
   overflow: hidden;
 }
 
-.collection-media-inner img { will-change: transform; }
+.collection-media-inner img {
+  height: 114% !important;
+  will-change: transform;
+}
 
 .collection-body {
   padding: clamp(3.5rem, 7vw, 7rem) clamp(1.5rem, 4.5vw, 4.5rem);
@@ -826,14 +831,17 @@
 .gallery-center {
   position: relative;
   width: min(560px, 82vw);
+  aspect-ratio: 4 / 5;
   border-radius: var(--radius-md);
   overflow: hidden;
 }
 
 .gallery-center img {
   width: 100%;
-  height: auto;
+  height: 112%;
+  object-fit: cover;
   display: block;
+  will-change: transform;
 }
 
 .gallery-side {
