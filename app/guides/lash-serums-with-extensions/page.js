@@ -23,7 +23,7 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="container" style={{ maxWidth: "var(--container-text)" }}>
         <div className="section-header" style={{ textAlign: "left" }}>
-          <p className="section-overline reveal"><Link href="/guides">Guides</Link></p>
+          <p className="section-overline reveal"><Link href="/#home-journal">Journal</Link></p>
           <h1 className="section-title reveal delay-1">Can you use a lash serum with extensions or a lash lift?</h1>
           <p className="section-desc reveal delay-2" style={{ marginLeft: 0 }}>
             Short answer: yes — if you choose the right formula and time it correctly. Here&apos;s the aftercare logic lash technicians follow.

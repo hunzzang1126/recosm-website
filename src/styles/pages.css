@@ -170,6 +170,7 @@
 .pillars-scene .pillar-card {
   position: absolute;
   width: min(250px, 62vw);
+  will-change: transform;
 }
 
 .pillar-card {
@@ -328,6 +329,7 @@
 }
 
 .collection-card {
+  will-change: transform, opacity;
   scroll-snap-align: start;
   position: relative;
   flex: 0 0 min(280px, 74vw);
@@ -914,6 +916,7 @@
   letter-spacing: var(--tracking-tight);
   line-height: 1.08;
   max-width: 20ch;
+  margin-inline: auto;
 }
 
 .section-title em {
@@ -927,6 +930,7 @@
   line-height: var(--leading-relaxed);
   color: var(--color-text-secondary);
   max-width: 54ch;
+  margin-inline: auto;
 }
 
 .section-warm { background: var(--color-bg-warm); }
@@ -1304,14 +1308,54 @@
   padding-bottom: var(--section-pad);
 }
 
-.ingredient-detail,
+.ingredient-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
 .ingredient-detail-card {
-  display: flex;
-  gap: var(--space-5);
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  column-gap: var(--space-4);
+  align-items: center;
+  align-content: start;
   background: var(--color-bg-white);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
   box-shadow: var(--shadow-sm);
+}
+
+.ingredient-detail-card .ingredient-icon {
+  grid-row: 1 / span 2;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.ingredient-detail-card h4 {
+  grid-column: 2;
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0;
+  align-self: end;
+}
+
+.ingredient-detail-card .ingredient-scientific {
+  grid-column: 2;
+  margin-bottom: 0;
+  align-self: start;
+}
+
+.ingredient-detail-card > p:last-child {
+  grid-column: 1 / -1;
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 720px) {
+  .ingredient-detail { grid-template-columns: 1fr; }
 }
 
 .ingredient-icon {

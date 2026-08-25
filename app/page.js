@@ -351,12 +351,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="journal-seeall">
-            <Link href="/guides" className="seeall-circle" aria-label="See all guides">
-              <ArrowIcon />
-            </Link>
-            <Link href="/guides" className="seeall-label">See all</Link>
-          </div>
         </div>
       </section>
 

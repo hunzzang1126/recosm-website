@@ -186,9 +186,9 @@ export default function SciencePage() {
       <section className="comparison-section">
         <div className="container">
           <div className="section-header">
-            <p className="section-overline reveal" style={{ color: "var(--color-primary)" }}>The Difference</p>
-            <h2 className="section-title reveal delay-1" style={{ color: "white" }}>Peptide-based vs. Prostaglandin-based</h2>
-            <p className="section-desc reveal delay-2" style={{ color: "rgba(255,255,255,0.6)" }}>Not all lash serums are created equal. Here&apos;s how the two approaches compare.</p>
+            <p className="section-overline reveal">The Difference</p>
+            <h2 className="section-title reveal delay-1">Peptide-based vs. Prostaglandin-based</h2>
+            <p className="section-desc reveal delay-2">Not all lash serums are created equal. Here&apos;s how the two approaches compare.</p>
           </div>
           <div className="reveal delay-3" style={{ overflowX: "auto" }}>
             <table className="comparison-table">
@@ -246,7 +246,7 @@ export default function SciencePage() {
         <div className="container container-narrow text-center">
           <p className="section-overline reveal">Compliance</p>
           <h2 className="section-title reveal delay-1">Health Canada compliant</h2>
-          <p className="section-desc reveal delay-2" style={{ maxWidth: 600 }}>
+          <p className="section-desc reveal delay-2">
             Re:Cosm Lash Conditioning Serum is formulated in compliance with Health Canada&apos;s Cosmetic Regulations. All labeling is bilingual (English/French) as required by the Consumer Packaging and Labelling Act. Our product is classified as a cosmetic, not a drug, and does not require a Drug Identification Number (DIN).
           </p>
         </div>

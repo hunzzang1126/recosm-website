@@ -94,21 +94,18 @@ export default function HomeScrollFX() {
       gsap.from(pillarWords, {
         yPercent: 120,
         rotate: 5,
-        ease: "power2.out",
+        duration: 0.9,
+        ease: "power4.out",
         stagger: 0.05,
-        scrollTrigger: {
-          trigger: ".pillars-heading",
-          start: "top 94%",
-          end: "top 55%",
-          scrub: 0.4,
-        },
+        scrollTrigger: { trigger: ".pillars-heading", start: "top 88%" },
       });
 
       gsap.from(".pillars-ellipse", {
         opacity: 0,
-        y: 110,
-        ease: "power1.out",
-        scrollTrigger: { trigger: ".pillars-scene", start: "top 92%", end: "top 45%", scrub: 0.4 },
+        y: 90,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".pillars-scene", start: "top 82%" },
       });
 
       // image parallax inside the rotated ellipse frame
@@ -118,7 +115,7 @@ export default function HomeScrollFX() {
         {
           y: "6%",
           ease: "none",
-          scrollTrigger: { trigger: ".pillars-scene", start: "top bottom", end: "bottom top", scrub: 0.6 },
+          scrollTrigger: { trigger: ".pillars-scene", start: "top bottom", end: "bottom top", scrub: 1.2 },
         }
       );
 
@@ -138,14 +135,15 @@ export default function HomeScrollFX() {
             {
               y: -(70 + (i % 4) * 55),
               ease: "none",
-              scrollTrigger: { trigger: ".pillars-scene", start: "top bottom", end: "bottom top", scrub: 0.5 },
+              scrollTrigger: { trigger: ".pillars-scene", start: "top bottom", end: "bottom top", scrub: 1.1 },
             }
           );
         } else {
           gsap.from(card, {
-            y: 90,
-            ease: "power1.out",
-            scrollTrigger: { trigger: card, start: "top 96%", end: "top 70%", scrub: 0.4 },
+            y: 70,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: { trigger: card, start: "top 94%" },
           });
         }
       });
@@ -159,8 +157,9 @@ export default function HomeScrollFX() {
           { strokeDasharray: len, strokeDashoffset: len },
           {
             strokeDashoffset: 0,
-            ease: "none",
-            scrollTrigger: { trigger: ".pillars-arrow", start: "top 90%", end: "top 30%", scrub: 0.4 },
+            duration: 1.4,
+            ease: "power2.inOut",
+            scrollTrigger: { trigger: ".pillars-arrow", start: "top 85%" },
           }
         );
       }
@@ -168,8 +167,9 @@ export default function HomeScrollFX() {
       gsap.from(".pillars-orange", {
         scale: 0,
         rotate: -30,
-        ease: "power1.out",
-        scrollTrigger: { trigger: ".pillars-orange", start: "top 98%", end: "top 72%", scrub: 0.4 },
+        duration: 0.8,
+        ease: "back.out(1.6)",
+        scrollTrigger: { trigger: ".pillars-orange", start: "top 92%" },
       });
 
       /* ---------- 03/04 Collections — sequenced scrub entrance ---------- */
@@ -187,7 +187,7 @@ export default function HomeScrollFX() {
             {
               yPercent: 0,
               ease: "none",
-              scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: 0.6 },
+              scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: 1.2 },
             }
           );
         }
@@ -197,9 +197,9 @@ export default function HomeScrollFX() {
           defaults: { ease: "power2.out" },
           scrollTrigger: {
             trigger: section,
-            start: "top 82%",
-            end: "top 6%",
-            scrub: 0.5,
+            start: "top 92%",
+            end: "top -25%",
+            scrub: 1,
           },
         });
 
@@ -220,7 +220,7 @@ export default function HomeScrollFX() {
       /* ---------- 05 Ethos — display lines travel with the scroll ---------- */
       const etl = gsap.timeline({
         defaults: { ease: "power2.out" },
-        scrollTrigger: { trigger: ".ethos", start: "top 82%", end: "top -4%", scrub: 0.5 },
+        scrollTrigger: { trigger: ".ethos", start: "top 92%", end: "top -30%", scrub: 1 },
       });
       etl
         .from(".ethos-chip", { y: 40, opacity: 0, duration: 0.25 }, 0)
@@ -244,7 +244,7 @@ export default function HomeScrollFX() {
         opacity: 0,
         stagger: 0.12,
         ease: "power1.out",
-        scrollTrigger: { trigger: ".ethos-features", start: "top 92%", end: "top 55%", scrub: 0.5 },
+        scrollTrigger: { trigger: ".ethos-features", start: "top 100%", end: "top 40%", scrub: 1 },
       });
 
       /* ---------- 06 Quality + waitlist ---------- */
@@ -253,7 +253,7 @@ export default function HomeScrollFX() {
         opacity: 0,
         stagger: 0.1,
         ease: "power1.out",
-        scrollTrigger: { trigger: ".quality", start: "top 85%", end: "top 40%", scrub: 0.5 },
+        scrollTrigger: { trigger: ".quality", start: "top 95%", end: "top 25%", scrub: 1 },
       });
 
       const qArrow = document.querySelector(".quality-arrow-path");
@@ -265,7 +265,7 @@ export default function HomeScrollFX() {
           {
             strokeDashoffset: 0,
             ease: "none",
-            scrollTrigger: { trigger: ".quality-arrow", start: "top 95%", end: "top 45%", scrub: 0.4 },
+            scrollTrigger: { trigger: ".quality-arrow", start: "top 100%", end: "top 35%", scrub: 0.9 },
           }
         );
       }
@@ -275,7 +275,7 @@ export default function HomeScrollFX() {
         opacity: 0,
         stagger: 0.08,
         ease: "power1.out",
-        scrollTrigger: { trigger: ".waitlist-panel", start: "top 85%", end: "top 42%", scrub: 0.5 },
+        scrollTrigger: { trigger: ".waitlist-panel", start: "top 95%", end: "top 28%", scrub: 1 },
       });
 
       /* ---------- 07 Journal ---------- */
@@ -292,7 +292,7 @@ export default function HomeScrollFX() {
         y: 110,
         opacity: 0,
         ease: "power1.out",
-        scrollTrigger: { trigger: ".journal-feature-grid", start: "top 92%", end: "top 55%", scrub: 0.5 },
+        scrollTrigger: { trigger: ".journal-feature-grid", start: "top 100%", end: "top 40%", scrub: 1 },
       });
 
       gsap.from(".journal-side .journal-card", {
@@ -300,16 +300,9 @@ export default function HomeScrollFX() {
         opacity: 0,
         stagger: 0.12,
         ease: "power1.out",
-        scrollTrigger: { trigger: ".journal-feature-grid", start: "top 92%", end: "top 45%", scrub: 0.5 },
+        scrollTrigger: { trigger: ".journal-feature-grid", start: "top 100%", end: "top 30%", scrub: 1 },
       });
 
-      gsap.from(".journal-seeall", {
-        scale: 0.7,
-        opacity: 0,
-        duration: 0.8,
-        ease: "back.out(1.6)",
-        scrollTrigger: { trigger: ".journal-seeall", start: "top 94%" },
-      });
 
       /* ---------- 08 Gallery finale ---------- */
       gsap.fromTo(
@@ -318,7 +311,7 @@ export default function HomeScrollFX() {
         {
           yPercent: 0,
           ease: "none",
-          scrollTrigger: { trigger: ".gallery-strip", start: "top bottom", end: "bottom top", scrub: 0.6 },
+          scrollTrigger: { trigger: ".gallery-strip", start: "top bottom", end: "bottom top", scrub: 1.2 },
         }
       );
 
@@ -328,7 +321,7 @@ export default function HomeScrollFX() {
         rotate: 4,
         stagger: 0.08,
         ease: "power2.out",
-        scrollTrigger: { trigger: ".gallery-heading", start: "top 96%", end: "top 58%", scrub: 0.4 },
+        scrollTrigger: { trigger: ".gallery-heading", start: "top 100%", end: "top 45%", scrub: 0.9 },
       });
 
       gsap.fromTo(

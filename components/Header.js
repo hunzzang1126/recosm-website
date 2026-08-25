@@ -8,7 +8,6 @@ import { useStore } from "./StoreContext";
 const NAV = [
   { href: "/product", label: "The Serum" },
   { href: "/science", label: "Our Science" },
-  { href: "/guides", label: "Journal" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];

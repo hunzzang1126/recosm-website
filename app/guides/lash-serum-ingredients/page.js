@@ -56,7 +56,7 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="container" style={{ maxWidth: "var(--container-text)" }}>
         <div className="section-header" style={{ textAlign: "left" }}>
-          <p className="section-overline reveal"><Link href="/guides">Guides</Link></p>
+          <p className="section-overline reveal"><Link href="/#home-journal">Journal</Link></p>
           <h1 className="section-title reveal delay-1">Lash serum ingredients, explained</h1>
           <p className="section-desc reveal delay-2" style={{ marginLeft: 0 }}>
             An ingredient list shouldn&apos;t require a chemistry degree. Here&apos;s what each key ingredient in a peptide lash serum actually does — in plain language.

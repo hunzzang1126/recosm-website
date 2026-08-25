@@ -6,7 +6,6 @@ export default function sitemap() {
     { url: `${BASE_URL}/`, lastModified, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE_URL}/product`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE_URL}/science`, lastModified, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE_URL}/guides`, lastModified, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/guides/prostaglandin-free-lash-serums`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/guides/lash-serum-ingredients`, lastModified, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/guides/lash-serums-with-extensions`, lastModified, changeFrequency: "monthly", priority: 0.7 },
