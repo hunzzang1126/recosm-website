@@ -101,6 +101,18 @@
 .float-a { animation: float-a 7s ease-in-out infinite; }
 .float-b { animation: float-b 9s ease-in-out infinite; }
 
+/* Word-split reveal masks */
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.w-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
 /* Marquee strip */
 @keyframes marquee {
   from { transform: translateX(0); }

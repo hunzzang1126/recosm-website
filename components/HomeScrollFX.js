@@ -1,11 +1,9 @@
 "use client";
 
 // Truekind-style scroll choreography for the homepage.
-// GSAP ScrollTrigger drives: hero intro + parallax exit, the diagonal-ellipse
-// pillars scene (cards drop in, arrow draws itself, ellipse rotates subtly),
-// sticky-split collection sections (media zoom, cards slide in), the oversized
-// ethos display lines, quality/waitlist reveals, journal staggers and the
-// gallery finale.
+// Scrub-driven: typography and cards travel WITH the scrollbar (not one-shot
+// toggles) — word-mask title reveals, parallax card rises around the diagonal
+// ellipse, sequenced collection entrances, staggered ethos display lines.
 
 import { useEffect } from "react";
 import { gsap } from "gsap";
@@ -13,19 +11,60 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Wrap each word in an overflow-hidden mask so lines can rise truekind-style.
+// Keeps nested <em>/<br> intact.
+function splitWords(el) {
+  if (!el) return [];
+  if (el.dataset.split === "1") return el.querySelectorAll(".w-inner");
+
+  const wrapTextNode = (textNode) => {
+    const frag = document.createDocumentFragment();
+    textNode.textContent.split(/(\s+)/).forEach((part) => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) {
+        frag.appendChild(document.createTextNode(part));
+        return;
+      }
+      const outer = document.createElement("span");
+      outer.className = "w";
+      const inner = document.createElement("span");
+      inner.className = "w-inner";
+      inner.textContent = part;
+      outer.appendChild(inner);
+      frag.appendChild(outer);
+    });
+    textNode.parentNode.replaceChild(frag, textNode);
+  };
+
+  const walk = (node) => {
+    Array.from(node.childNodes).forEach((child) => {
+      if (child.nodeType === 3 && child.textContent.trim()) {
+        wrapTextNode(child);
+      } else if (child.nodeType === 1 && child.tagName !== "BR" && !child.classList.contains("w")) {
+        walk(child);
+      }
+    });
+  };
+
+  walk(el);
+  el.dataset.split = "1";
+  return el.querySelectorAll(".w-inner");
+}
+
 export default function HomeScrollFX() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
       /* ---------- 01 Hero ---------- */
+      const heroWords = splitWords(document.querySelector(".hero-title"));
       const heroIntro = gsap
         .timeline({ paused: true, defaults: { ease: "power3.out" } })
-        .fromTo(".hero-media img", { scale: 1.18 }, { scale: 1, duration: 2.4, ease: "power2.out" }, 0)
-        .from(".hero-overline", { y: 34, opacity: 0, duration: 0.9 }, 0.25)
-        .from(".hero-title", { y: 60, opacity: 0, duration: 1.1 }, 0.4)
-        .from(".hero-description", { y: 40, opacity: 0, duration: 0.9 }, 0.65)
-        .from(".hero-cta", { y: 60, opacity: 0, duration: 0.9 }, 0.8);
+        .fromTo(".hero-media img", { scale: 1.16 }, { scale: 1, duration: 2.4, ease: "power2.out" }, 0)
+        .from(".hero-overline", { y: 34, opacity: 0, duration: 0.9 }, 0.2)
+        .from(heroWords, { yPercent: 118, rotate: 4, duration: 1.1, stagger: 0.06, ease: "power4.out" }, 0.35)
+        .from(".hero-description", { y: 40, opacity: 0, duration: 0.9 }, 0.9)
+        .from(".hero-cta", { y: 60, opacity: 0, duration: 0.9 }, 1.05);
 
       if (window.__recosmReady) {
         heroIntro.play();
@@ -46,20 +85,26 @@ export default function HomeScrollFX() {
       });
 
       /* ---------- 02 Pillars scene ---------- */
-      gsap.from(".pillars-heading", {
-        y: 70,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".pillars-heading", start: "top 86%" },
+      // Heading: word-mask rise, scrubbed so the type "acts" as you scroll.
+      const pillarWords = splitWords(document.querySelector(".pillars-heading"));
+      gsap.from(pillarWords, {
+        yPercent: 120,
+        rotate: 5,
+        ease: "power2.out",
+        stagger: 0.05,
+        scrollTrigger: {
+          trigger: ".pillars-heading",
+          start: "top 94%",
+          end: "top 55%",
+          scrub: 0.4,
+        },
       });
 
       gsap.from(".pillars-ellipse", {
         opacity: 0,
-        y: 90,
-        duration: 1.4,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".pillars-scene", start: "top 74%" },
+        y: 110,
+        ease: "power1.out",
+        scrollTrigger: { trigger: ".pillars-scene", start: "top 92%", end: "top 45%", scrub: 0.4 },
       });
 
       // image parallax inside the rotated ellipse frame
@@ -73,19 +118,35 @@ export default function HomeScrollFX() {
         }
       );
 
+      // Cards: continuous parallax rise at different speeds + soft fade-in.
+      const isDesktopScene = window.matchMedia("(min-width: 881px)").matches;
       gsap.utils.toArray(".pillars-scene .pillar-card").forEach((card, i) => {
         gsap.from(card, {
-          y: 120,
           opacity: 0,
-          rotate: i % 2 ? 6 : -6,
-          duration: 1,
-          delay: (i % 4) * 0.08,
-          ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 92%" },
+          duration: 0.6,
+          ease: "power1.out",
+          scrollTrigger: { trigger: card, start: "top 97%", toggleActions: "play none none reverse" },
         });
+        if (isDesktopScene) {
+          gsap.fromTo(
+            card,
+            { y: 170 + (i % 3) * 110 },
+            {
+              y: -(70 + (i % 4) * 55),
+              ease: "none",
+              scrollTrigger: { trigger: ".pillars-scene", start: "top bottom", end: "bottom top", scrub: 0.5 },
+            }
+          );
+        } else {
+          gsap.from(card, {
+            y: 90,
+            ease: "power1.out",
+            scrollTrigger: { trigger: card, start: "top 96%", end: "top 70%", scrub: 0.4 },
+          });
+        }
       });
 
-      // hand-drawn arrow draws itself
+      // hand-drawn arrow draws itself with the scroll
       const arrowPath = document.querySelector(".pillars-arrow-path");
       if (arrowPath) {
         const len = arrowPath.getTotalLength();
@@ -95,7 +156,7 @@ export default function HomeScrollFX() {
           {
             strokeDashoffset: 0,
             ease: "none",
-            scrollTrigger: { trigger: ".pillars-arrow", start: "top 85%", end: "top 35%", scrub: true },
+            scrollTrigger: { trigger: ".pillars-arrow", start: "top 90%", end: "top 30%", scrub: 0.4 },
           }
         );
       }
@@ -103,12 +164,11 @@ export default function HomeScrollFX() {
       gsap.from(".pillars-orange", {
         scale: 0,
         rotate: -30,
-        duration: 0.9,
-        ease: "back.out(1.6)",
-        scrollTrigger: { trigger: ".pillars-orange", start: "top 92%" },
+        ease: "power1.out",
+        scrollTrigger: { trigger: ".pillars-orange", start: "top 98%", end: "top 72%", scrub: 0.4 },
       });
 
-      /* ---------- 03/04 Collections ---------- */
+      /* ---------- 03/04 Collections — sequenced scrub entrance ---------- */
       gsap.utils.toArray(".collection").forEach((section) => {
         const media = section.querySelector(".collection-media-inner img");
         const title = section.querySelector(".collection-title");
@@ -129,66 +189,41 @@ export default function HomeScrollFX() {
           );
         }
 
-        if (title) {
-          gsap.from(title, {
-            y: 90,
-            opacity: 0,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: { trigger: title, start: "top 84%" },
-          });
-        }
-
-        if (arrow) {
-          gsap.from(arrow, {
-            scale: 0,
-            duration: 0.7,
-            ease: "back.out(1.7)",
-            scrollTrigger: { trigger: title || arrow, start: "top 84%" },
-          });
-        }
-
-        if (cards.length) {
-          gsap.from(cards, {
-            x: 260,
-            opacity: 0,
-            duration: 1.1,
-            stagger: 0.12,
-            ease: "power3.out",
-            scrollTrigger: { trigger: cards[0], start: "top 88%" },
-          });
-        }
-
-        if (caption) {
-          gsap.from(caption, {
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: { trigger: caption, start: "top 94%" },
-          });
-        }
-      });
-
-      /* ---------- 05 Ethos ---------- */
-      gsap.from(".ethos-chip", {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".ethos", start: "top 78%" },
-      });
-
-      gsap.utils.toArray(".ethos-line").forEach((line, i) => {
-        gsap.from(line, {
-          y: 130,
-          opacity: 0,
-          duration: 1.1,
-          delay: i * 0.06,
-          ease: "power3.out",
-          scrollTrigger: { trigger: line, start: "top 92%" },
+        const words = splitWords(title);
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.out" },
+          scrollTrigger: {
+            trigger: section,
+            start: "top 82%",
+            end: "top 6%",
+            scrub: 0.5,
+          },
         });
+
+        if (words.length) {
+          tl.from(words, { yPercent: 125, rotate: 5, duration: 0.55, stagger: 0.09 }, 0);
+        }
+        if (arrow) {
+          tl.from(arrow, { scale: 0, rotate: -60, duration: 0.4 }, 0.18);
+        }
+        if (cards.length) {
+          tl.from(cards, { x: 340, opacity: 0, duration: 0.7, stagger: 0.14 }, 0.22);
+        }
+        if (caption) {
+          tl.from(caption, { y: 44, opacity: 0, duration: 0.35 }, ">-0.15");
+        }
       });
+
+      /* ---------- 05 Ethos — display lines travel with the scroll ---------- */
+      const etl = gsap.timeline({
+        defaults: { ease: "power2.out" },
+        scrollTrigger: { trigger: ".ethos", start: "top 82%", end: "top -4%", scrub: 0.5 },
+      });
+      etl
+        .from(".ethos-chip", { y: 40, opacity: 0, duration: 0.25 }, 0)
+        .from(".ethos-line-1", { y: 170, opacity: 0, duration: 0.5 }, 0.08)
+        .from(".ethos-line-2", { y: 170, opacity: 0, duration: 0.5 }, 0.28)
+        .from(".ethos-line-3", { y: 170, opacity: 0, duration: 0.5 }, 0.48);
 
       gsap.fromTo(
         ".ethos-float",
@@ -202,22 +237,20 @@ export default function HomeScrollFX() {
       );
 
       gsap.from(".ethos-feature", {
-        y: 60,
+        y: 70,
         opacity: 0,
-        duration: 0.9,
-        stagger: 0.14,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".ethos-features", start: "top 84%" },
+        stagger: 0.12,
+        ease: "power1.out",
+        scrollTrigger: { trigger: ".ethos-features", start: "top 92%", end: "top 55%", scrub: 0.5 },
       });
 
       /* ---------- 06 Quality + waitlist ---------- */
       gsap.from(".quality-copy > *", {
-        y: 50,
+        y: 60,
         opacity: 0,
-        duration: 0.9,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".quality", start: "top 76%" },
+        stagger: 0.1,
+        ease: "power1.out",
+        scrollTrigger: { trigger: ".quality", start: "top 85%", end: "top 40%", scrub: 0.5 },
       });
 
       const qArrow = document.querySelector(".quality-arrow-path");
@@ -229,18 +262,17 @@ export default function HomeScrollFX() {
           {
             strokeDashoffset: 0,
             ease: "none",
-            scrollTrigger: { trigger: ".quality-arrow", start: "top 92%", end: "top 45%", scrub: true },
+            scrollTrigger: { trigger: ".quality-arrow", start: "top 95%", end: "top 45%", scrub: 0.4 },
           }
         );
       }
 
       gsap.from(".waitlist-panel > *", {
-        y: 46,
+        y: 56,
         opacity: 0,
-        duration: 0.9,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".waitlist-panel", start: "top 78%" },
+        stagger: 0.08,
+        ease: "power1.out",
+        scrollTrigger: { trigger: ".waitlist-panel", start: "top 85%", end: "top 42%", scrub: 0.5 },
       });
 
       /* ---------- 07 Journal ---------- */
@@ -256,18 +288,16 @@ export default function HomeScrollFX() {
       gsap.from(".journal-card--feature", {
         y: 110,
         opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".journal-feature-grid", start: "top 84%" },
+        ease: "power1.out",
+        scrollTrigger: { trigger: ".journal-feature-grid", start: "top 92%", end: "top 55%", scrub: 0.5 },
       });
 
       gsap.from(".journal-side .journal-card", {
-        y: 110,
+        y: 130,
         opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".journal-feature-grid", start: "top 84%" },
+        stagger: 0.12,
+        ease: "power1.out",
+        scrollTrigger: { trigger: ".journal-feature-grid", start: "top 92%", end: "top 45%", scrub: 0.5 },
       });
 
       gsap.from(".journal-seeall", {
@@ -290,12 +320,13 @@ export default function HomeScrollFX() {
         }
       );
 
-      gsap.from(".gallery-heading", {
-        y: 110,
-        opacity: 0,
-        duration: 1.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".gallery-heading", start: "top 92%" },
+      const galleryWords = splitWords(document.querySelector(".gallery-heading"));
+      gsap.from(galleryWords, {
+        yPercent: 120,
+        rotate: 4,
+        stagger: 0.08,
+        ease: "power2.out",
+        scrollTrigger: { trigger: ".gallery-heading", start: "top 96%", end: "top 58%", scrub: 0.4 },
       });
 
       gsap.fromTo(

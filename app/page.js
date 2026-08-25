@@ -55,12 +55,12 @@ export default function HomePage() {
       <section className="hero" id="home-hero">
         <div className="hero-media">
           <Image
-            src="/images/hero-lashes.jpg"
-            alt="Close-up of striking blue eyes with long, full lashes"
+            src="/images/hero-away.jpg"
+            alt="Editorial beauty portrait on a warm pink backdrop, gazing away"
             fill
             priority
             sizes="100vw"
-            style={{ objectFit: "cover", objectPosition: "center 32%" }}
+            style={{ objectFit: "cover", objectPosition: "center 24%" }}
           />
         </div>
 
@@ -140,11 +140,11 @@ export default function HomePage() {
         <div className="collection-media">
           <div className="collection-media-inner">
             <Image
-              src="/images/portrait-soft.jpg"
-              alt="Soft studio portrait highlighting the eye area"
+              src="/images/model-lash.jpg"
+              alt="Close editorial portrait with defined lashes, chin resting on hand"
               fill
               sizes="(max-width: 880px) 100vw, 50vw"
-              style={{ objectFit: "cover", objectPosition: "50% 30%" }}
+              style={{ objectFit: "cover", objectPosition: "50% 24%" }}
             />
           </div>
         </div>
@@ -228,11 +228,11 @@ export default function HomePage() {
         <div className="collection-media">
           <div className="collection-media-inner">
             <Image
-              src="/images/model-lash.jpg"
-              alt="Close editorial portrait resting chin on hand, lashes defined"
+              src="/images/model-tilt.jpg"
+              alt="Relaxed editorial portrait with tilted head in warm light"
               fill
               sizes="(max-width: 880px) 100vw, 50vw"
-              style={{ objectFit: "cover", objectPosition: "50% 20%" }}
+              style={{ objectFit: "cover", objectPosition: "50% 30%" }}
             />
           </div>
         </div>
