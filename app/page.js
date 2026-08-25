@@ -65,13 +65,13 @@ export default function HomePage() {
         </div>
 
         <div className="hero-inner">
-          <p className="hero-overline">Korean Clean Beauty — Toronto</p>
+          <p className="hero-overline">Prostaglandin-Free Peptide Lash Serum</p>
           <h1 className="hero-title">
-            <em>True</em> to your eyes,<br />kind to your <em>lashes</em>
+            Re:<em>define</em><br />your lashes
           </h1>
           <p className="hero-description">
-            Unreservedly honest lash care that truly works — peptide-powered,
-            prostaglandin-free, no exceptions.
+            A peptide lash conditioning serum with zero prostaglandins —
+            Korean clean beauty, made by Kolmar, made for Canada.
           </p>
         </div>
 
@@ -242,10 +242,9 @@ export default function HomePage() {
       <section className="ethos" id="home-ethos">
         <div className="container">
           <span className="ethos-chip">Ethos</span>
-          <div className="ethos-display" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
-            <span className="ethos-line ethos-line-1">No prosta&shy;glandins.</span>
+          <div className="ethos-display" aria-label="No prostaglandins. No black boxes.">
+            <span className="ethos-line ethos-line-1">No prostaglandins.</span>
             <span className="ethos-line ethos-line-2">No black boxes.</span>
-            <span className="ethos-line ethos-line-3"><em>Nothing</em> to hide.</span>
           </div>
 
           <div className="ethos-float" aria-hidden="true">

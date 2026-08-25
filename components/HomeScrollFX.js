@@ -83,7 +83,7 @@ export default function HomeScrollFX() {
         scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
       });
       gsap.to(".hero-media", {
-        yPercent: 14,
+        yPercent: 20,
         ease: "none",
         scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
       });
@@ -111,9 +111,9 @@ export default function HomeScrollFX() {
       // image parallax inside the rotated ellipse frame
       gsap.fromTo(
         ".pillars-ellipse img",
-        { y: "-6%" },
+        { y: "-9%" },
         {
-          y: "6%",
+          y: "9%",
           ease: "none",
           scrollTrigger: { trigger: ".pillars-scene", start: "top bottom", end: "bottom top", scrub: 1.2 },
         }
@@ -131,9 +131,9 @@ export default function HomeScrollFX() {
         if (isDesktopScene) {
           gsap.fromTo(
             card,
-            { y: 170 + (i % 3) * 110 },
+            { y: 210 + (i % 3) * 140 },
             {
-              y: -(70 + (i % 4) * 55),
+              y: -(100 + (i % 4) * 70),
               ease: "none",
               scrollTrigger: { trigger: ".pillars-scene", start: "top bottom", end: "bottom top", scrub: 1.1 },
             }
@@ -183,7 +183,7 @@ export default function HomeScrollFX() {
         if (media) {
           gsap.fromTo(
             media,
-            { yPercent: -11 },
+            { yPercent: -16 },
             {
               yPercent: 0,
               ease: "none",
@@ -230,9 +230,9 @@ export default function HomeScrollFX() {
 
       gsap.fromTo(
         ".ethos-float",
-        { yPercent: 26, rotate: -12 },
+        { yPercent: 34, rotate: -13 },
         {
-          yPercent: -14,
+          yPercent: -22,
           rotate: -2,
           ease: "none",
           scrollTrigger: { trigger: ".ethos", start: "top bottom", end: "bottom top", scrub: 1 },
@@ -307,7 +307,7 @@ export default function HomeScrollFX() {
       /* ---------- 08 Gallery finale ---------- */
       gsap.fromTo(
         ".gallery-center img",
-        { yPercent: -9 },
+        { yPercent: -14 },
         {
           yPercent: 0,
           ease: "none",
@@ -326,9 +326,9 @@ export default function HomeScrollFX() {
 
       gsap.fromTo(
         ".gallery-side",
-        { yPercent: 30 },
+        { yPercent: 38 },
         {
-          yPercent: -20,
+          yPercent: -28,
           ease: "none",
           scrollTrigger: { trigger: ".gallery-strip", start: "top bottom", end: "bottom top", scrub: 1 },
         }
