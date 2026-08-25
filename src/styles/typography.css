@@ -1,53 +1,60 @@
 /* ============================================
    Re:Cosm — Typography
+   One grotesque, two widths. Expanded Black = the wordmark voice
+   (as printed on the carton). Normal = reading voice. Mono = spec voice.
    ============================================ */
 
-.heading-display {
+.heading-display,
+.heading-1,
+.heading-2,
+.heading-3 {
   font-family: var(--font-display);
-  font-size: var(--text-5xl);
-  font-weight: var(--font-weight-light);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--font-weight-black);
   line-height: var(--leading-tight);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--tracking-tighter);
   color: var(--color-text-primary);
+}
+
+.heading-display {
+  font-size: var(--text-6xl);
 }
 
 .heading-1 {
-  font-family: var(--font-display);
-  font-size: var(--text-4xl);
-  font-weight: var(--font-weight-light);
-  line-height: var(--leading-tight);
-  letter-spacing: -0.01em;
-  color: var(--color-text-primary);
+  font-size: var(--text-5xl);
 }
 
 .heading-2 {
-  font-family: var(--font-display);
   font-size: var(--text-3xl);
-  font-weight: var(--font-weight-light);
-  line-height: var(--leading-snug);
-  color: var(--color-text-primary);
 }
 
 .heading-3 {
-  font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: var(--font-weight-light);
-  line-height: var(--leading-snug);
-  color: var(--color-text-primary);
+  font-weight: var(--font-weight-bold);
 }
 
 .heading-4 {
   font-size: var(--text-xl);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
   color: var(--color-text-primary);
 }
 
 .heading-5 {
   font-size: var(--text-lg);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   line-height: var(--leading-snug);
   color: var(--color-text-primary);
+}
+
+/* Orange colon — the brand's own punctuation, everywhere a heading uses it */
+.heading-display em,
+.heading-1 em,
+.heading-2 em,
+.heading-3 em {
+  font-style: normal;
+  color: var(--color-orange);
 }
 
 .text-body {
@@ -69,19 +76,27 @@
 }
 
 .text-caption {
+  font-family: var(--font-mono);
   font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-widest);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
   color: var(--color-text-secondary);
 }
 
+/* Spec-sheet eyebrow: EN / FR pair set in mono, like the bilingual carton */
 .text-overline {
-  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
+}
+
+.text-overline .fr {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-regular);
 }
 
 /* Responsive typography */

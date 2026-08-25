@@ -9,9 +9,9 @@ import { createContext, useContext, useEffect, useState, useCallback, useRef } f
 const CART_KEY = "recosm_cart";
 
 export const PRODUCT = {
-  id: "recosm-lcs-7ml",
+  id: "recosm-lcs-10ml",
   name: "Lash Conditioning Serum",
-  variant: "7 mL",
+  variant: "10 mL",
   price: 55.0,
   currency: "CAD",
 };

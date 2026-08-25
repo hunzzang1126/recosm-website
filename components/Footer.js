@@ -6,11 +6,16 @@ import EmailForm from "./EmailForm";
 export default function Footer() {
   return (
     <footer className="site-footer" id="site-footer">
+      <div className="footer-wordmark" aria-hidden="true">Re<em>:</em>Cosm</div>
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="footer-logo">Re<span>:</span>Cosm</div>
             <p>Korean beauty science meets Canadian clean beauty standards. Peptide-powered lash care, made responsibly.</p>
+            <p className="footer-spec">
+              Lash Conditioning Serum<br />
+              Sérum revitalisant pour les cils<br />
+              Net. 10 mL · Made in Korea by Kolmar
+            </p>
           </div>
 
           <div className="footer-col">
@@ -36,13 +41,13 @@ export default function Footer() {
 
           <div className="footer-newsletter">
             <h4 className="footer-heading">Stay Updated</h4>
-            <p>Join our community for exclusive offers and clean beauty insights.</p>
+            <p>Be first to know when we launch online — plus clean beauty insights, no noise.</p>
             <EmailForm className="newsletter-form" buttonLabel="Join" />
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Re:Cosm. All rights reserved. Made in Korea 🇰🇷 · Toronto, Canada</p>
+          <p>&copy; {new Date().getFullYear()} Re:Cosm · Made in Korea · Toronto, ON, Canada</p>
           <div className="footer-legal">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
