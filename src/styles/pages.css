@@ -458,7 +458,7 @@
 
 .ethos {
   position: relative;
-  background: #E9E7E0;
+  background: #E9E4DD;
   padding: var(--section-pad) 0 calc(var(--section-pad) * 1.1);
   overflow: hidden;
 }

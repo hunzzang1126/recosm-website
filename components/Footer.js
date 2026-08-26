@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import EmailForm from "./EmailForm";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
@@ -13,7 +14,7 @@ export default function Footer() {
 
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="footer-logo">Re<span>:</span>Cosm</div>
+            <div className="footer-logo"><Logo /></div>
             <p>Korean beauty science meets Canadian clean beauty standards. Peptide-powered lash care, made responsibly by Kolmar Korea.</p>
           </div>
 

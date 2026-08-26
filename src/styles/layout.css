@@ -72,11 +72,38 @@ main { display: block; }
   transition: color var(--duration-base) var(--ease-out);
 }
 
-.header-logo em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: var(--font-weight-regular);
+/* Re:Cosm wordmark — brand system 2026 */
+.logo-mark {
+  display: inline-flex;
+  align-items: baseline;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
+
+.logo-mark b { font-weight: 700; }
+.logo-mark .logo-light { font-weight: 300; }
+
+.logo-colon {
+  display: inline-block;
+  position: relative;
+  width: 0.14em;
+  height: 0.56em;
+  margin: 0 0.09em;
+}
+
+.logo-colon::before,
+.logo-colon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 0.14em;
+  height: 0.14em;
+  background: var(--color-primary);
+}
+
+.logo-colon::before { top: 0; }
+.logo-colon::after { bottom: 0; }
 
 .site-header.is-scrolled .header-logo,
 .site-header.is-solid .header-logo { color: var(--color-text-primary); }
@@ -305,12 +332,7 @@ main { display: block; }
   margin-bottom: var(--space-4);
 }
 
-.footer-logo span {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: var(--font-weight-regular);
-  color: var(--color-primary);
-}
+
 
 .footer-heading {
   font-size: var(--text-xs);

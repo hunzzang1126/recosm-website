@@ -42,11 +42,18 @@ export const metadata = {
     description: "Peptide-powered, prostaglandin-free lash serum. Made in Korea. Loved in Canada.",
   },
   robots: { index: true, follow: true },
-  icons: { icon: "/images/favicon.svg" },
+  icons: {
+    icon: [
+      { url: "/images/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/images/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/images/icon-180.png",
+  },
 };
 
 export const viewport = {
-  themeColor: "#F4EFE8",
+  themeColor: "#F5F3ED",
 };
 
 const organizationJsonLd = {
@@ -76,7 +83,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap"
           rel="stylesheet"
         />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />

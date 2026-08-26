@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useStore } from "./StoreContext";
+import Logo from "./Logo";
 
 const NAV = [
   { href: "/product", label: "The Serum" },
@@ -45,8 +46,8 @@ export default function Header() {
         id="site-header"
       >
         <div className="header-inner">
-          <Link href="/" className="header-logo">
-            Re<em>:</em>Cosm
+          <Link href="/" className="header-logo" aria-label="Re:Cosm home">
+            <Logo />
           </Link>
 
           <nav className="header-nav" aria-label="Primary">
