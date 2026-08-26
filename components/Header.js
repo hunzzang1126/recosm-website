@@ -47,7 +47,8 @@ export default function Header() {
       >
         <div className="header-inner">
           <Link href="/" className="header-logo" aria-label="Re:Cosm home">
-            <Logo />
+            <Logo variant="white" className="logo-on-dark" />
+            <Logo variant="dark" className="logo-on-light" />
           </Link>
 
           <nav className="header-nav" aria-label="Primary">

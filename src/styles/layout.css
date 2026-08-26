@@ -72,38 +72,34 @@ main { display: block; }
   transition: color var(--duration-base) var(--ease-out);
 }
 
-/* Re:Cosm wordmark — brand system 2026 */
-.logo-mark {
-  display: inline-flex;
-  align-items: baseline;
-  line-height: 1;
-  letter-spacing: normal;
-  white-space: nowrap;
+/* Re:Cosm wordmark — official brand asset */
+.logo-img {
+  display: block;
+  height: 22px;
+  width: auto;
 }
 
-.logo-mark b { font-weight: 700; }
-.logo-mark .logo-light { font-weight: 300; }
+.header-logo { position: relative; }
 
-.logo-colon {
-  display: inline-block;
-  position: relative;
-  width: 0.13em;
-  height: 0.56em;
-  margin: 0 0.045em;
-}
-
-.logo-colon::before,
-.logo-colon::after {
-  content: "";
+.header-logo .logo-on-light {
   position: absolute;
-  left: 0;
-  width: 0.13em;
-  height: 0.13em;
-  background: var(--color-primary);
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 
-.logo-colon::before { top: 0; }
-.logo-colon::after { bottom: 0; }
+.header-logo .logo-on-dark {
+  opacity: 1;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.site-header.is-scrolled .header-logo .logo-on-light,
+.site-header.is-solid .header-logo .logo-on-light { opacity: 1; }
+
+.site-header.is-scrolled .header-logo .logo-on-dark,
+.site-header.is-solid .header-logo .logo-on-dark { opacity: 0; }
+
+.footer-logo .logo-img { height: 26px; }
 
 .site-header.is-scrolled .header-logo,
 .site-header.is-solid .header-logo { color: var(--color-text-primary); }
