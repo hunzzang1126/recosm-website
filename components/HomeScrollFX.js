@@ -210,7 +210,8 @@ export default function HomeScrollFX() {
           tl.from(arrow, { scale: 0, rotate: -60, duration: 0.4 }, 0.18);
         }
         if (cards.length) {
-          tl.from(cards, { x: 340, opacity: 0, duration: 0.7, stagger: 0.14 }, 0.22);
+          const fromX = section.classList.contains("collection--flip") ? -340 : 340;
+          tl.from(cards, { x: fromX, opacity: 0, duration: 0.7, stagger: 0.14 }, 0.22);
         }
         if (caption) {
           tl.from(caption, { y: 44, opacity: 0, duration: 0.35 }, ">-0.15");

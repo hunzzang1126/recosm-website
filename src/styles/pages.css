@@ -315,23 +315,15 @@
 }
 
 .collection-track {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-4);
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  padding-bottom: var(--space-4);
-  margin-inline: -6px;
-  padding-inline: 6px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
 }
 
 .collection-card {
   will-change: transform, opacity;
-  scroll-snap-align: start;
   position: relative;
-  flex: 0 0 min(280px, 74vw);
-  min-height: 420px;
+  min-height: 380px;
   display: flex;
   flex-direction: column;
   border-radius: var(--radius-sm);
@@ -442,6 +434,8 @@
 
 @media (max-width: 880px) {
   .collection { grid-template-columns: 1fr; }
+
+  .collection-track { grid-template-columns: 1fr; }
 
   .collection-media { order: 1 !important; }
   .collection-body { order: 2 !important; }

@@ -9,7 +9,6 @@ const RITUAL_STEPS = [
   { n: "01", title: "Cleanse", desc: "Remove all makeup. Lashes clean and completely dry." },
   { n: "02", title: "Apply", desc: "A thin line of serum along the upper lash line, close to the roots." },
   { n: "03", title: "Brush", desc: "Flip to the spoolie side and brush from root to tip." },
-  { n: "04", title: "Nightly", desc: "Every evening before bed. Fuller-looking lashes in 4–6 weeks." },
 ];
 
 const GUIDES = [
@@ -222,7 +221,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <p className="collection-caption">One minute a night. That&apos;s the whole routine.</p>
+          <p className="collection-caption">Every night before bed — one minute is the whole routine. Fuller-looking lashes in 4–6 weeks.</p>
         </div>
 
         <div className="collection-media">
