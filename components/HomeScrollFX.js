@@ -204,17 +204,24 @@ export default function HomeScrollFX() {
         });
 
         if (words.length) {
-          tl.from(words, { yPercent: 125, rotate: 5, duration: 0.55, stagger: 0.09 }, 0);
+          tl.fromTo(words, { yPercent: 125, rotate: 5 }, { yPercent: 0, rotate: 0, duration: 0.55, stagger: 0.09 }, 0);
         }
         if (arrow) {
-          tl.from(arrow, { scale: 0, rotate: -60, duration: 0.4 }, 0.18);
+          tl.fromTo(arrow, { scale: 0, rotate: -60 }, { scale: 1, rotate: 0, duration: 0.4 }, 0.18);
         }
         if (cards.length) {
+          // fromTo (양끝 명시) — scrub+from() 조합은 lazy 초기화가 immediateRender로
+          // 이미 밀려난 x를 목표값으로 캡처해 340→340으로 얼어붙는다.
           const fromX = section.classList.contains("collection--flip") ? -340 : 340;
-          tl.from(cards, { x: fromX, opacity: 0, duration: 0.7, stagger: 0.14 }, 0.22);
+          tl.fromTo(
+            cards,
+            { x: fromX, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.7, stagger: 0.14, immediateRender: true },
+            0.22
+          );
         }
         if (caption) {
-          tl.from(caption, { y: 44, opacity: 0, duration: 0.35 }, ">-0.15");
+          tl.fromTo(caption, { y: 44, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, ">-0.15");
         }
       });
 
@@ -224,10 +231,10 @@ export default function HomeScrollFX() {
         scrollTrigger: { trigger: ".ethos", start: "top 92%", end: "top -30%", scrub: 1 },
       });
       etl
-        .from(".ethos-chip", { y: 40, opacity: 0, duration: 0.25 }, 0)
-        .from(".ethos-line-1", { y: 170, opacity: 0, duration: 0.5 }, 0.08)
-        .from(".ethos-line-2", { y: 170, opacity: 0, duration: 0.5 }, 0.28)
-        .from(".ethos-line-3", { y: 170, opacity: 0, duration: 0.5 }, 0.48);
+        .fromTo(".ethos-chip", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.25 }, 0)
+        .fromTo(".ethos-line-1", { y: 170, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.08)
+        .fromTo(".ethos-line-2", { y: 170, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.28)
+        .fromTo(".ethos-line-3", { y: 170, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.48);
 
       gsap.fromTo(
         ".ethos-float",
@@ -240,18 +247,18 @@ export default function HomeScrollFX() {
         }
       );
 
-      gsap.from(".ethos-feature", {
-        y: 70,
-        opacity: 0,
+      gsap.fromTo(".ethos-feature", { y: 70, opacity: 0 }, {
+        y: 0,
+        opacity: 1,
         stagger: 0.12,
         ease: "power1.out",
         scrollTrigger: { trigger: ".ethos-features", start: "top 100%", end: "top 40%", scrub: 1 },
       });
 
       /* ---------- 06 Quality + waitlist ---------- */
-      gsap.from(".quality-copy > *", {
-        y: 60,
-        opacity: 0,
+      gsap.fromTo(".quality-copy > *", { y: 60, opacity: 0 }, {
+        y: 0,
+        opacity: 1,
         stagger: 0.1,
         ease: "power1.out",
         scrollTrigger: { trigger: ".quality", start: "top 95%", end: "top 25%", scrub: 1 },
@@ -271,9 +278,9 @@ export default function HomeScrollFX() {
         );
       }
 
-      gsap.from(".waitlist-panel > *", {
-        y: 56,
-        opacity: 0,
+      gsap.fromTo(".waitlist-panel > *", { y: 56, opacity: 0 }, {
+        y: 0,
+        opacity: 1,
         stagger: 0.08,
         ease: "power1.out",
         scrollTrigger: { trigger: ".waitlist-panel", start: "top 95%", end: "top 28%", scrub: 1 },
@@ -289,16 +296,16 @@ export default function HomeScrollFX() {
         scrollTrigger: { trigger: ".journal .section-header", start: "top 82%" },
       });
 
-      gsap.from(".journal-card--feature", {
-        y: 110,
-        opacity: 0,
+      gsap.fromTo(".journal-card--feature", { y: 110, opacity: 0 }, {
+        y: 0,
+        opacity: 1,
         ease: "power1.out",
         scrollTrigger: { trigger: ".journal-feature-grid", start: "top 100%", end: "top 40%", scrub: 1 },
       });
 
-      gsap.from(".journal-side .journal-card", {
-        y: 130,
-        opacity: 0,
+      gsap.fromTo(".journal-side .journal-card", { y: 130, opacity: 0 }, {
+        y: 0,
+        opacity: 1,
         stagger: 0.12,
         ease: "power1.out",
         scrollTrigger: { trigger: ".journal-feature-grid", start: "top 100%", end: "top 30%", scrub: 1 },
@@ -317,9 +324,9 @@ export default function HomeScrollFX() {
       );
 
       const galleryWords = splitWords(document.querySelector(".gallery-heading"));
-      gsap.from(galleryWords, {
-        yPercent: 120,
-        rotate: 4,
+      gsap.fromTo(galleryWords, { yPercent: 120, rotate: 4 }, {
+        yPercent: 0,
+        rotate: 0,
         stagger: 0.08,
         ease: "power2.out",
         scrollTrigger: { trigger: ".gallery-heading", start: "top 100%", end: "top 45%", scrub: 0.9 },
