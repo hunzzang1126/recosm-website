@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Where to Buy Re:Cosm in Toronto — Stockists",
+  title: "Where to Buy Re:Cosm in Toronto | Stockists",
   description:
-    "Buy Re:Cosm Lash Conditioning Serum in person at Jacob & Sebastian in Toronto (622 Queen St W and Commerce Court, 199 Bay St), or online at recosm.co with free shipping across Canada.",
+    "Buy Re:Cosm Lash Conditioning Serum at Jacob & Sebastian in Toronto (622 Queen St W and Commerce Court, 199 Bay St) or online with free Canadian shipping.",
 };
 
 const jsonLd = {
@@ -13,12 +13,12 @@ const jsonLd = {
   itemListElement: [
     {
       "@type": "Store",
-      name: "Jacob & Sebastian — Queen West",
+      name: "Jacob & Sebastian, Queen West",
       address: { "@type": "PostalAddress", streetAddress: "622 Queen Street West", addressLocality: "Toronto", addressRegion: "ON", addressCountry: "CA" },
     },
     {
       "@type": "Store",
-      name: "Jacob & Sebastian — Commerce Court",
+      name: "Jacob & Sebastian, Commerce Court",
       address: { "@type": "PostalAddress", streetAddress: "199 Bay Street, Commerce Court Concourse", addressLocality: "Toronto", addressRegion: "ON", addressCountry: "CA" },
     },
   ],
@@ -39,7 +39,7 @@ export default function StockistsPage() {
 
         <div className="reviews-grid" style={{ marginBottom: "var(--space-12)" }}>
           <div className="review-card reveal delay-1">
-            <div className="review-author">Jacob &amp; Sebastian — Queen West</div>
+            <div className="review-author">Jacob &amp; Sebastian, Queen West</div>
             <p className="review-text">622 Queen Street West, Toronto, ON</p>
             <div className="review-meta">
               Boutique apothecary for niche &amp; cult beauty ·{" "}
@@ -47,7 +47,7 @@ export default function StockistsPage() {
             </div>
           </div>
           <div className="review-card reveal delay-2">
-            <div className="review-author">Jacob &amp; Sebastian — Commerce Court</div>
+            <div className="review-author">Jacob &amp; Sebastian, Commerce Court</div>
             <p className="review-text">Commerce Court Concourse, 199 Bay Street, Toronto, ON</p>
             <div className="review-meta">
               In the heart of the Financial District ·{" "}
@@ -55,7 +55,7 @@ export default function StockistsPage() {
             </div>
           </div>
           <div className="review-card reveal delay-3">
-            <div className="review-author">Online — recosm.co</div>
+            <div className="review-author">Online at recosm.co</div>
             <p className="review-text">Launching November 2026</p>
             <div className="review-meta">Free standard shipping across all of Canada</div>
           </div>

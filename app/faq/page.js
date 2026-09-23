@@ -2,9 +2,9 @@ import Link from "next/link";
 import Accordion from "@/components/Accordion";
 
 export const metadata = {
-  title: "FAQ — Re:Cosm | Lash Serum Safety, Results & Shipping",
+  title: "FAQ: Lash Serum Safety, Results & Shipping | Re:Cosm",
   description:
-    "Answers about Re:Cosm Lash Conditioning Serum: safety for sensitive eyes and lash extensions, what prostaglandin-free means, Health Canada compliance, results timeline, and shipping across Canada.",
+    "Answers about Re:Cosm Lash Conditioning Serum: sensitive eyes, lash extensions, prostaglandin-free, Health Canada, results timeline and shipping.",
 };
 
 const categories = [
@@ -25,7 +25,7 @@ const categories = [
       },
       {
         q: "What does prostaglandin-free mean and why does it matter?",
-        a: "Prostaglandins are hormone-like compounds used in many lash serums (and originally in glaucoma medications). Prostaglandin analogs like bimatoprost and isopropyl cloprostenate can cause side effects including iris color changes, periorbital fat loss (sunken appearance around eyes), and eyelid darkening — and isopropyl cloprostenate is prohibited in cosmetics sold in Canada. Re:Cosm uses peptide-based conditioning technology instead.",
+        a: "Prostaglandins are hormone-like compounds used in many lash serums (and originally in glaucoma medications). Prostaglandin analogs like bimatoprost and isopropyl cloprostenate can cause side effects including iris color changes, periorbital fat loss (sunken appearance around eyes), and eyelid darkening, and isopropyl cloprostenate is prohibited in cosmetics sold in Canada. Re:Cosm uses peptide-based conditioning technology instead.",
       },
       {
         q: "Can I use it on my lower lashes?",
@@ -38,15 +38,15 @@ const categories = [
     items: [
       {
         q: "When will I see results?",
-        a: "Most users begin to notice their lashes looking healthier and more conditioned within 4-6 weeks of consistent nightly use, with the full effect — fuller-looking, healthier-looking lashes — typically visible after 8-12 weeks. Results vary by individual, and consistent, daily application is key.",
+        a: "Most users begin to notice their lashes looking healthier and more conditioned within 4-6 weeks of consistent nightly use, with the full effect, fuller-looking, healthier-looking lashes, typically visible after 8-12 weeks. Results vary by individual, and consistent, daily application is key.",
       },
       {
         q: "How long does one tube last?",
-        a: "One 7 mL tube of Re:Cosm Lash Conditioning Serum lasts approximately 3 months with nightly use on both eyes. A small amount goes a long way — you only need a thin line along the upper lash line.",
+        a: "One 7 mL tube of Re:Cosm Lash Conditioning Serum lasts approximately 3 months with nightly use on both eyes. A small amount goes a long way, you only need a thin line along the upper lash line.",
       },
       {
         q: "What happens if I stop using it?",
-        a: "Your lashes will gradually return to their natural state over time, as the lash cycle completes. There is no rebound effect — your lashes will not become worse than they were before you started using the product. Many users choose to transition to every-other-night application for maintenance.",
+        a: "Your lashes will gradually return to their natural state over time, as the lash cycle completes. There is no rebound effect. Your lashes will not become worse than they were before you started using the product. Many users choose to transition to every-other-night application for maintenance.",
       },
     ],
   },
@@ -63,7 +63,7 @@ const categories = [
       },
       {
         q: "Is the product vegan and cruelty-free?",
-        a: "Re:Cosm is cruelty-free — we do not test on animals at any stage of product development. Our formula contains no animal-derived ingredients.",
+        a: "Re:Cosm is cruelty-free. We do not test on animals at any stage of product development. Our formula contains no animal-derived ingredients.",
       },
       {
         q: "Is it safe during pregnancy or breastfeeding?",
@@ -80,7 +80,7 @@ const categories = [
       },
       {
         q: "Where can I buy Re:Cosm in person?",
-        a: "Re:Cosm is stocked at Jacob & Sebastian in Toronto — at 622 Queen Street West and at Commerce Court Concourse, 199 Bay Street.",
+        a: "Re:Cosm is stocked at Jacob & Sebastian in Toronto, at 622 Queen Street West and at Commerce Court Concourse, 199 Bay Street.",
       },
       {
         q: "Do you ship internationally?",

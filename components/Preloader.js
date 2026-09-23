@@ -4,6 +4,7 @@
 // Runs once per browser session (sessionStorage) so repeat navigation is instant.
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const DURATION = 2100;
 
@@ -11,6 +12,7 @@ export default function Preloader() {
   const [state, setState] = useState("pending"); // pending | counting | done | hidden
   const [count, setCount] = useState(0);
   const raf = useRef(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     let seen = false;
@@ -24,7 +26,11 @@ export default function Preloader() {
       window.dispatchEvent(new CustomEvent("recosm:ready"));
     };
 
-    if (seen || reduced) {
+    // Readers arriving from search on a guide get the article immediately;
+    // the counter stays for the brand pages it was designed for.
+    const article = (pathname || "").startsWith("/guides");
+
+    if (seen || reduced || article) {
       setState("hidden");
       announce();
       return;
@@ -66,7 +72,7 @@ export default function Preloader() {
   return (
     <div className={`preloader${state === "done" ? " is-done" : ""}`} aria-hidden="true">
       <span className="preloader-count">{String(count).padStart(2, "0")}</span>
-      <span className="preloader-mark">Re:Cosm — Lash Care</span>
+      <span className="preloader-mark">Re:Cosm · Lash Care</span>
     </div>
   );
 }

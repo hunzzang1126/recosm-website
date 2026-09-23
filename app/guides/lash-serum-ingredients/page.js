@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { GuideByline, GuideSources } from "@/components/GuideMeta";
 import { INGREDIENTS, INCI, SITE, HUB_PATH, HUB_MODIFIED, ingredientPath } from "@/lib/ingredients";
 
 export const metadata = {
   title: "Lash Serum Ingredients, Explained: Capixyl, Biotin, Panthenol | Re:Cosm",
   description:
-    "What Acetyl Tetrapeptide-3 (Capixyl™), biotin, panthenol, centella asiatica, and hyaluronic acid actually do in a lash serum, explained in plain language, with the full Re:Cosm ingredient list.",
+    "What each lash serum ingredient does, from Capixyl™ and biotin to panthenol and hyaluronic acid, plus every ingredient on the Re:Cosm label decoded.",
 };
 
 const FAQ = [
@@ -55,6 +56,7 @@ export default function Page() {
         </div>
 
         <div className="text-body" style={{ lineHeight: 1.8 }}>
+          <GuideByline />
           <h2 className="heading-3" style={{ marginBottom: "var(--space-6)" }}>The key ingredients</h2>
           {INGREDIENTS.map((ing) => (
             <div key={ing.slug} style={{ marginBottom: "var(--space-10)" }}>
@@ -109,6 +111,14 @@ export default function Page() {
               <p>{a}</p>
             </div>
           ))}
+
+          <p style={{ marginTop: "var(--space-8)" }}>
+            More guides: <Link href="/guides/lash-serum-after-lash-lift">lash serum after a lash lift</Link>,{" "}
+            <Link href="/guides/lash-serum-for-sensitive-eyes">lash serum for sensitive eyes</Link>,{" "}
+            <Link href="/guides/korean-lash-serum">Korean lash serums</Link>.
+          </p>
+
+          <GuideSources keys={[]} />
 
           <div style={{ margin: "var(--space-12) 0", padding: "var(--space-8)", background: "var(--color-bg-warm)", borderRadius: "var(--radius-md)", textAlign: "center" }}>
             <p className="heading-4" style={{ marginBottom: "var(--space-3)" }}>See every ingredient</p>

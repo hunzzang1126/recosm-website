@@ -2,9 +2,9 @@ import Image from "next/image";
 import Icon from "@/components/Icon";
 
 export const metadata = {
-  title: "Our Science — Re:Cosm | Peptides vs. Prostaglandins in Lash Serums",
+  title: "Our Science: Peptides vs. Prostaglandins in Lash Serums | Re:Cosm",
   description:
-    "Why Re:Cosm chose peptides over prostaglandins: the science behind Capixyl™, Biotin, Panthenol, and Centella Asiatica — manufactured by Kolmar Korea, compliant with Health Canada cosmetic regulations.",
+    "Why Re:Cosm uses peptides instead of prostaglandins: Capixyl™, biotin, panthenol and centella, made by Kolmar Korea to Health Canada cosmetic rules.",
 };
 
 export default function SciencePage() {
@@ -41,10 +41,10 @@ export default function SciencePage() {
               <p className="text-overline" style={{ marginBottom: "var(--space-4)" }}>The Story</p>
               <h2 className="heading-3">Born from a question:<br />why compromise?</h2>
               <p>
-                Most lash serums on the market rely on prostaglandin analogs — synthetic compounds originally developed for glaucoma treatment. They come with well-documented side effects: iris darkening, periorbital fat loss, and eyelid pigmentation.
+                Most lash serums on the market rely on prostaglandin analogs, synthetic compounds originally developed for glaucoma treatment. They come with well-documented side effects: iris darkening, periorbital fat loss, and eyelid pigmentation.
               </p>
               <p>
-                Re:Cosm was founded on a simple premise: you shouldn&apos;t have to choose between beautiful-looking lashes and safety. By combining Korean cosmetic innovation with Canadian regulatory standards, we created a lash conditioning serum built on peptide science — without the trade-offs.
+                Re:Cosm was founded on a simple premise: you shouldn&apos;t have to choose between beautiful-looking lashes and safety. By combining Korean cosmetic innovation with Canadian regulatory standards, we created a lash conditioning serum built on peptide science, without the trade-offs.
               </p>
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function SciencePage() {
                 icon: "B7",
                 name: "Biotin",
                 sci: "Vitamin B7 / Vitamin H",
-                desc: "An essential water-soluble B-vitamin and a natural building block of keratin — the primary structural protein of lashes. Supports stronger-looking, more resilient lashes.",
+                desc: "An essential water-soluble B-vitamin and a natural building block of keratin, the primary structural protein of lashes. Supports stronger-looking, more resilient lashes.",
                 delay: 2,
               },
               {
@@ -160,7 +160,7 @@ export default function SciencePage() {
           <div className="section-header">
             <p className="section-overline reveal">Clean Commitment</p>
             <h2 className="section-title reveal delay-1">What we leave out</h2>
-            <p className="section-desc reveal delay-2">We believe in transparency. Here&apos;s what you&apos;ll never find in our formula — and why.</p>
+            <p className="section-desc reveal delay-2">We believe in transparency. Here&apos;s what you&apos;ll never find in our formula, and why.</p>
           </div>
           <div className="leave-out-grid">
             <div className="leave-out-card reveal delay-1">

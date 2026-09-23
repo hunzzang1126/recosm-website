@@ -2,9 +2,9 @@ import Icon from "@/components/Icon";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata = {
-  title: "Contact — Re:Cosm | Toronto, Canada",
+  title: "Contact Re:Cosm | Toronto, Canada",
   description:
-    "Get in touch with Re:Cosm — questions about our prostaglandin-free lash conditioning serum, orders, or wholesale. Based in Toronto, free shipping across Canada.",
+    "Get in touch with Re:Cosm: questions about our prostaglandin-free lash conditioning serum, orders, or wholesale. Based in Toronto, free shipping across Canada.",
 };
 
 export default function ContactPage() {
@@ -48,7 +48,7 @@ export default function ContactPage() {
                 Response Time
               </h4>
               <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-body)", lineHeight: 1.6 }}>
-                We typically respond within 24 hours during business days (Mon–Fri, 9 AM – 6 PM EST).
+                We typically respond within 24 hours during business days (Mon to Fri, 9 AM to 6 PM EST).
               </p>
             </div>
           </div>

@@ -1,13 +1,14 @@
 import Link from "next/link";
+import { GuideByline, GuideSources } from "@/components/GuideMeta";
 import { SITE, HUB_PATH, ingredientPath } from "@/lib/ingredients";
 
 const PATH = "/guides/lash-serum-ingredients-to-avoid";
 const PUBLISHED = "2026-09-23";
 
 export const metadata = {
-  title: "Lash Serum Ingredients to Avoid: Prostaglandins, Fragrance and Oils | Re:Cosm",
+  title: "Lash Serum Ingredients to Avoid (Prostaglandins, Oils) | Re:Cosm",
   description:
-    "The lash serum ingredients worth avoiding and how to spot them on a label: prostaglandin analogs and their disguised names, fragrance near the eyes, and oils if you wear extensions. With a Canadian regulatory note.",
+    "Lash serum ingredients to avoid and how to spot them: prostaglandin analogs and their label names, fragrance, and oils if you wear extensions.",
   alternates: { canonical: PATH },
 };
 
@@ -71,6 +72,7 @@ export default function Page() {
         </div>
 
         <div className="text-body" style={{ lineHeight: 1.8 }}>
+          <GuideByline />
           <h2 className="heading-3" style={{ marginBottom: "var(--space-4)" }}>1. Prostaglandin analogs</h2>
           <p style={{ marginBottom: "var(--space-4)" }}>
             Prostaglandin analogs were developed as glaucoma medication. Patients using them grew longer, darker lashes, which
@@ -144,6 +146,14 @@ export default function Page() {
               <p>{a}</p>
             </div>
           ))}
+
+          <p style={{ marginTop: "var(--space-8)" }}>
+            More guides: <Link href="/guides/lash-serum-after-lash-lift">lash serum after a lash lift</Link>,{" "}
+            <Link href="/guides/lash-serum-for-sensitive-eyes">lash serum for sensitive eyes</Link>,{" "}
+            <Link href="/guides/korean-lash-serum">Korean lash serums</Link>.
+          </p>
+
+          <GuideSources keys={["hotlist", "sccs"]} />
 
           <div style={{ margin: "var(--space-12) 0", padding: "var(--space-8)", background: "var(--color-bg-warm)", borderRadius: "var(--radius-md)", textAlign: "center" }}>
             <p className="heading-4" style={{ marginBottom: "var(--space-3)" }}>None of the above</p>

@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { GuideByline, GuideSources } from "@/components/GuideMeta";
 import { ingredientPath } from "@/lib/ingredients";
 
 export const metadata = {
   title: "Prostaglandin-Free Lash Serums: What It Means & Why It Matters | Re:Cosm",
   description:
-    "What prostaglandin analogs are, the documented side effects (iris darkening, fat loss, eyelid pigmentation), what Health Canada prohibits in cosmetics, and how to check any lash serum's ingredient list yourself.",
+    "What prostaglandin analogs are, their documented side effects, why isopropyl cloprostenate is banned in Canadian cosmetics, and how to check any label.",
 };
 
 const jsonLd = {
@@ -56,6 +57,7 @@ export default function Page() {
         </div>
 
         <div className="text-body" style={{ lineHeight: 1.8 }}>
+          <GuideByline />
           <h2 className="heading-3" style={{ margin: "var(--space-10) 0 var(--space-4)" }}>What are prostaglandin analogs?</h2>
           <p style={{ marginBottom: "var(--space-4)" }}>
             Prostaglandin analogs are synthetic compounds originally developed for glaucoma medication. Researchers noticed a side effect: patients using these eye drops grew longer, darker lashes. That discovery led to prescription lash treatments, and then to a wave of over-the-counter serums using related compounds such as <strong>isopropyl cloprostenate</strong>, often without clearly disclosing what they are.
@@ -108,6 +110,14 @@ export default function Page() {
               <p>{a}</p>
             </div>
           ))}
+
+          <p style={{ marginTop: "var(--space-8)" }}>
+            More guides: <Link href="/guides/lash-serum-after-lash-lift">lash serum after a lash lift</Link>,{" "}
+            <Link href="/guides/lash-serum-for-sensitive-eyes">lash serum for sensitive eyes</Link>,{" "}
+            <Link href="/guides/korean-lash-serum">Korean lash serums</Link>.
+          </p>
+
+          <GuideSources keys={["hotlist", "sccs"]} />
 
           <div style={{ margin: "var(--space-12) 0", padding: "var(--space-8)", background: "var(--color-bg-warm)", borderRadius: "var(--radius-md)", textAlign: "center" }}>
             <p className="heading-4" style={{ marginBottom: "var(--space-3)" }}>Re:Cosm Lash Conditioning Serum</p>

@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { GuideByline, GuideSources } from "@/components/GuideMeta";
 import { SITE, ingredientPath } from "@/lib/ingredients";
 
 const PATH = "/guides/lash-serums-with-extensions";
 
 export const metadata = {
-  title: "Lash Conditioner for Lash Extensions: What's Safe and How to Use It | Re:Cosm",
+  title: "Lash Serum with Extensions: What's Safe | Re:Cosm",
   description:
-    "Can you use a lash conditioner or serum with extensions or a lash lift? What makes a formula extension-safe, the oil names to check for, how to apply it without hurting retention, and when to start after a lift or tint.",
+    "Can you use a lash serum with extensions? What makes a formula extension-safe, the oils to check for, and how to apply it without hurting retention.",
   alternates: { canonical: PATH },
 };
 
@@ -32,7 +33,7 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Article",
-      headline: "Lash Conditioner for Lash Extensions: What's Safe and How to Use It",
+      headline: "Lash Serum with Extensions: Safe Lash Conditioners and How to Use Them",
       datePublished: "2026-08-20",
       dateModified: "2026-09-23",
       author: { "@type": "Organization", name: "Re:Cosm", url: SITE },
@@ -60,7 +61,7 @@ export default function Page() {
       <div className="container" style={{ maxWidth: "var(--container-text)" }}>
         <div className="section-header" style={{ textAlign: "left" }}>
           <p className="section-overline reveal"><Link href="/#home-journal">Journal</Link></p>
-          <h1 className="section-title reveal delay-1">Lash conditioner for lash extensions: what&apos;s safe and how to use it</h1>
+          <h1 className="section-title reveal delay-1">Using a lash serum with extensions: what&apos;s safe and how to apply it</h1>
           <p className="section-desc reveal delay-2" style={{ marginLeft: 0 }}>
             Short answer: yes, you can use a lash conditioner or serum with extensions or after a lash lift, if you choose the
             right formula and time it correctly. Here&apos;s the aftercare logic lash technicians follow.
@@ -68,6 +69,7 @@ export default function Page() {
         </div>
 
         <div className="text-body" style={{ lineHeight: 1.8 }}>
+          <GuideByline />
           <h2 className="heading-3" style={{ margin: "var(--space-10) 0 var(--space-4)" }}>Why condition lashes under extensions</h2>
           <p style={{ marginBottom: "var(--space-4)" }}>
             Extensions are only as good as the natural lashes they&apos;re bonded to. Each extension is glued to one natural
@@ -115,7 +117,8 @@ export default function Page() {
             A lift restructures the lash with a perming solution, and a tint deposits dye. Both leave the cuticle temporarily
             more open. <strong>Wait 24 to 48 hours</strong> before starting or resuming a serum. After that window,
             conditioning actually helps: lifts and tints can be drying, and panthenol and hyaluronic acid hydration counteracts
-            the brittleness that sometimes follows.
+            the brittleness that sometimes follows. The full routine is in{" "}
+            <Link href="/guides/lash-serum-after-lash-lift">lash serum after a lash lift or tint</Link>.
           </p>
 
           <h2 className="heading-3" style={{ margin: "var(--space-10) 0 var(--space-4)" }}>What to avoid over extensions and lifts</h2>
@@ -143,6 +146,14 @@ export default function Page() {
               <p>{a}</p>
             </div>
           ))}
+
+          <p style={{ marginTop: "var(--space-8)" }}>
+            More guides: <Link href="/guides/lash-serum-after-lash-lift">lash serum after a lash lift</Link>,{" "}
+            <Link href="/guides/lash-serum-for-sensitive-eyes">lash serum for sensitive eyes</Link>,{" "}
+            <Link href="/guides/korean-lash-serum">Korean lash serums</Link>.
+          </p>
+
+          <GuideSources keys={[]} />
 
           <div style={{ margin: "var(--space-12) 0", padding: "var(--space-8)", background: "var(--color-bg-warm)", borderRadius: "var(--radius-md)", textAlign: "center" }}>
             <p className="heading-4" style={{ marginBottom: "var(--space-3)" }}>Extension-safe by design</p>

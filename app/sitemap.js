@@ -1,4 +1,5 @@
 import { INGREDIENTS, ingredientPath, HUB_MODIFIED } from "@/lib/ingredients";
+import { GUIDES } from "@/lib/guides";
 
 const BASE_URL = "https://www.recosm.co";
 
@@ -24,6 +25,12 @@ export default function sitemap() {
       lastModified: new Date(date),
       changeFrequency,
       priority,
+    })),
+    ...GUIDES.map((g) => ({
+      url: `${BASE_URL}/guides/${g.slug}`,
+      lastModified: new Date("2026-09-23"),
+      changeFrequency: "monthly",
+      priority: 0.8,
     })),
     ...INGREDIENTS.map((i) => ({
       url: `${BASE_URL}${ingredientPath(i.slug)}`,

@@ -20,7 +20,7 @@ export default function ProductGallery() {
           <TubeIllustration ratio="3/4" />
         ) : (
           <div className="img-placeholder" style={{ aspectRatio: "3/4", borderRadius: "var(--radius-md)" }}>
-            <span>Product — {VIEWS[active].key}</span>
+            <span>Product · {VIEWS[active].key}</span>
           </div>
         )}
       </div>

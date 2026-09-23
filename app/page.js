@@ -24,7 +24,7 @@ const GUIDES = [
   {
     slug: "lash-serum-ingredients",
     title: "Lash serum ingredients, explained",
-    desc: "Capixyl™, biotin, panthenol, centella — what each one actually does.",
+    desc: "Capixyl™, biotin, panthenol, centella: what each one actually does.",
     date: "Aug 2026",
     image: "/images/oranges.jpg",
     alt: "Fresh oranges with green leaves and a curl of peel on a cream table",
@@ -69,7 +69,7 @@ export default function HomePage() {
             Re:<em>define</em><br />your lashes
           </h1>
           <p className="hero-description">
-            A peptide lash conditioning serum with zero prostaglandins —
+            A peptide lash conditioning serum with zero prostaglandins.
             Korean clean beauty, made by Kolmar, made for Canada.
           </p>
         </div>
@@ -111,19 +111,19 @@ export default function HomePage() {
           <div className="pillar-card pillar-card-1">
             <div className="pillar-icon"><Icon name="shield" /></div>
             <h3>Prostaglandin-free, beyond reproach</h3>
-            <p>No prostaglandin analogs — the ingredient class linked to iris darkening and orbital fat loss. Ever.</p>
+            <p>No prostaglandin analogs, the ingredient class linked to iris darkening and orbital fat loss. Ever.</p>
           </div>
 
           <div className="pillar-card pillar-card-2">
             <div className="pillar-icon"><Icon name="molecule" /></div>
             <h3>Radical transparency</h3>
-            <p>No black boxes, nothing to hide — we disclose our full formula, so you never have to guess what&apos;s in it.</p>
+            <p>No black boxes, nothing to hide. We disclose our full formula, so you never have to guess what&apos;s in it.</p>
           </div>
 
           <div className="pillar-card pillar-card-3">
             <div className="pillar-icon"><Icon name="flag" /></div>
             <h3>Made in Korea, by Kolmar</h3>
-            <p>Formulated and manufactured by Kolmar Korea — the lab behind the world&apos;s leading K-beauty brands.</p>
+            <p>Formulated and manufactured by Kolmar Korea, the lab behind the world&apos;s leading K-beauty brands.</p>
           </div>
 
           <div className="pillar-card pillar-card-4">
@@ -221,7 +221,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <p className="collection-caption">Every night before bed — one minute is the whole routine. Fuller-looking lashes in 4–6 weeks.</p>
+          <p className="collection-caption">Every night before bed. One minute is the whole routine. Fuller-looking lashes in 4 to 6 weeks.</p>
         </div>
 
         <div className="collection-media">
@@ -256,7 +256,7 @@ export default function HomePage() {
               <span className="ethos-feature-icon"><Icon name="check" /></span>
               <h3 className="ethos-feature-title">100% transparent formula</h3>
               <p className="ethos-feature-desc">
-                We disclose every ingredient — formulated to the highest standards of efficacy
+                We disclose every ingredient, formulated to the highest standards of efficacy
                 and safety, in bio-compatible bases, free from over 1,800 questionable ingredients.
               </p>
             </div>
@@ -265,14 +265,14 @@ export default function HomePage() {
               <h3 className="ethos-feature-title">Only verified ingredients</h3>
               <p className="ethos-feature-desc">
                 Lash care packed with peptides, vitamins and calming botanicals at stable pH levels
-                that don&apos;t promise miracles — but deliver real results.
+                that don&apos;t promise miracles, but deliver real results.
               </p>
             </div>
             <div className="ethos-feature">
               <span className="ethos-feature-icon"><Icon name="leaf" /></span>
               <h3 className="ethos-feature-title">Kind to sensitive eyes</h3>
               <p className="ethos-feature-desc">
-                Fragrance-free and prostaglandin-free, designed for the delicate eye area —
+                Fragrance-free and prostaglandin-free, designed for the delicate eye area,
                 suitable for contact lens wearers and lash extensions.
               </p>
             </div>
@@ -285,7 +285,7 @@ export default function HomePage() {
         <div className="quality-copy">
           <span className="ethos-chip">Quality</span>
           <h2 className="quality-title">
-            Only proven ingredients, quality over quantity — <em>always.</em>
+            Only proven ingredients, quality over quantity, <em>always.</em>
           </h2>
           <p className="quality-sub">
             It&apos;s about what we don&apos;t put in. A squeaky-clean formula,

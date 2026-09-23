@@ -14,7 +14,7 @@ const BASE_URL = "https://www.recosm.co";
 
 export const metadata = {
   metadataBase: new URL(BASE_URL),
-  title: "Re:Cosm — Lash Conditioning Serum | Korean Clean Beauty",
+  title: "Re:Cosm Lash Conditioning Serum | Korean Peptide Lash Serum",
   description:
     "Re:define your lashes with Re:Cosm's peptide-powered, prostaglandin-free Lash Conditioning Serum. Made in Korea by Kolmar Korea. Clean beauty for Canada.",
   keywords: [
@@ -32,14 +32,14 @@ export const metadata = {
   },
   openGraph: {
     siteName: "Re:Cosm",
-    title: "Re:Cosm — Lash Conditioning Serum",
+    title: "Re:Cosm Lash Conditioning Serum",
     description: "Peptide-powered, prostaglandin-free lash serum. Made in Korea. Loved in Canada.",
     type: "website",
     locale: "en_CA",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Re:Cosm — Lash Conditioning Serum",
+    title: "Re:Cosm Lash Conditioning Serum",
     description: "Peptide-powered, prostaglandin-free lash serum. Made in Korea. Loved in Canada.",
   },
   robots: { index: true, follow: true },
@@ -62,8 +62,14 @@ const organizationJsonLd = {
   "@type": "Organization",
   "@id": `${BASE_URL}/#organization`,
   name: "Re:Cosm",
+  alternateName: ["Recosm", "Re:Cosm Toronto", "Re:Cosm Lash"],
   url: BASE_URL,
+  logo: `${BASE_URL}/images/icon-512.png`,
   description: "Korean clean beauty brand. Peptide-powered lash care.",
+  disambiguatingDescription:
+    "Toronto-based lash care brand selling Re:Cosm Lash Conditioning Serum, a prostaglandin-free peptide lash serum made in Korea by Kolmar Korea. Not affiliated with the French ReCosm refill packaging initiative.",
+  foundingLocation: { "@type": "Place", name: "Toronto, Ontario, Canada" },
+  knowsAbout: ["lash serum", "prostaglandin-free lash serum", "peptide lash serum", "Korean beauty", "lash extension aftercare"],
   address: {
     "@type": "PostalAddress",
     addressLocality: "Toronto",

@@ -71,7 +71,7 @@ export default function CartDrawer() {
               <span className="amount">{formatPrice(cartTotal)}</span>
             </div>
             <p className="cart-tax-note">Taxes calculated at checkout</p>
-            <button className="btn btn-dark btn-full" onClick={() => showToast("Launching November 2026 — checkout opens soon!")}>
+            <button className="btn btn-dark btn-full" onClick={() => showToast("Launching November 2026. Checkout opens soon!")}>
               Checkout
             </button>
           </div>

@@ -7,9 +7,9 @@ import ProductPurchase from "@/components/ProductPurchase";
 const PRICE = 55.0;
 
 export const metadata = {
-  title: "Lash Conditioning Serum — Re:Cosm | Prostaglandin-Free Peptide Lash Serum",
+  title: "Re:Cosm Lash Conditioning Serum | Prostaglandin-Free, Canada",
   description:
-    "Re:Cosm Lash Conditioning Serum: Acetyl Tetrapeptide-3 (Capixyl™), Biotin, Panthenol, Centella Asiatica. Prostaglandin-free, fragrance-free, made in Korea by Kolmar. $55 CAD, free shipping across Canada.",
+    "Peptide lash serum with Capixyl™, biotin and panthenol. Prostaglandin-free, fragrance-free, made in Korea by Kolmar. $55 CAD, free shipping in Canada.",
 };
 
 const productJsonLd = {
@@ -43,11 +43,11 @@ const accordionItems = [
     title: "Key Ingredients",
     content: (
       <ul style={{ listStyle: "none", padding: 0 }}>
-        <li style={{ marginBottom: 12 }}><strong>Acetyl Tetrapeptide-3 (Capixyl™)</strong> — Biomimetic peptide complex that conditions the lash line and supports the look of fuller, denser lashes.</li>
-        <li style={{ marginBottom: 12 }}><strong>Biotin (Vitamin B7)</strong> — Essential B-vitamin and a natural building block of keratin, the structural protein of lashes.</li>
-        <li style={{ marginBottom: 12 }}><strong>Panthenol (Pro-Vitamin B5)</strong> — Deeply hydrates and improves lash flexibility, helping prevent breakage.</li>
-        <li style={{ marginBottom: 12 }}><strong>Centella Asiatica Extract</strong> — Calming botanical that soothes the sensitive lash line area.</li>
-        <li><strong>Hyaluronic Acid</strong> — Locks in moisture for plump, healthy-looking lashes.</li>
+        <li style={{ marginBottom: 12 }}><strong>Acetyl Tetrapeptide-3 (Capixyl™):</strong> Biomimetic peptide complex that conditions the lash line and supports the look of fuller, denser lashes.</li>
+        <li style={{ marginBottom: 12 }}><strong>Biotin (Vitamin B7):</strong> Essential B-vitamin and a natural building block of keratin, the structural protein of lashes.</li>
+        <li style={{ marginBottom: 12 }}><strong>Panthenol (Pro-Vitamin B5):</strong> Deeply hydrates and improves lash flexibility, helping prevent breakage.</li>
+        <li style={{ marginBottom: 12 }}><strong>Centella Asiatica Extract:</strong> Calming botanical that soothes the sensitive lash line area.</li>
+        <li><strong>Hyaluronic Acid:</strong> Locks in moisture for plump, healthy-looking lashes.</li>
       </ul>
     ),
   },
@@ -66,10 +66,10 @@ const accordionItems = [
     title: "How to Use",
     content: (
       <ol style={{ paddingLeft: 20, lineHeight: 1.8 }}>
-        <li style={{ marginBottom: 8 }}><strong>Cleanse</strong> — Remove all makeup. Ensure lashes are clean and completely dry.</li>
-        <li style={{ marginBottom: 8 }}><strong>Apply</strong> — Using the rounded applicator tip, apply a thin line of serum along the upper lash line, as close to the roots as possible.</li>
-        <li style={{ marginBottom: 8 }}><strong>Brush</strong> — Flip the applicator to the spoolie brush side. Gently brush through lashes from root to tip to evenly distribute serum.</li>
-        <li><strong>Repeat nightly</strong> — For best results, use every evening before bed. Allow serum to absorb fully before applying other products.</li>
+        <li style={{ marginBottom: 8 }}><strong>Cleanse:</strong> Remove all makeup. Ensure lashes are clean and completely dry.</li>
+        <li style={{ marginBottom: 8 }}><strong>Apply:</strong> Using the rounded applicator tip, apply a thin line of serum along the upper lash line, as close to the roots as possible.</li>
+        <li style={{ marginBottom: 8 }}><strong>Brush:</strong> Flip the applicator to the spoolie brush side. Gently brush through lashes from root to tip to evenly distribute serum.</li>
+        <li><strong>Repeat nightly:</strong> For best results, use every evening before bed. Allow serum to absorb fully before applying other products.</li>
       </ol>
     ),
   },
@@ -79,8 +79,8 @@ const accordionItems = [
       <>
         <p style={{ marginBottom: 12 }}>We ship across Canada with standard and express options:</p>
         <ul style={{ paddingLeft: 20, lineHeight: 1.8 }}>
-          <li><strong>Standard Shipping:</strong> 5-7 business days — Free</li>
-          <li><strong>Express Shipping:</strong> 2-3 business days — $9.99 CAD</li>
+          <li><strong>Standard Shipping:</strong> 5-7 business days, free</li>
+          <li><strong>Express Shipping:</strong> 2-3 business days, $9.99 CAD</li>
         </ul>
         <p style={{ marginTop: 12 }}>Returns accepted within 30 days of delivery for unopened products. See our return policy for details.</p>
       </>
@@ -90,7 +90,7 @@ const accordionItems = [
     title: "FAQ",
     content: (
       <div style={{ lineHeight: 1.8 }}>
-        <p style={{ marginBottom: 12 }}><strong>Is it safe for sensitive eyes?</strong><br />Yes. Our formula is fragrance-free and prostaglandin-free, and formulated specifically for the delicate eye area — suitable for sensitive eyes and contact lens wearers.</p>
+        <p style={{ marginBottom: 12 }}><strong>Is it safe for sensitive eyes?</strong><br />Yes. Our formula is fragrance-free and prostaglandin-free, and formulated specifically for the delicate eye area, suitable for sensitive eyes and contact lens wearers.</p>
         <p style={{ marginBottom: 12 }}><strong>Can I use it with lash extensions?</strong><br />Absolutely. Our formula is safe for use with lash extensions and after lash lifts.</p>
         <p style={{ marginBottom: 12 }}><strong>How long does one tube last?</strong><br />One 7 mL tube lasts approximately 3 months with nightly use.</p>
         <p><strong>When will I see results?</strong><br />Most users notice their lashes looking fuller and healthier within 4-6 weeks of consistent nightly application.</p>

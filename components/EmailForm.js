@@ -30,7 +30,7 @@ export default function EmailForm({ className = "email-form", buttonLabel = "Sub
         showToast("Please double-check your email address.");
       }
     } catch {
-      showToast("Something went wrong — please try again.");
+      showToast("Something went wrong. Please try again.");
     } finally {
       setBusy(false);
     }

@@ -1,4 +1,5 @@
 import { INGREDIENTS, ingredientPath } from "@/lib/ingredients";
+import { GUIDES } from "@/lib/guides";
 
 const SITE = "https://www.recosm.co";
 
@@ -7,6 +8,8 @@ export const dynamic = "force-static";
 export function GET() {
   const body = [
     "# Re:Cosm",
+    "",
+    "Not to be confused with ReCosm, a French refill packaging initiative. Re:Cosm (recosm.co) is a Toronto lash care brand.",
     "",
     "> Re:Cosm is a Toronto-based Korean clean beauty brand. Its product is Lash Conditioning Serum: a peptide-based (Acetyl Tetrapeptide-3 / Capixyl™), prostaglandin-free, fragrance-free, oil-free lash serum, 7 mL, made in Korea by Kolmar Korea, $55 CAD with free shipping across Canada. Safe with lash extensions and after lash lifts. The full INCI ingredient list is published.",
     "",
@@ -22,7 +25,8 @@ export function GET() {
     `- [Prostaglandin-free lash serums](${SITE}/guides/prostaglandin-free-lash-serums): what prostaglandin analogs are, documented side effects, Health Canada status, how to check a label.`,
     `- [Lash serum ingredients, explained](${SITE}/guides/lash-serum-ingredients): every ingredient in the formula decoded.`,
     `- [Lash serum ingredients to avoid](${SITE}/guides/lash-serum-ingredients-to-avoid): prostaglandin analog names, fragrance, oils with extensions.`,
-    `- [Lash conditioner for lash extensions](${SITE}/guides/lash-serums-with-extensions): what is extension-safe, application, timing after lifts and tints.`,
+    `- [Lash serum with extensions](${SITE}/guides/lash-serums-with-extensions): what is extension-safe, oils to avoid, application.`,
+    ...GUIDES.map((g) => `- [${g.h1}](${SITE}/guides/${g.slug}): ${g.description}`),
     "",
     "## Ingredients",
     ...INGREDIENTS.map((i) => `- [${i.name}](${SITE}${ingredientPath(i.slug)}): ${i.summary}`),

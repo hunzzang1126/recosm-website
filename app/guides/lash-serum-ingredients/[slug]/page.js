@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { INGREDIENTS, SITE, HUB_PATH, HUB_MODIFIED, ingredientPath } from "@/lib/ingredients";
+import { GuideByline, GuideSources } from "@/components/GuideMeta";
 
 export const dynamicParams = false;
 
@@ -81,6 +82,7 @@ export default async function IngredientPage({ params }) {
         </div>
 
         <div className="text-body" style={{ lineHeight: 1.8 }}>
+          <GuideByline />
           <p style={{ fontSize: "var(--text-lg)", marginBottom: "var(--space-10)" }}>
             <strong>In short:</strong> {ing.summary}
           </p>
@@ -97,7 +99,7 @@ export default async function IngredientPage({ params }) {
           <section style={{ marginBottom: "var(--space-10)" }}>
             <h2 className="heading-3" style={{ marginBottom: "var(--space-4)" }}>Where it sits in the Re:Cosm formula</h2>
             <p style={{ marginBottom: "var(--space-4)" }}>
-              {ing.name} is one of 29 ingredients in Re:Cosm Lash Conditioning Serum, a prostaglandin-free, fragrance-free and
+              Re:Cosm Lash Conditioning Serum has 29 ingredients, and this page covers one part of that formula: a prostaglandin-free, fragrance-free and
               oil-free peptide serum made in Korea by Kolmar Korea. Every ingredient and the job it does is decoded on the{" "}
               <Link href={HUB_PATH}>lash serum ingredients guide</Link>, and the full label is on the{" "}
               <Link href="/product">product page</Link>.
@@ -128,6 +130,8 @@ export default async function IngredientPage({ params }) {
               <Link href="/guides/prostaglandin-free-lash-serums">what prostaglandin-free means</Link>.
             </p>
           </section>
+
+          <GuideSources />
 
           <div style={{ margin: "var(--space-12) 0", padding: "var(--space-8)", background: "var(--color-bg-warm)", borderRadius: "var(--radius-md)", textAlign: "center" }}>
             <p className="heading-4" style={{ marginBottom: "var(--space-3)" }}>See the whole formula</p>
