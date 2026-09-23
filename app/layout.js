@@ -8,6 +8,7 @@ import Toast from "@/components/Toast";
 import Reveals from "@/components/Reveals";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
+import { Analytics } from "@vercel/analytics/next";
 
 const BASE_URL = "https://www.recosm.co";
 
@@ -101,6 +102,7 @@ export default function RootLayout({ children }) {
           <Toast />
           <Reveals />
         </StoreProvider>
+        <Analytics />
       </body>
     </html>
   );

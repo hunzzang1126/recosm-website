@@ -1,16 +1,35 @@
+import { INGREDIENTS, ingredientPath, HUB_MODIFIED } from "@/lib/ingredients";
+
 const BASE_URL = "https://www.recosm.co";
 
+// lastModified is the date the page content last changed. Keep it honest:
+// a date that moves on every build teaches Google to ignore it.
+const PAGES = [
+  ["/", "2026-09-10", "weekly", 1],
+  ["/product", "2026-08-25", "weekly", 0.9],
+  ["/science", "2026-08-25", "monthly", 0.8],
+  ["/guides/prostaglandin-free-lash-serums", "2026-09-23", "monthly", 0.8],
+  ["/guides/lash-serum-ingredients", HUB_MODIFIED, "monthly", 0.8],
+  ["/guides/lash-serum-ingredients-to-avoid", "2026-09-23", "monthly", 0.8],
+  ["/guides/lash-serums-with-extensions", "2026-09-23", "monthly", 0.8],
+  ["/stockists", "2026-08-25", "monthly", 0.6],
+  ["/faq", "2026-08-25", "monthly", 0.7],
+  ["/contact", "2026-08-25", "yearly", 0.5],
+];
+
 export default function sitemap() {
-  const lastModified = new Date();
   return [
-    { url: `${BASE_URL}/`, lastModified, changeFrequency: "weekly", priority: 1 },
-    { url: `${BASE_URL}/product`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${BASE_URL}/science`, lastModified, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE_URL}/guides/prostaglandin-free-lash-serums`, lastModified, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE_URL}/guides/lash-serum-ingredients`, lastModified, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE_URL}/guides/lash-serums-with-extensions`, lastModified, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE_URL}/stockists`, lastModified, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE_URL}/faq`, lastModified, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE_URL}/contact`, lastModified, changeFrequency: "monthly", priority: 0.5 },
+    ...PAGES.map(([path, date, changeFrequency, priority]) => ({
+      url: `${BASE_URL}${path}`,
+      lastModified: new Date(date),
+      changeFrequency,
+      priority,
+    })),
+    ...INGREDIENTS.map((i) => ({
+      url: `${BASE_URL}${ingredientPath(i.slug)}`,
+      lastModified: new Date(HUB_MODIFIED),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    })),
   ];
 }

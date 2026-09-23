@@ -92,6 +92,7 @@
   /* === Layout === */
   --container-max: 1360px;
   --container-narrow: 820px;
+  --container-text: 760px;
   --container-pad: clamp(1.25rem, 4vw, 3rem);
   --header-height: 76px;
 

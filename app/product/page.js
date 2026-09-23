@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Icon from "@/components/Icon";
 import Accordion from "@/components/Accordion";
 import ProductGallery from "@/components/ProductGallery";
@@ -53,9 +54,12 @@ const accordionItems = [
   {
     title: "Full Ingredient List",
     content: (
+      <>
       <p style={{ fontSize: 13, lineHeight: 1.7, color: "var(--color-text-secondary)" }}>
         Aqua, Betaine, Pentylene Glycol, Glycerin, Propanediol, 1,2-Hexanediol, Sodium Polyacryloyldimethyl Taurate, Butylene Glycol, Hydroxyethylcellulose, Panthenol, Xanthan Gum, Dipotassium Glycyrrhizate, Saccharide Isomerate, Hydroxypropyl Trimonium Hyaluronate, Ethylhexylglycerin, Tromethamine, Disodium EDTA, Centella Asiatica Extract, Houttuynia Cordata Extract, Glycine Soja (Soybean) Seed Extract, Biotin, Disodium Phosphate, Polysorbate 60, Sodium Citrate, Citric Acid, Dextran, Sodium Phosphate, Acetyl Tetrapeptide-3, Trifolium Pratense (Clover) Flower Extract.
       </p>
+      <p style={{ fontSize: 13, marginTop: 10 }}><Link href="/guides/lash-serum-ingredients">What each ingredient does</Link></p>
+      </>
     ),
   },
   {
