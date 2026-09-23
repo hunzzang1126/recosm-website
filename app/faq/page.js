@@ -80,7 +80,7 @@ const categories = [
       },
       {
         q: "Where can I buy Re:Cosm in person?",
-        a: "Re:Cosm is stocked at Jacob & Sebastian in Toronto, at 622 Queen Street West and at Commerce Court Concourse, 199 Bay Street.",
+        a: "Re:Cosm is coming soon to Jacob & Sebastian in Toronto, at 622 Queen Street West and at Commerce Court Concourse, 199 Bay Street. Join the waitlist to hear the day it arrives.",
       },
       {
         q: "Do you ship internationally?",

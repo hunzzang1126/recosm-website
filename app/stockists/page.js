@@ -3,13 +3,13 @@ import Link from "next/link";
 export const metadata = {
   title: "Where to Buy Re:Cosm in Toronto | Stockists",
   description:
-    "Buy Re:Cosm Lash Conditioning Serum at Jacob & Sebastian in Toronto (622 Queen St W and Commerce Court, 199 Bay St) or online with free Canadian shipping.",
+    "Re:Cosm Lash Conditioning Serum is coming soon to Jacob & Sebastian in Toronto (622 Queen St W and Commerce Court, 199 Bay St) and online across Canada.",
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  name: "Re:Cosm Stockists",
+  name: "Re:Cosm Stockists (coming soon)",
   itemListElement: [
     {
       "@type": "Store",
@@ -33,7 +33,7 @@ export default function StockistsPage() {
           <p className="section-overline reveal">Stockists</p>
           <h1 className="section-title reveal delay-1">Where to find Re:Cosm</h1>
           <p className="section-desc reveal delay-2">
-            Try the serum in person in Toronto, or order online with free shipping across Canada.
+            Coming soon to two Jacob &amp; Sebastian stores in Toronto, and online with free shipping across Canada. Join the waitlist to hear the day it arrives.
           </p>
         </div>
 
@@ -41,6 +41,7 @@ export default function StockistsPage() {
           <div className="review-card reveal delay-1">
             <div className="review-author">Jacob &amp; Sebastian, Queen West</div>
             <p className="review-text">622 Queen Street West, Toronto, ON</p>
+            <p className="review-text">Arriving soon</p>
             <div className="review-meta">
               Boutique apothecary for niche &amp; cult beauty ·{" "}
               <a href="https://maps.google.com/?q=622+Queen+St+W+Toronto" target="_blank" rel="noopener noreferrer">Map</a>
@@ -49,6 +50,7 @@ export default function StockistsPage() {
           <div className="review-card reveal delay-2">
             <div className="review-author">Jacob &amp; Sebastian, Commerce Court</div>
             <p className="review-text">Commerce Court Concourse, 199 Bay Street, Toronto, ON</p>
+            <p className="review-text">Arriving soon</p>
             <div className="review-meta">
               In the heart of the Financial District ·{" "}
               <a href="https://maps.google.com/?q=Commerce+Court+199+Bay+St+Toronto" target="_blank" rel="noopener noreferrer">Map</a>

@@ -19,7 +19,7 @@ export function GET() {
     `- [Lash Conditioning Serum](${SITE}/product): price, full ingredient list, how to use, shipping.`,
     `- [Our science](${SITE}/science): why peptides instead of prostaglandins, manufacturing by Kolmar Korea.`,
     `- [FAQ](${SITE}/faq): safety for sensitive eyes and extensions, results timeline, shipping.`,
-    `- [Stockists](${SITE}/stockists): where to buy in Canada.`,
+    `- [Stockists](${SITE}/stockists): coming soon to Jacob & Sebastian in Toronto; online launch with free Canadian shipping.`,
     "",
     "## Guides",
     `- [Prostaglandin-free lash serums](${SITE}/guides/prostaglandin-free-lash-serums): what prostaglandin analogs are, documented side effects, Health Canada status, how to check a label.`,
