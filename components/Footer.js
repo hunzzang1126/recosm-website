@@ -52,6 +52,7 @@ export default function Footer() {
             <Link href="/faq">Privacy Policy</Link>
             <Link href="/faq">Terms of Service</Link>
             <Link href="/contact">Accessibility</Link>
+            <a href="https://www.showfirst.ca/work/recosm" title="ShowFirst, Toronto web design">Site by ShowFirst</a>
           </div>
         </div>
       </div>
