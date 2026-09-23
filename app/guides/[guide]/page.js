@@ -66,9 +66,9 @@ export default async function GuidePage({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="container" style={{ maxWidth: "var(--container-text)" }}>
         <div className="section-header" style={{ textAlign: "left" }}>
-          <p className="section-overline reveal"><Link href="/#home-journal">Journal</Link></p>
-          <h1 className="section-title reveal delay-1">{g.h1}</h1>
-          <p className="section-desc reveal delay-2" style={{ marginLeft: 0 }}>{g.intro}</p>
+          <p className="section-overline"><Link href="/#home-journal">Journal</Link></p>
+          <h1 className="section-title">{g.h1}</h1>
+          <p className="section-desc" style={{ marginLeft: 0 }}>{g.intro}</p>
         </div>
 
         <div className="text-body" style={{ lineHeight: 1.8 }}>

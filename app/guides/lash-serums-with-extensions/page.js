@@ -60,9 +60,9 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="container" style={{ maxWidth: "var(--container-text)" }}>
         <div className="section-header" style={{ textAlign: "left" }}>
-          <p className="section-overline reveal"><Link href="/#home-journal">Journal</Link></p>
-          <h1 className="section-title reveal delay-1">Using a lash serum with extensions: what&apos;s safe and how to apply it</h1>
-          <p className="section-desc reveal delay-2" style={{ marginLeft: 0 }}>
+          <p className="section-overline"><Link href="/#home-journal">Journal</Link></p>
+          <h1 className="section-title">Using a lash serum with extensions: what&apos;s safe and how to apply it</h1>
+          <p className="section-desc" style={{ marginLeft: 0 }}>
             Short answer: yes, you can use a lash conditioner or serum with extensions or after a lash lift, if you choose the
             right formula and time it correctly. Here&apos;s the aftercare logic lash technicians follow.
           </p>

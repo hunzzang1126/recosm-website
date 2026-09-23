@@ -72,11 +72,11 @@ export default async function IngredientPage({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="container" style={{ maxWidth: "var(--container-text)" }}>
         <div className="section-header" style={{ textAlign: "left" }}>
-          <p className="section-overline reveal">
+          <p className="section-overline">
             <Link href={HUB_PATH}>Lash serum ingredients</Link>
           </p>
-          <h1 className="section-title reveal delay-1">{ing.name}</h1>
-          <p className="section-desc reveal delay-2" style={{ marginLeft: 0 }}>
+          <h1 className="section-title">{ing.name}</h1>
+          <p className="section-desc" style={{ marginLeft: 0 }}>
             {ing.aka} · {ing.role}
           </p>
         </div>

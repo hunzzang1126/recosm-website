@@ -49,9 +49,9 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="container" style={{ maxWidth: "var(--container-text)" }}>
         <div className="section-header" style={{ textAlign: "left" }}>
-          <p className="section-overline reveal"><Link href="/#home-journal">Journal</Link></p>
-          <h1 className="section-title reveal delay-1">Prostaglandin-free lash serums: what it means &amp; why it matters</h1>
-          <p className="section-desc reveal delay-2" style={{ marginLeft: 0 }}>
+          <p className="section-overline"><Link href="/#home-journal">Journal</Link></p>
+          <h1 className="section-title">Prostaglandin-free lash serums: what it means &amp; why it matters</h1>
+          <p className="section-desc" style={{ marginLeft: 0 }}>
             If you&apos;ve searched for a lash serum recently, you&apos;ve probably seen the phrase &quot;prostaglandin-free.&quot; Here&apos;s what it actually means, and how to check any product yourself.
           </p>
         </div>
