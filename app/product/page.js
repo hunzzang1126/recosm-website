@@ -24,8 +24,8 @@ const productJsonLd = {
     "https://www.recosm.co/images/product/orange.jpg",
   ],
   description:
-    "A peptide-based, prostaglandin-free lash conditioning serum. 7 mL. Made in Korea by Kolmar Korea.",
-  sku: "RECOSM-LCS-7ML",
+    "A peptide-based, prostaglandin-free lash conditioning serum. 10 mL. Made in Korea by Kolmar Korea.",
+  sku: "RECOSM-LCS-10ML",
   category: "Beauty > Eye Care > Lash Serums",
   countryOfOrigin: "KR",
   manufacturer: { "@type": "Organization", name: "Kolmar Korea" },
@@ -97,7 +97,7 @@ const accordionItems = [
       <div style={{ lineHeight: 1.8 }}>
         <p style={{ marginBottom: 12 }}><strong>Is it safe for sensitive eyes?</strong><br />Yes. Our formula is fragrance-free and prostaglandin-free, and formulated specifically for the delicate eye area, suitable for sensitive eyes and contact lens wearers.</p>
         <p style={{ marginBottom: 12 }}><strong>Can I use it with lash extensions?</strong><br />Absolutely. Our formula is safe for use with lash extensions and after lash lifts.</p>
-        <p style={{ marginBottom: 12 }}><strong>How long does one tube last?</strong><br />One 7 mL tube lasts approximately 3 months with nightly use.</p>
+        <p style={{ marginBottom: 12 }}><strong>How long does one tube last?</strong><br />One 10 mL tube lasts approximately 3 months with nightly use.</p>
         <p><strong>When will I see results?</strong><br />Most users notice their lashes looking fuller and healthier within 4-6 weeks of consistent nightly application.</p>
       </div>
     ),
@@ -115,7 +115,7 @@ export default function ProductPage() {
           <div className="product-info reveal-right">
             <p className="product-brand">Re:Cosm</p>
             <h1 className="product-name">Lash Conditioning Serum</h1>
-            <p className="product-subtitle">Peptide-Powered · 7 mL · Made in Korea</p>
+            <p className="product-subtitle">Peptide-Powered · 10 mL · Made in Korea</p>
             <p className="product-price">${PRICE.toFixed(2)} CAD</p>
 
             <p className="product-desc">

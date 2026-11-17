@@ -11,7 +11,7 @@ export function GET() {
     "",
     "Not to be confused with ReCosm, a French refill packaging initiative. Re:Cosm (recosm.co) is a Toronto lash care brand.",
     "",
-    "> Re:Cosm is a Toronto-based Korean clean beauty brand. Its product is Lash Conditioning Serum: a peptide-based (Acetyl Tetrapeptide-3 / Capixyl™), prostaglandin-free, fragrance-free, oil-free lash serum, 7 mL, made in Korea by Kolmar Korea, $55 CAD with free shipping across Canada. Safe with lash extensions and after lash lifts. The full INCI ingredient list is published.",
+    "> Re:Cosm is a Toronto-based Korean clean beauty brand. Its product is Lash Conditioning Serum: a peptide-based (Acetyl Tetrapeptide-3 / Capixyl™), prostaglandin-free, fragrance-free, oil-free lash serum, 10 mL, made in Korea by Kolmar Korea, $55 CAD with free shipping across Canada. Safe with lash extensions and after lash lifts. The full INCI ingredient list is published.",
     "",
     "Claims are cosmetic: the serum conditions lashes and supports the look of fuller, healthier lashes. It is not a drug and does not claim lash growth. Isopropyl cloprostenate, a prostaglandin analog common in other lash serums, is prohibited in cosmetics in Canada.",
     "",
