@@ -3,14 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 
-// Campaign stills of the production tube (label matches the Kolmar deco sheet).
+// One shoot, one concept (travertine, oranges, orange blossom): only the framing changes.
 const VIEWS = [
-  { key: "With orange and blossom", src: "/images/product/orange-blossom.jpg", alt: "Re:Cosm Re:define Lash Conditioning Serum tube on travertine with halved oranges and orange blossom" },
-  { key: "Floating with citrus", src: "/images/product/floating-citrus.jpg", alt: "Re:Cosm lash serum tube floating among orange slices and white blossoms on an orange backdrop" },
-  { key: "Flat lay with flowers", src: "/images/product/flatlay-flowers.jpg", alt: "Re:Cosm lash serum tube lying on cream linen with peach ranunculus, cosmos and orange slices" },
-  { key: "In water", src: "/images/product/water.jpg", alt: "Re:Cosm lash serum tube standing in rippling sunlit water with petals and an orange slice" },
-  { key: "With centella and clover", src: "/images/product/botanical.jpg", alt: "Re:Cosm lash serum tube on wet stone with centella asiatica leaves and clover blossoms" },
-  { key: "On the vanity", src: "/images/product/vanity.jpg", alt: "Re:Cosm lash serum tube on a ceramic tray beside a vase of white flowers" },
+  { key: "Hero", src: "/images/product/hero.jpg", alt: "Re:Cosm Re:define Lash Conditioning Serum tube on travertine with halved oranges and orange blossom" },
+  { key: "Label close-up", src: "/images/product/closeup.jpg", alt: "Close-up of the Re:Cosm Re:define label on the lash serum tube, with a halved orange behind" },
+  { key: "Lying on stone", src: "/images/product/lying.jpg", alt: "Re:Cosm lash serum tube lying on travertine beside a halved orange and orange blossom" },
+  { key: "Two tubes", src: "/images/product/duo.jpg", alt: "Two Re:Cosm lash serum tubes, one standing and one lying, with a halved orange" },
+  { key: "Low angle", src: "/images/product/low-angle.jpg", alt: "Re:Cosm lash serum tube seen from a low angle with oranges and leaf shadows on a peach wall" },
 ];
 
 export default function ProductGallery() {

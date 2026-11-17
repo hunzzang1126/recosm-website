@@ -43,7 +43,7 @@ export default function CartDrawer() {
             cart.map((item) => (
               <div className="cart-item" key={item.id}>
                 <div className="cart-item-image">
-                  <Image src="/images/product/orange-blossom.jpg" alt="" width={144} height={176} sizes="72px" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <Image src="/images/product/hero.jpg" alt="" width={144} height={176} sizes="72px" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div className="cart-item-details">
                   <div className="cart-item-name">{item.name}</div>

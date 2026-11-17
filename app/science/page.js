@@ -79,8 +79,8 @@ export default function SciencePage() {
             </div>
             <div className="science-image reveal-right reveal-mask reveal" style={{ order: 2 }}>
               <Image
-                src="/images/gallery-v2.jpg"
-                alt="Smiling woman holding a bright orange book in a cream studio"
+                src="/images/product/botanical.jpg"
+                alt="Re:Cosm lash serum tube on wet stone with centella asiatica leaves and clover blossoms"
                 width={880}
                 height={1170}
                 sizes="(max-width: 880px) 90vw, 560px"

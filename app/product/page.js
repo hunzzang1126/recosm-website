@@ -19,8 +19,8 @@ const productJsonLd = {
   url: "https://www.recosm.co/product",
   brand: { "@type": "Brand", name: "Re:Cosm" },
   image: [
-    "https://www.recosm.co/images/product/orange-blossom.jpg",
-    "https://www.recosm.co/images/product/floating-citrus.jpg",
+    "https://www.recosm.co/images/product/hero.jpg",
+    "https://www.recosm.co/images/product/closeup.jpg",
     "https://www.recosm.co/images/product/flatlay-flowers.jpg",
   ],
   description:

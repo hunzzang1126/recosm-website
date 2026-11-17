@@ -25,9 +25,9 @@ const GUIDES = [
     title: "Lash serum ingredients, explained",
     desc: "Capixyl™, biotin, panthenol, centella: what each one actually does.",
     date: "Aug 2026",
-    image: "/images/oranges.jpg",
-    alt: "Fresh oranges with green leaves and a curl of peel on a cream table",
-    position: "50% 55%",
+    image: "/images/product/botanical.jpg",
+    alt: "Re:Cosm lash serum tube on wet stone with centella asiatica leaves and clover blossoms",
+    position: "50% 50%",
   },
   {
     slug: "lash-serums-with-extensions",
@@ -162,7 +162,7 @@ export default function HomePage() {
               <div className="collection-card-visual">
                 <div className="collection-card-photo">
                   <Image
-                    src="/images/product/orange-blossom.jpg"
+                    src="/images/product/hero.jpg"
                     alt="Re:Cosm Re:define Lash Conditioning Serum, white 10 mL tube"
                     fill
                     sizes="(max-width: 880px) 60vw, 240px"
@@ -234,11 +234,11 @@ export default function HomePage() {
         <div className="collection-media">
           <div className="collection-media-inner">
             <Image
-              src="/images/ritual-v2.jpg"
-              alt="Editorial beauty portrait in sunlight against colorful architecture"
+              src="/images/product/flatlay-flowers.jpg"
+              alt="Re:Cosm lash serum tube lying on cream linen with peach ranunculus, cosmos and orange slices"
               fill
               sizes="(max-width: 880px) 100vw, 50vw"
-              style={{ objectFit: "cover", objectPosition: "50% 28%" }}
+              style={{ objectFit: "cover", objectPosition: "50% 50%" }}
             />
           </div>
         </div>
