@@ -25,9 +25,9 @@ const GUIDES = [
     title: "Lash serum ingredients, explained",
     desc: "Capixyl™, biotin, panthenol, centella: what each one actually does.",
     date: "Aug 2026",
-    image: "/images/product/botanical.jpg",
-    alt: "Re:Cosm lash serum tube on wet stone with centella asiatica leaves and clover blossoms",
-    position: "50% 50%",
+    image: "/images/oranges.jpg",
+    alt: "Fresh oranges with green leaves and a curl of peel on a cream table",
+    position: "50% 55%",
   },
   {
     slug: "lash-serums-with-extensions",
