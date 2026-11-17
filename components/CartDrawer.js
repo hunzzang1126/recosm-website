@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import Icon from "./Icon";
 import { useStore, formatPrice } from "./StoreContext";
+import Image from "next/image";
 
 export default function CartDrawer() {
   const { cart, cartTotal, updateQty, cartOpen, setCartOpen, showToast } = useStore();
@@ -42,7 +43,7 @@ export default function CartDrawer() {
             cart.map((item) => (
               <div className="cart-item" key={item.id}>
                 <div className="cart-item-image">
-                  <div className="img-placeholder" style={{ fontSize: 9 }}>Product</div>
+                  <Image src="/images/product/front.jpg" alt="" width={144} height={176} sizes="72px" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div className="cart-item-details">
                   <div className="cart-item-name">{item.name}</div>

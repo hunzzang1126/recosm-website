@@ -18,6 +18,11 @@ const productJsonLd = {
   name: "Lash Conditioning Serum",
   url: "https://www.recosm.co/product",
   brand: { "@type": "Brand", name: "Re:Cosm" },
+  image: [
+    "https://www.recosm.co/images/product/front.jpg",
+    "https://www.recosm.co/images/product/duo.jpg",
+    "https://www.recosm.co/images/product/orange.jpg",
+  ],
   description:
     "A peptide-based, prostaglandin-free lash conditioning serum. 7 mL. Made in Korea by Kolmar Korea.",
   sku: "RECOSM-LCS-7ML",

@@ -380,6 +380,15 @@
 
 .collection-card-visual > div { width: 70%; }
 
+.collection-card-visual > .collection-card-photo {
+  width: 100%;
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
 .collection-card-icon {
   width: 96px !important;
   height: 96px;
@@ -1113,6 +1122,26 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-7);
+}
+
+/* grid children may shrink below their content width (thumb row) */
+.product-grid > * { min-width: 0; }
+
+.gallery-main--photo {
+  position: relative;
+  padding: 0;
+}
+
+.gallery-thumbs > .active { border-color: var(--color-primary); }
+
+/* five thumbs must fit a 390px phone: let them shrink instead of overflowing */
+.gallery-thumbs > .gallery-thumb {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 84px;
+  height: auto;
+  aspect-ratio: 1;
+  padding: 0;
 }
 
 .gallery-thumbs {

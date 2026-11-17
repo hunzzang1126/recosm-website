@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import EmailForm from "@/components/EmailForm";
-import TubeIllustration from "@/components/TubeIllustration";
 import HomeScrollFX from "@/components/HomeScrollFX";
 
 const RITUAL_STEPS = [
@@ -161,7 +160,15 @@ export default function HomePage() {
               <span className="collection-chip">The Serum</span>
               <span className="collection-bag" aria-hidden="true"><Icon name="cart" /></span>
               <div className="collection-card-visual">
-                <TubeIllustration ratio="3/4" />
+                <div className="collection-card-photo">
+                  <Image
+                    src="/images/product/front.jpg"
+                    alt="Re:Cosm Re:define Lash Conditioning Serum, white 10 mL tube"
+                    fill
+                    sizes="(max-width: 880px) 60vw, 240px"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
               </div>
               <div className="collection-card-meta">
                 <span className="collection-card-name">Lash Conditioning Serum</span>
