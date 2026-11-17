@@ -162,7 +162,7 @@ export default function HomePage() {
               <div className="collection-card-visual">
                 <div className="collection-card-photo">
                   <Image
-                    src="/images/product/front.jpg"
+                    src="/images/product/orange-blossom.jpg"
                     alt="Re:Cosm Re:define Lash Conditioning Serum, white 10 mL tube"
                     fill
                     sizes="(max-width: 880px) 60vw, 240px"

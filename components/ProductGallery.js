@@ -3,13 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 
-// Renders of the production tube (Kolmar deco sheet, 17.1 × 115 mm).
+// Campaign stills of the production tube (label matches the Kolmar deco sheet).
 const VIEWS = [
-  { key: "Front", src: "/images/product/front.jpg", alt: "Re:Cosm Re:define Lash Conditioning Serum, white 10 mL tube, front view" },
-  { key: "Label detail", src: "/images/product/detail.jpg", alt: "Close-up of the Re:Cosm Re:define logo printed on the serum tube" },
-  { key: "Standing and lying", src: "/images/product/duo.jpg", alt: "Two Re:Cosm lash serum tubes, one standing and one lying on a peach surface" },
-  { key: "On orange", src: "/images/product/orange.jpg", alt: "Re:Cosm lash serum tube on a cream pedestal against brand orange" },
-  { key: "Back label", src: "/images/product/back.jpg", alt: "Back of the Re:Cosm lash serum tube with importer details" },
+  { key: "With orange and blossom", src: "/images/product/orange-blossom.jpg", alt: "Re:Cosm Re:define Lash Conditioning Serum tube on travertine with halved oranges and orange blossom" },
+  { key: "Floating with citrus", src: "/images/product/floating-citrus.jpg", alt: "Re:Cosm lash serum tube floating among orange slices and white blossoms on an orange backdrop" },
+  { key: "Flat lay with flowers", src: "/images/product/flatlay-flowers.jpg", alt: "Re:Cosm lash serum tube lying on cream linen with peach ranunculus, cosmos and orange slices" },
+  { key: "In water", src: "/images/product/water.jpg", alt: "Re:Cosm lash serum tube standing in rippling sunlit water with petals and an orange slice" },
+  { key: "With centella and clover", src: "/images/product/botanical.jpg", alt: "Re:Cosm lash serum tube on wet stone with centella asiatica leaves and clover blossoms" },
+  { key: "On the vanity", src: "/images/product/vanity.jpg", alt: "Re:Cosm lash serum tube on a ceramic tray beside a vase of white flowers" },
 ];
 
 export default function ProductGallery() {
