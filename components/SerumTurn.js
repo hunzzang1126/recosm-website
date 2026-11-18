@@ -149,7 +149,7 @@ export default function SerumTurn() {
       <div className="turn-stage">
         <div className="turn-bg" aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/model/turn-bg.jpg" alt="" loading="lazy" decoding="async" />
+          <img src="/images/model/turn-bg-v2.jpg" alt="" loading="lazy" decoding="async" />
         </div>
         <div className="turn-scrim" aria-hidden="true" />
 
