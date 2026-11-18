@@ -27,6 +27,25 @@
   object-position: center 32%;
 }
 
+.hero-media--video .hero-poster,
+.hero-media--video .hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-media--video .hero-video {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.hero-media--video .hero-video.is-playing {
+  opacity: 1;
+}
+
 .hero-media::after {
   content: "";
   position: absolute;
@@ -89,6 +108,38 @@
   bottom: clamp(28px, 6vh, 64px);
   z-index: 2;
   padding-inline: var(--container-pad);
+}
+
+/* Hero with the brand film: the copy sits low and left so faces and product stay clear */
+.hero--film {
+  align-items: flex-end;
+}
+
+.hero--film .hero-media::after {
+  background:
+    linear-gradient(to bottom, rgba(27, 26, 24, 0.32) 0%, rgba(27, 26, 24, 0) 20%, rgba(27, 26, 24, 0) 42%, rgba(27, 26, 24, 0.62) 100%);
+}
+
+.hero--film .hero-inner {
+  align-items: flex-start;
+  text-align: left;
+  padding-top: 0;
+  padding-bottom: clamp(128px, 21vh, 200px);
+}
+
+.hero--film .hero-title {
+  font-size: var(--display-lg);
+  text-shadow: 0 2px 30px rgba(27, 26, 24, 0.35);
+}
+
+.hero--film .hero-overline {
+  margin-bottom: var(--space-4);
+}
+
+.hero--film .hero-description {
+  margin-top: var(--space-4);
+  max-width: 40ch;
+  text-shadow: 0 1px 18px rgba(27, 26, 24, 0.4);
 }
 
 /* ============ 02 Pillars — diagonal ellipse scene ============ */

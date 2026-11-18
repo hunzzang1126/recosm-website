@@ -3,6 +3,7 @@ import Link from "next/link";
 import Icon from "@/components/Icon";
 import EmailForm from "@/components/EmailForm";
 import HomeScrollFX from "@/components/HomeScrollFX";
+import HeroVideo from "@/components/HeroVideo";
 
 const RITUAL_STEPS = [
   { n: "01", title: "Cleanse", desc: "Remove all makeup. Lashes clean and completely dry." },
@@ -50,17 +51,8 @@ export default function HomePage() {
       <HomeScrollFX />
 
       {/* 01 — Hero */}
-      <section className="hero" id="home-hero">
-        <div className="hero-media">
-          <Image
-            src="/images/hero-v2.jpg"
-            alt="Serene close-up with eyes closed and long dark lashes on a warm peach backdrop"
-            fill
-            priority
-            sizes="100vw"
-            style={{ objectFit: "cover", objectPosition: "center 30%" }}
-          />
-        </div>
+      <section className="hero hero--film" id="home-hero">
+        <HeroVideo />
 
         <div className="hero-inner">
           <p className="hero-overline">Prostaglandin-Free Peptide Lash Serum</p>
