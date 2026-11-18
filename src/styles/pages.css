@@ -1675,7 +1675,7 @@
 
 .page-content { display: block; }
 
-/* ============ Serum turn: scroll-driven tube scene (home) ============ */
+/* ============ Serum turn: scroll-driven blueprint scene (home) ============ */
 
 .turn {
   position: relative;
@@ -1683,34 +1683,18 @@
   color: var(--color-bg-white);
 }
 
-/* Fallback (no JS / reduced motion): an ordinary stacked section with a still tube */
+/* Fallback (no JS / reduced motion): a still tube and the notes as an ordinary list */
 .turn-stage {
   position: relative;
-  padding: var(--section-pad, 6rem) var(--container-pad);
-  max-width: var(--container-max);
+  padding: var(--section-pad) var(--container-pad);
+  max-width: var(--container-narrow);
   margin: 0 auto;
 }
 
-.turn-photos,
-.turn-canvas,
-.turn-progress {
-  display: none;
-}
-
-.turn-tube {
-  width: min(42vw, 190px);
-  margin: 0 auto var(--space-7);
-}
-
-.turn-still,
+.turn-bg,
+.turn-scrim,
 .turn-canvas {
-  width: 100%;
-  height: auto;
-}
-
-.turn-chapter {
-  max-width: 34rem;
-  margin: 0 auto var(--space-8);
+  display: none;
 }
 
 .turn-kicker {
@@ -1718,15 +1702,15 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: rgba(250, 249, 247, 0.82);
-  margin-bottom: var(--space-4);
+  color: rgba(250, 249, 247, 0.85);
+  margin-bottom: var(--space-3);
 }
 
 .turn-title {
-  font-size: var(--display-md);
+  font-size: var(--display-sm);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
+  line-height: var(--leading-snug);
   color: var(--color-bg-white);
 }
 
@@ -1736,16 +1720,58 @@
   font-weight: var(--font-weight-regular);
 }
 
-.turn-body {
-  margin-top: var(--space-5);
-  font-size: var(--text-md);
-  line-height: var(--leading-relaxed);
+.turn-rig {
+  width: min(40vw, 170px);
+  margin: var(--space-7) auto;
+}
+
+.turn-still,
+.turn-canvas {
+  width: 100%;
+  height: auto;
+}
+
+.turn-notes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-5);
+}
+
+.turn-note {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  column-gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(250, 249, 247, 0.35);
+}
+
+.turn-note-n {
+  grid-row: span 2;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-lg);
+  color: rgba(250, 249, 247, 0.85);
+}
+
+.turn-note-t {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+.turn-note-d {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
   color: rgba(250, 249, 247, 0.92);
-  max-width: 38ch;
+}
+
+.turn-buy {
+  margin-top: var(--space-7);
 }
 
 .turn-meta {
-  margin-top: var(--space-4);
   font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);
 }
@@ -1754,14 +1780,14 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
   padding: 0.7rem 0.75rem 0.7rem 1.25rem;
   border-radius: 999px;
   background: var(--color-bg-white);
   color: var(--color-text-primary);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-semibold);
-  transition: transform 0.25s ease, background 0.25s ease;
+  transition: transform 0.25s ease;
 }
 
 .turn-link:hover {
@@ -1783,98 +1809,96 @@
   height: 14px;
 }
 
-.turn-steps {
-  list-style: none;
-  margin: var(--space-5) 0 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-4);
-  max-width: 40ch;
-}
-
-.turn-steps li {
-  display: grid;
-  grid-template-columns: 2.25rem 1fr;
-  column-gap: var(--space-3);
-  padding-top: var(--space-3);
-  border-top: 1px solid rgba(250, 249, 247, 0.35);
-}
-
-.turn-step-n {
-  grid-row: span 2;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--text-lg);
-  color: rgba(250, 249, 247, 0.85);
-}
-
-.turn-step-t {
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--text-md);
-}
-
-.turn-step-d {
-  font-size: var(--text-base);
-  line-height: var(--leading-normal);
-  color: rgba(250, 249, 247, 0.9);
-}
-
-/* Live scene: the stage pins for the length of the section */
+/* ---- Live scene: the stage pins; the tube turns and grows, then the notes appear at once ---- */
 .turn.is-live {
-  height: 560vh;
+  height: 420vh;
 }
 
 .turn.is-live .turn-stage {
-  position: relative;
+  /* --rx: where the tube stands; --rh: its full height; --rw: the frame's width at that height */
+  --rx: 69%;
+  --rh: calc(100vh - 104px);
+  --rw: calc(var(--rh) * 0.42857);
+  --ln: 64px;
+  --nw: 15.5rem;
   width: 100%;
   height: 100vh;
-  height: 100dvh;
   max-width: none;
   padding: 0;
   overflow: hidden;
 }
 
-.turn.is-live .turn-photos {
+/* the model stays put for the whole scene */
+.turn.is-live .turn-bg {
   display: block;
   position: absolute;
   inset: 0;
-  background: radial-gradient(120% 90% at 50% 40%, #EE6A2E 0%, var(--color-primary) 55%, #D2470F 100%);
+  background: var(--color-primary);
 }
 
-.turn-photo {
+.turn.is-live .turn-bg img {
   position: absolute;
   top: 0;
+  left: -26%;
+  width: 126%;
+  max-width: none;
   height: 100%;
-  max-width: none; /* the reset caps images at 100%, which would undo the off-centre framing */
   object-fit: cover;
-  opacity: 0;
-  transform: scale(1.06);
-  transition: opacity 0.9s ease, transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+  object-position: 50% 30%;
 }
 
-.turn-photo.is-on {
-  opacity: 1;
-  transform: scale(1);
+/* orange wash + drafting grid that come up with the blueprint */
+.turn.is-live .turn-scrim {
+  display: block;
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(232, 85, 30, 0) 26%, rgba(226, 80, 24, 0.6) 46%, rgba(222, 76, 20, 0.74) 100%),
+    linear-gradient(to bottom, rgba(27, 26, 24, 0.2) 0%, rgba(27, 26, 24, 0) 16%);
+  transition: background-color 0.7s ease;
 }
 
-/* soft scrim on the side the copy sits on, plus a touch at the top for the header */
-.turn.is-live .turn-photos::after {
+.turn.is-live .turn-scrim::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(27, 26, 24, 0.22) 0%, rgba(27, 26, 24, 0) 18%, rgba(27, 26, 24, 0) 78%, rgba(27, 26, 24, 0.2) 100%);
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.11) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.11) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: linear-gradient(to right, transparent 34%, #000 58%);
+  mask-image: linear-gradient(to right, transparent 34%, #000 58%);
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
-.turn.is-live .turn-tube {
+.turn.is-live.is-blueprint .turn-scrim::after {
+  opacity: 1;
+}
+
+.turn.is-live .turn-head {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  height: min(92vh, 980px);
-  width: auto;
-  aspect-ratio: 600 / 1400;
+  left: var(--container-pad);
+  bottom: clamp(32px, 7vh, 72px);
+  max-width: 24rem;
+  text-shadow: 0 1px 24px rgba(110, 32, 0, 0.5);
+}
+
+.turn.is-live .turn-title {
+  font-size: var(--display-sm);
+}
+
+.turn.is-live .turn-rig {
+  position: absolute;
+  left: var(--rx);
+  top: calc(50% + 34px);
+  width: var(--rw);
+  height: var(--rh);
   margin: 0;
-  transform: translate(-50%, -50%);
-  filter: drop-shadow(0 30px 40px rgba(110, 32, 0, 0.35));
+  transform: translate(-50%, -50%) scale(var(--s, 0.44));
+  transform-origin: 50% 50%;
+  will-change: transform;
+  filter: drop-shadow(0 28px 36px rgba(110, 32, 0, 0.34));
 }
 
 .turn.is-live .turn-still {
@@ -1887,136 +1911,254 @@
   height: 100%;
 }
 
-.turn.is-live .turn-chapters {
+/* notes: each one hangs off its part of the tube on a hairline */
+.turn.is-live .turn-notes {
+  display: block;
   position: absolute;
-  inset: 0;
-  max-width: var(--container-max);
-  margin: 0 auto;
+  left: var(--rx);
+  top: calc(50% + 34px);
+  width: var(--rw);
+  height: var(--rh);
+  transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
-.turn.is-live .turn-chapter {
+.turn.is-live .turn-note {
   position: absolute;
-  top: 50%;
-  width: min(30vw, 26rem);
+  top: calc(var(--y) * 100%);
+  display: block;
+  width: var(--nw);
+  margin-top: -0.62em;
+  padding-top: 0;
+  border-top: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  text-shadow: 0 1px 18px rgba(110, 32, 0, 0.45);
+}
+
+.turn.is-live .turn-note--l {
+  right: calc(50% + var(--rw) * var(--e));
+  padding-right: calc(var(--ln) + 14px);
+  text-align: right;
+  transform: translateX(14px);
+}
+
+.turn.is-live .turn-note--r {
+  left: calc(50% + var(--rw) * var(--e));
+  padding-left: calc(var(--ln) + 14px);
+  transform: translateX(-14px);
+}
+
+/* hairline */
+.turn.is-live .turn-note::before {
+  content: "";
+  position: absolute;
+  top: 0.62em;
+  width: var(--ln);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.95);
+  transform: scaleX(0);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.turn.is-live .turn-note--l::before {
+  right: 4px;
+  transform-origin: right center;
+}
+
+.turn.is-live .turn-note--r::before {
+  left: 4px;
+  transform-origin: left center;
+}
+
+/* anchor dot on the part */
+.turn.is-live .turn-note::after {
+  content: "";
+  position: absolute;
+  top: calc(0.62em - 4px);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  background: var(--color-primary);
+  transform: scale(0);
+  transition: transform 0.35s ease;
+}
+
+.turn.is-live .turn-note--l::after {
+  right: -4px;
+}
+
+.turn.is-live .turn-note--r::after {
+  left: -4px;
+}
+
+.turn.is-live .turn-note-n {
+  display: block;
+  font-family: var(--font-family);
+  font-style: normal;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wider);
+  line-height: 1.24em;
+  color: rgba(250, 249, 247, 0.8);
+  /* the number sits on the hairline's level; title and text hang below it */
+}
+
+.turn.is-live .turn-note-t {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: var(--text-lg);
+}
+
+.turn.is-live .turn-note-d {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: var(--text-sm);
+}
+
+.turn.is-live.is-blueprint .turn-note {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: calc(var(--i) * 70ms);
+}
+
+.turn.is-live.is-blueprint .turn-note::before {
+  transform: scaleX(1);
+  transition-delay: calc(var(--i) * 70ms);
+}
+
+.turn.is-live.is-blueprint .turn-note::after {
+  transform: scale(1);
+  transition-delay: calc(var(--i) * 70ms);
+}
+
+.turn.is-live .turn-buy {
+  position: absolute;
+  left: var(--container-pad);
+  top: calc(var(--header-height) + clamp(20px, 5vh, 48px));
   margin: 0;
   opacity: 0;
-  transform: translateY(calc(-50% + 36px));
-  transition: opacity 0.45s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  text-shadow: 0 1px 20px rgba(110, 32, 0, 0.5);
 }
 
-.turn.is-live .turn-chapter.is-on {
+.turn.is-live .turn-buy .turn-link {
+  text-shadow: none;
+}
+
+.turn.is-live.is-blueprint .turn-buy {
   opacity: 1;
-  transform: translateY(-50%);
-  pointer-events: auto;
-  transition-delay: 0.12s;
+  transform: translateY(0);
+  transition-delay: 0.45s;
 }
 
-.turn.is-live .turn-chapter--left {
-  left: var(--container-pad);
-}
-
-.turn.is-live .turn-chapter--right {
-  right: var(--container-pad);
-}
-
-.turn.is-live .turn-title,
-.turn.is-live .turn-body,
-.turn.is-live .turn-kicker {
-  text-shadow: 0 1px 22px rgba(120, 36, 0, 0.45);
-}
-
-.turn.is-live .turn-progress {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: absolute;
-  right: calc(var(--container-pad) * 0.5);
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.turn-progress span {
-  width: 3px;
-  height: 22px;
-  border-radius: 3px;
-  background: rgba(250, 249, 247, 0.35);
-  transition: background 0.3s ease, height 0.3s ease;
-}
-
-.turn-progress span.is-on {
-  background: var(--color-bg-white);
-  height: 34px;
+@media (max-width: 1180px) and (min-width: 881px) {
+  .turn.is-live .turn-stage {
+    --ln: 44px;
+    --nw: 14rem;
+  }
 }
 
 @media (max-width: 880px) {
-  .turn.is-live {
-    height: 520vh;
+  .turn.is-live .turn-stage {
+    --rx: 50%;
+    --rh: min(calc(100vh - 210px), 150vw);
+    --ln: 14px;
   }
 
-  /* phones: no face photos behind the tube, just the orange ground */
-  .turn-photo {
-    display: none;
+  /* width is set here, not on the stage: it depends on each note's own --e */
+  .turn.is-live .turn-note {
+    width: calc(50vw - var(--rw) * var(--e) - 10px);
   }
 
-  .turn.is-live .turn-tube {
-    top: 30%;
-    height: min(50vh, 500px);
+  .turn.is-live .turn-bg img {
+    left: -50%;
+    width: 190%;
+    object-position: 50% 20%;
   }
 
-  .turn.is-live .turn-chapter,
-  .turn.is-live .turn-chapter--left,
-  .turn.is-live .turn-chapter--right {
+  .turn.is-live .turn-scrim {
+    background:
+      linear-gradient(to bottom, rgba(226, 80, 24, 0.56) 0%, rgba(226, 80, 24, 0.72) 100%);
+  }
+
+  .turn.is-live .turn-scrim::after {
+    background-size: 40px 40px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .turn.is-live .turn-rig,
+  .turn.is-live .turn-notes {
+    top: calc(50% + 6px);
+  }
+
+  .turn.is-live .turn-head {
     left: var(--container-pad);
     right: var(--container-pad);
-    top: auto;
-    bottom: clamp(20px, 4vh, 44px);
-    width: auto;
-    transform: translateY(28px);
+    top: calc(var(--header-height) + 12px);
+    bottom: auto;
+    max-width: none;
+    text-align: center;
+    transition: opacity 0.4s ease;
   }
 
-  .turn.is-live .turn-chapter.is-on {
-    transform: translateY(0);
+  .turn.is-live .turn-head .turn-kicker {
+    margin-bottom: 4px;
   }
 
   .turn.is-live .turn-title {
-    font-size: clamp(1.6rem, 7vw, 2.1rem);
+    font-size: 1.05rem;
+    letter-spacing: 0;
   }
 
-  .turn.is-live .turn-body {
-    margin-top: var(--space-3);
+  .turn.is-live .turn-note {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .turn.is-live .turn-note--l {
+    padding-right: calc(var(--ln) + 8px);
+  }
+
+  .turn.is-live .turn-note--r {
+    padding-left: calc(var(--ln) + 8px);
+  }
+
+  .turn.is-live .turn-note-n {
+    font-size: 0.625rem;
+  }
+
+  .turn.is-live .turn-note-t {
+    margin-top: 0.15rem;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+  }
+
+  .turn.is-live .turn-note-d {
+    margin-top: 0.15rem;
+    font-size: 0.6875rem;
+    line-height: 1.35;
+  }
+
+  .turn.is-live .turn-buy {
+    left: var(--container-pad);
+    right: var(--container-pad);
+    top: auto;
+    bottom: clamp(14px, 3vh, 28px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .turn.is-live .turn-buy .turn-meta {
     font-size: var(--text-base);
-    line-height: var(--leading-normal);
   }
 
-  .turn.is-live .turn-steps {
-    margin-top: var(--space-3);
-    gap: var(--space-2);
-  }
-
-  .turn.is-live .turn-steps li {
-    padding-top: var(--space-2);
-  }
-
-  .turn.is-live .turn-link {
-    margin-top: var(--space-4);
-  }
-
-  .turn.is-live .turn-progress {
-    flex-direction: row;
-    right: auto;
-    left: 50%;
-    top: calc(var(--header-height) + 6px);
-    transform: translateX(-50%);
-  }
-
-  .turn-progress span {
-    width: 22px;
-    height: 3px;
-  }
-
-  .turn-progress span.is-on {
-    width: 34px;
-    height: 3px;
+  .turn.is-live .turn-buy .turn-link {
+    margin-top: 0;
   }
 }
