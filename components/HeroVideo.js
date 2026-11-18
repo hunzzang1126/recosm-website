@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from "react";
 // then the right cut for the screen shape is attached and played, muted and looping.
 // People who ask for reduced motion keep the still poster.
 const SOURCES = {
-  desktop: { video: "/videos/hero-desktop.mp4", poster: "/images/hero-poster-desktop.jpg" },
-  mobile: { video: "/videos/hero-mobile.mp4", poster: "/images/hero-poster-mobile.jpg" },
+  desktop: { video: "/videos/hero-desktop-v2.mp4", poster: "/images/hero-poster-desktop-v2.jpg" },
+  mobile: { video: "/videos/hero-mobile-v2.mp4", poster: "/images/hero-poster-mobile-v2.jpg" },
 };
 
 export default function HeroVideo() {
@@ -41,7 +41,7 @@ export default function HeroVideo() {
         <img
           className="hero-poster"
           src={SOURCES.desktop.poster}
-          alt="Model with golden eyeshadow and defined lashes on a vivid orange backdrop, from the Re:Cosm lash serum film"
+          alt="Model on a vivid orange backdrop, from the Re:Cosm lash serum film"
           fetchPriority="high"
           decoding="async"
         />
