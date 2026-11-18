@@ -1960,8 +1960,8 @@
   }
 
   .turn.is-live .turn-tube {
-    top: 34%;
-    height: min(58vh, 560px);
+    top: 30%;
+    height: min(50vh, 500px);
   }
 
   .turn.is-live .turn-chapter,
