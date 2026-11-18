@@ -1679,15 +1679,15 @@
 
 .page-content { display: block; }
 
-/* ============ Serum turn: scroll-driven blueprint scene (home) ============ */
+/* ============ Serum turn: scroll-driven formula scene (home) ============ */
 
 .turn {
   position: relative;
-  background: var(--color-primary);
+  background: #EE6334;
   color: var(--color-bg-white);
 }
 
-/* Fallback (no JS / reduced motion): a still tube and the notes as an ordinary list */
+/* Fallback (no JS / reduced motion): a still tube and the ingredients as an ordinary list */
 .turn-stage {
   position: relative;
   padding: var(--section-pad) var(--container-pad);
@@ -1696,8 +1696,10 @@
 }
 
 .turn-bg,
-.turn-scrim,
-.turn-canvas {
+.turn-links,
+.turn-canvas,
+.turn-node--sat,
+.turn-node-dot {
   display: none;
 }
 
@@ -1735,37 +1737,29 @@
   height: auto;
 }
 
-.turn-notes {
+.turn-nodes {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
-.turn-note {
-  display: grid;
-  grid-template-columns: 2.5rem 1fr;
-  column-gap: var(--space-3);
+.turn-node {
   padding-top: var(--space-4);
   border-top: 1px solid rgba(250, 249, 247, 0.35);
 }
 
-.turn-note-n {
-  grid-row: span 2;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--text-lg);
-  color: rgba(250, 249, 247, 0.85);
-}
-
-.turn-note-t {
+.turn-node-t {
+  display: block;
   font-size: var(--text-lg);
   font-weight: var(--font-weight-semibold);
   line-height: var(--leading-snug);
 }
 
-.turn-note-d {
+.turn-node-d {
+  display: block;
+  margin-top: 0.25rem;
   font-size: var(--text-base);
   line-height: var(--leading-normal);
   color: rgba(250, 249, 247, 0.92);
@@ -1824,9 +1818,9 @@
   height: 14px;
 }
 
-/* ---- Live scene: the stage pins; the tube turns and grows, then the notes appear at once ---- */
+/* ---- Live scene: the stage is held by CSS sticky while the section scrolls past ---- */
 .turn.is-live {
-  height: 420vh;
+  height: 440vh;
 }
 
 .turn.is-live .turn-stage {
@@ -1834,21 +1828,22 @@
   --rx: 69%;
   --rh: calc(100vh - 104px);
   --rw: calc(var(--rh) * 0.42857);
-  --ln: 64px;
-  --nw: 15.5rem;
+  position: sticky;
+  top: 0;
   width: 100%;
   height: 100vh;
   max-width: none;
   padding: 0;
   overflow: hidden;
+  /* the photo's own backdrop colours, so its feathered edge meets the ground without a seam */
+  background: linear-gradient(to bottom, #E45A32 0%, #EE6334 50%, #EF6334 100%);
 }
 
-/* the model stays put for the whole scene */
+/* the model slides in as the scene arrives, at full colour, then stays */
 .turn.is-live .turn-bg {
   display: block;
   position: absolute;
   inset: 0;
-  background: var(--color-primary);
 }
 
 .turn.is-live .turn-bg img {
@@ -1860,33 +1855,10 @@
   height: 100%;
   object-fit: cover;
   object-position: 50% 30%;
-}
-
-/* No colour wash over the photo: the model stays crisp against her backdrop. Only a drafting grid comes up
-   with the blueprint, and only on the open side of the picture. */
-.turn.is-live .turn-scrim {
-  display: block;
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(27, 26, 24, 0.16) 0%, rgba(27, 26, 24, 0) 14%);
-}
-
-.turn.is-live .turn-scrim::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: linear-gradient(to right, transparent 47%, #000 60%);
-  mask-image: linear-gradient(to right, transparent 47%, #000 60%);
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-
-.turn.is-live.is-blueprint .turn-scrim::after {
-  opacity: 1;
+  -webkit-mask-image: linear-gradient(to right, #000 78%, transparent 97%);
+  mask-image: linear-gradient(to right, #000 78%, transparent 97%);
+  transform: translate3d(calc((1 - var(--w, 0)) * -52%), 0, 0);
+  will-change: transform;
 }
 
 .turn.is-live .turn-head {
@@ -1897,10 +1869,6 @@
   text-shadow: 0 1px 24px rgba(110, 32, 0, 0.5);
 }
 
-.turn.is-live .turn-title {
-  font-size: var(--display-sm);
-}
-
 .turn.is-live .turn-rig {
   position: absolute;
   left: var(--rx);
@@ -1908,7 +1876,7 @@
   width: var(--rw);
   height: var(--rh);
   margin: 0;
-  transform: translate(-50%, -50%) scale(var(--s, 0.44));
+  transform: translate3d(-50%, -50%, 0) scale(var(--s, 0.44));
   transform-origin: 50% 50%;
   will-change: transform;
   filter: drop-shadow(0 28px 36px rgba(110, 32, 0, 0.34));
@@ -1924,126 +1892,127 @@
   height: 100%;
 }
 
-/* notes: each one hangs off its part of the tube on a hairline */
-.turn.is-live .turn-notes {
+/* ---- ingredient graph ---- */
+.turn.is-live .turn-links {
   display: block;
   position: absolute;
-  left: var(--rx);
-  top: calc(50% + 34px);
-  width: var(--rw);
-  height: var(--rh);
-  transform: translate(-50%, -50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
-.turn.is-live .turn-note {
-  position: absolute;
-  top: calc(var(--y) * 100%);
+.turn-links path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.78);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.turn-links .turn-link-cross {
+  stroke: rgba(255, 255, 255, 0.34);
+}
+
+.turn-links .turn-link-sat {
+  stroke: rgba(255, 255, 255, 0.5);
+}
+
+.turn.is-graph .turn-links path {
+  stroke-dashoffset: 0;
+  transition-delay: calc(var(--i) * 60ms);
+}
+
+.turn.is-live .turn-nodes {
   display: block;
-  width: var(--nw);
-  margin-top: -0.62em;
-  padding-top: 0;
-  border-top: 0;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.turn.is-live .turn-node {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: 0;
   opacity: 0;
-  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  text-shadow: 0 1px 18px rgba(110, 32, 0, 0.45);
+  transition: opacity 0.45s ease;
 }
 
-.turn.is-live .turn-note--l {
-  right: calc(50% + var(--rw) * var(--e));
-  padding-right: calc(var(--ln) + 14px);
-  text-align: right;
-  transform: translateX(14px);
+.turn.is-graph .turn-node {
+  opacity: 1;
+  transition-delay: calc(180ms + var(--i) * 60ms);
 }
 
-.turn.is-live .turn-note--r {
-  left: calc(50% + var(--rw) * var(--e));
-  padding-left: calc(var(--ln) + 14px);
-  transform: translateX(-14px);
-}
-
-/* hairline */
-.turn.is-live .turn-note::before {
-  content: "";
+.turn.is-live .turn-node-dot {
+  display: block;
   position: absolute;
-  top: 0.62em;
-  width: var(--ln);
-  height: 1px;
-  background: rgba(255, 255, 255, 0.95);
-  transform: scaleX(0);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.turn.is-live .turn-note--l::before {
-  right: 4px;
-  transform-origin: right center;
-}
-
-.turn.is-live .turn-note--r::before {
-  left: 4px;
-  transform-origin: left center;
-}
-
-/* anchor dot on the part */
-.turn.is-live .turn-note::after {
-  content: "";
-  position: absolute;
-  top: calc(0.62em - 4px);
-  width: 9px;
-  height: 9px;
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  border: 1px solid #fff;
-  background: var(--color-primary);
+  background: #fff;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.22), 0 0 22px rgba(255, 255, 255, 0.55);
   transform: scale(0);
-  transition: transform 0.35s ease;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.turn.is-live .turn-note--l::after {
-  right: -4px;
+.turn.is-graph .turn-node-dot {
+  transform: scale(1);
+  transition-delay: calc(180ms + var(--i) * 60ms);
 }
 
-.turn.is-live .turn-note--r::after {
-  left: -4px;
+.turn.is-live .turn-node-label {
+  position: absolute;
+  top: -0.7em;
+  width: 13.5rem;
+  text-shadow: 0 1px 18px rgba(110, 32, 0, 0.5);
 }
 
-.turn.is-live .turn-note-n {
-  display: block;
-  font-family: var(--font-family);
-  font-style: normal;
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--tracking-wider);
-  line-height: 1.24em;
-  color: rgba(250, 249, 247, 0.8);
-  /* the number sits on the hairline's level; title and text hang below it */
+.turn.is-live .turn-node--r .turn-node-label {
+  left: 20px;
 }
 
-.turn.is-live .turn-note-t {
-  display: block;
-  margin-top: 0.3rem;
-  font-size: var(--text-lg);
+.turn.is-live .turn-node--l .turn-node-label {
+  right: 20px;
+  text-align: right;
 }
 
-.turn.is-live .turn-note-d {
-  display: block;
-  margin-top: 0.3rem;
+.turn.is-live .turn-node-d {
   font-size: var(--text-sm);
 }
 
-.turn.is-live.is-blueprint .turn-note {
-  opacity: 1;
-  transform: translateX(0);
-  transition-delay: calc(var(--i) * 70ms);
+/* satellites: small dots with a caption underneath */
+.turn.is-live .turn-node--sat {
+  display: block;
 }
 
-.turn.is-live.is-blueprint .turn-note::before {
-  transform: scaleX(1);
-  transition-delay: calc(var(--i) * 70ms);
+.turn.is-live .turn-node--sat .turn-node-dot {
+  left: -3.5px;
+  top: -3.5px;
+  width: 7px;
+  height: 7px;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
 }
 
-.turn.is-live.is-blueprint .turn-note::after {
-  transform: scale(1);
-  transition-delay: calc(var(--i) * 70ms);
+.turn.is-live .turn-node--sat .turn-node-label {
+  top: 10px;
+  left: -5rem;
+  right: auto;
+  width: 10rem;
+  text-align: center;
+}
+
+.turn.is-live .turn-node--sat .turn-node-t {
+  font-size: 0.625rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: rgba(250, 249, 247, 0.86);
 }
 
 .turn.is-live .turn-buy {
@@ -2061,16 +2030,15 @@
   text-shadow: none;
 }
 
-.turn.is-live.is-blueprint .turn-buy {
+.turn.is-live.is-graph .turn-buy {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.45s;
+  transition-delay: 0.5s;
 }
 
 @media (max-width: 1180px) and (min-width: 881px) {
-  .turn.is-live .turn-stage {
-    --ln: 44px;
-    --nw: 14rem;
+  .turn.is-live .turn-node-label {
+    width: 11rem;
   }
 }
 
@@ -2078,43 +2046,17 @@
   .turn.is-live .turn-stage {
     --rx: 50%;
     --rh: min(calc(100vh - 210px), 150vw);
-    --ln: 14px;
+    background:
+      radial-gradient(90% 60% at 50% 45%, #F47B45 0%, rgba(244, 123, 69, 0) 70%),
+      #E8551E;
   }
 
-  /* width is set here, not on the stage: it depends on each note's own --e */
-  .turn.is-live .turn-note {
-    width: calc(50vw - var(--rw) * var(--e) - 10px);
+  /* phones: no model photo, the tube and the graph have the whole screen */
+  .turn.is-live .turn-bg {
+    display: none;
   }
 
-  .turn.is-live .turn-bg img {
-    left: -50%;
-    width: 190%;
-    object-position: 50% 20%;
-  }
-
-  /* phones: she is crisp while the tube turns; a flat orange sheet slides in behind the notes only when
-     the blueprint appears, because the notes sit across the whole screen there */
-  .turn.is-live .turn-scrim::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: #E8551E;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-  }
-
-  .turn.is-live.is-blueprint .turn-scrim::before {
-    opacity: 0.9;
-  }
-
-  .turn.is-live .turn-scrim::after {
-    background-size: 40px 40px;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-
-  .turn.is-live .turn-rig,
-  .turn.is-live .turn-notes {
+  .turn.is-live .turn-rig {
     top: calc(50% + 6px);
   }
 
@@ -2125,7 +2067,6 @@
     bottom: auto;
     max-width: none;
     text-align: center;
-    transition: opacity 0.4s ease;
   }
 
   .turn.is-live .turn-head .turn-kicker {
@@ -2137,30 +2078,35 @@
     letter-spacing: 0;
   }
 
-  .turn.is-live .turn-note {
-    padding-left: 0;
-    padding-right: 0;
+  .turn.is-live .turn-node--sat,
+  .turn-links .turn-link-sat {
+    display: none;
   }
 
-  .turn.is-live .turn-note--l {
-    padding-right: calc(var(--ln) + 8px);
+  .turn.is-live .turn-node-dot {
+    left: -5px;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.22), 0 0 16px rgba(255, 255, 255, 0.5);
   }
 
-  .turn.is-live .turn-note--r {
-    padding-left: calc(var(--ln) + 8px);
+  /* captions hang under their dots */
+  .turn.is-live .turn-node--l .turn-node-label,
+  .turn.is-live .turn-node--r .turn-node-label {
+    top: 14px;
+    left: -19vw;
+    right: auto;
+    width: 38vw;
+    text-align: center;
   }
 
-  .turn.is-live .turn-note-n {
-    font-size: 0.625rem;
-  }
-
-  .turn.is-live .turn-note-t {
-    margin-top: 0.15rem;
+  .turn.is-live .turn-node-t {
     font-size: 0.8125rem;
     line-height: 1.2;
   }
 
-  .turn.is-live .turn-note-d {
+  .turn.is-live .turn-node-d {
     margin-top: 0.15rem;
     font-size: 0.6875rem;
     line-height: 1.35;

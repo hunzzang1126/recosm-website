@@ -1,10 +1,11 @@
 "use client";
 
-// Scroll-driven product scene for the home page. One move, then the reveal: the tube turns once on its
-// axis while it grows to fill the screen, the cap lifts to show the applicator, and then every note
-// appears at once around it like a blueprint. The model photo behind it never changes.
-// 160 pre-rendered frames (transparent WebP) are drawn to a canvas. Without JavaScript, or with reduced
-// motion, the same notes read as an ordinary list beside a still tube.
+// Scroll-driven product scene for the home page. One move, then the reveal: the model slides in, the tube
+// turns once on its axis while it grows to fill the screen, the cap lifts to show the applicator, and then the
+// formula appears around it as a linked graph of ingredients.
+// 160 pre-rendered frames (transparent WebP, 3 degrees apart) are drawn to a canvas and cross-blended while
+// moving, so the turn is continuous at any scroll speed; at rest it settles on a whole frame, so it stays crisp. The stage is held with CSS sticky, not a script. Without JavaScript,
+// or with reduced motion, the same ingredients read as an ordinary list beside a still tube.
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -14,19 +15,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const FRAMES = 160;
-const PLAY = 0.68; // share of the scroll track the move takes; the blueprint holds for the rest
+const PLAY = 0.66; // share of the scroll track the move takes; the graph holds for the rest
 const START_SCALE = 0.44;
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
 
-// y = where the part sits in the final frame (fraction of its height); e = half-width of that part (fraction of frame width)
-const NOTES = [
-  { side: "l", y: 0.14, e: 0.0925, n: "01", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free." },
-  { side: "r", y: 0.475, e: 0.027, n: "02", title: "Capixyl™ peptide complex", body: "Acetyl tetrapeptide-3 with red clover extract, for fuller-looking lashes." },
-  { side: "l", y: 0.535, e: 0.025, n: "03", title: "Biotin", body: "A B-vitamin and building block of keratin, for stronger-looking lashes." },
-  { side: "r", y: 0.66, e: 0.091, n: "04", title: "Panthenol", body: "A humectant for flexible, less brittle lashes." },
-  { side: "l", y: 0.745, e: 0.091, n: "05", title: "Centella asiatica", body: "Tiger grass extract that soothes the delicate lash line." },
-  { side: "r", y: 0.845, e: 0.091, n: "06", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture." },
+// Positions are percentages of the stage: d = wide screens (tube stands at 69%), m = phones (tube centred).
+const HUB = { d: [69, 60], m: [50, 56] };
+const NODES = [
+  { id: "pg", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free.", d: [58, 22], m: [22, 23], sats: [{ label: "Fragrance-free", d: [62, 11] }] },
+  { id: "cap", title: "Capixyl™ peptide complex", body: "For fuller-looking lashes.", d: [80.5, 27], m: [78, 28], sats: [{ label: "Acetyl tetrapeptide-3", d: [89, 15] }, { label: "Red clover extract", d: [77.5, 12] }] },
+  { id: "bio", title: "Biotin", body: "A B-vitamin and building block of keratin.", d: [57.5, 47], m: [21, 44], sats: [{ label: "Keratin", d: [61.5, 37] }] },
+  { id: "pan", title: "Panthenol", body: "A humectant for flexible, less brittle lashes.", d: [81.5, 52], m: [79, 49], sats: [{ label: "Flexibility", d: [90, 42] }] },
+  { id: "cen", title: "Centella asiatica", body: "Tiger grass extract that soothes the lash line.", d: [58, 72], m: [22, 65], sats: [{ label: "Tiger grass", d: [61.5, 84] }] },
+  { id: "ha", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture.", d: [80.5, 78], m: [78, 70], sats: [{ label: "Moisture", d: [89, 89] }] },
 ];
+// links between neighbours, so it reads as a web and not a list
+const CROSS = [["pg", "bio"], ["bio", "cen"], ["cap", "pan"], ["pan", "ha"]];
 
 const Arrow = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -42,7 +46,7 @@ export default function SerumTurn() {
   const canvasRef = useRef(null);
   const rigRef = useRef(null);
   const [live, setLive] = useState(false);
-  const [blueprint, setBlueprint] = useState(false);
+  const [graph, setGraph] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -52,40 +56,52 @@ export default function SerumTurn() {
     if (!section || !canvas || !rig || !stage) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const set = window.matchMedia("(max-width: 880px)").matches ? "m" : "d";
+    const phone = window.matchMedia("(max-width: 880px)").matches;
+    const set = phone ? "m" : "d";
+    const key = phone ? "m" : "d";
     const ctx2d = canvas.getContext("2d");
     const imgs = new Array(FRAMES);
+    const ready = (k) => imgs[k] && imgs[k].complete && imgs[k].naturalWidth;
     let target = 0;
-    let shown = -1;
     let current = 0;
+    let drawn = -1;
     let raf = 0;
     let started = false;
+    let settle = 0;
 
-    const draw = (i) => {
+    const draw = (cur) => {
+      let i = Math.floor(cur);
+      const f = cur - i;
       // nearest earlier frame that has arrived, so the tube never blanks while the rest load
       let k = i;
-      while (k > 0 && !(imgs[k] && imgs[k].complete && imgs[k].naturalWidth)) k--;
+      while (k > 0 && !ready(k)) k--;
+      if (!ready(k)) return;
       const im = imgs[k];
-      if (!im || !im.complete || !im.naturalWidth) return;
       if (canvas.width !== im.naturalWidth) {
         canvas.width = im.naturalWidth;
         canvas.height = im.naturalHeight;
       }
+      ctx2d.globalAlpha = 1;
       ctx2d.clearRect(0, 0, canvas.width, canvas.height);
       ctx2d.drawImage(im, 0, 0);
-      shown = i;
+      // blend toward the next frame for the in-between positions
+      if (k === i && f > 0.02 && i + 1 < FRAMES && ready(i + 1)) {
+        ctx2d.globalAlpha = f;
+        ctx2d.drawImage(imgs[i + 1], 0, 0);
+        ctx2d.globalAlpha = 1;
+      }
+      drawn = cur;
     };
 
     const apply = () => {
       const t = current / (FRAMES - 1);
       rig.style.setProperty("--s", (START_SCALE + (1 - START_SCALE) * ease(Math.min(1, t / 0.82))).toFixed(4));
-      const i = Math.round(current);
-      if (i !== shown) draw(i);
+      if (Math.abs(current - drawn) > 0.01) draw(current);
     };
 
     const tick = () => {
-      current += (target - current) * 0.18;
-      if (Math.abs(target - current) < 0.02) current = target;
+      current += (target - current) * 0.12;
+      if (Math.abs(target - current) < 0.01) current = target;
       apply();
       raf = current === target ? 0 : requestAnimationFrame(tick);
     };
@@ -98,7 +114,7 @@ export default function SerumTurn() {
         im.decoding = "async";
         im.src = frameSrc(set, i);
         im.onload = () => {
-          if (shown < 0 || i === Math.round(current)) draw(Math.round(current));
+          if (drawn < 0 || Math.abs(i - current) < 1.5) draw(current);
         };
         imgs[i] = im;
       }
@@ -116,42 +132,116 @@ export default function SerumTurn() {
     );
     io.observe(section);
 
+    /* ---- ingredient graph: nodes drift a little, links follow ---- */
+    const nodeEls = Array.from(stage.querySelectorAll("[data-node]"));
+    const lineEls = Array.from(stage.querySelectorAll("[data-line]"));
+    const svg = stage.querySelector(".turn-links");
+    const base = { hub: HUB[key] };
+    nodeEls.forEach((el, n) => {
+      const xy = (el.dataset[key] || el.dataset.d).split(",").map(Number);
+      base[el.dataset.node] = { xy, phase: n * 1.7, el };
+    });
+    let graphRaf = 0;
+    let graphOn = false;
+    const place = (time) => {
+      const w = stage.clientWidth;
+      const h = stage.clientHeight;
+      const amp = phone ? 3 : 7; // px of drift
+      // links are drawn in real pixels, so their draw-on animation measures correctly
+      if (svg.getAttribute("viewBox") !== `0 0 ${w} ${h}`) svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+      const pos = { hub: base.hub };
+      nodeEls.forEach((el) => {
+        const b = base[el.dataset.node];
+        const x = b.xy[0] + (Math.sin(time * 0.00042 + b.phase) * amp * 100) / w;
+        const y = b.xy[1] + (Math.cos(time * 0.00035 + b.phase * 1.3) * amp * 100) / h;
+        pos[el.dataset.node] = [x, y];
+        el.style.left = x + "%";
+        el.style.top = y + "%";
+      });
+      lineEls.forEach((ln) => {
+        const a = pos[ln.dataset.a];
+        const b = pos[ln.dataset.b];
+        if (!a || !b) return;
+        ln.setAttribute("d", `M${((a[0] * w) / 100).toFixed(1)} ${((a[1] * h) / 100).toFixed(1)}L${((b[0] * w) / 100).toFixed(1)} ${((b[1] * h) / 100).toFixed(1)}`);
+      });
+    };
+    const loop = (time) => {
+      place(time);
+      graphRaf = graphOn ? requestAnimationFrame(loop) : 0;
+    };
+    place(0);
+
     setLive(true);
     apply();
     const st = ScrollTrigger.create({
       trigger: section,
       start: "top top",
       end: "bottom bottom",
-      // pinned by ScrollTrigger: an ancestor clips overflow, which disables position: sticky
-      pin: stage,
-      pinSpacing: false,
-      anticipatePin: 1,
       onUpdate: (self) => {
         target = Math.min(1, self.progress / PLAY) * (FRAMES - 1);
-        setBlueprint(self.progress >= PLAY + 0.03);
+        // once the scroll rests, ease onto the nearest whole frame (no half-blended print)
+        clearTimeout(settle);
+        settle = setTimeout(() => {
+          target = Math.round(target);
+          if (!raf) raf = requestAnimationFrame(tick);
+        }, 140);
+        const on = self.progress >= PLAY + 0.03;
+        if (on !== graphOn) {
+          graphOn = on;
+          setGraph(on);
+          if (on && !graphRaf) graphRaf = requestAnimationFrame(loop);
+        }
         if (!raf) raf = requestAnimationFrame(tick);
+      },
+    });
+    // the model comes in as the scene arrives
+    const enter = ScrollTrigger.create({
+      trigger: section,
+      start: "top 80%",
+      end: "top -30%",
+      onUpdate: (self) => {
+        const t = self.progress;
+        stage.style.setProperty("--w", (1 - Math.pow(1 - t, 3)).toFixed(4));
       },
     });
     const refresh = setTimeout(() => ScrollTrigger.refresh(), 60);
 
     return () => {
       clearTimeout(refresh);
+      clearTimeout(settle);
       io.disconnect();
       st.kill();
+      enter.kill();
+      graphOn = false;
       if (raf) cancelAnimationFrame(raf);
+      if (graphRaf) cancelAnimationFrame(graphRaf);
     };
   }, []);
 
-  const cls = ["turn", live ? "is-live" : "", blueprint ? "is-blueprint" : ""].filter(Boolean).join(" ");
+  const cls = ["turn", live ? "is-live" : "", graph ? "is-graph" : ""].filter(Boolean).join(" ");
+  let order = 0;
 
   return (
-    <section ref={sectionRef} className={cls} id="home-serum" aria-label="The serum">
+    <section ref={sectionRef} className={cls} id="home-serum" aria-label="The formula">
       <div className="turn-stage">
         <div className="turn-bg" aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/model/turn-bg-v2.jpg" alt="" loading="lazy" decoding="async" />
         </div>
-        <div className="turn-scrim" aria-hidden="true" />
+
+        <svg className="turn-links" viewBox="0 0 100 100" aria-hidden="true">
+          {NODES.map((n, i) => (
+            <path key={n.id} data-line data-a="hub" data-b={n.id} pathLength="1" style={{ "--i": i }} />
+          ))}
+          {CROSS.map(([a, b], i) => (
+            <path key={a + b} className="turn-link-cross" data-line data-a={a} data-b={b} pathLength="1" style={{ "--i": 6 + i }} />
+          ))}
+          {NODES.flatMap((n) =>
+            n.sats.map((s, j) => (
+              <path key={n.id + j} className="turn-link-sat" data-line data-a={n.id} data-b={`${n.id}-${j}`} pathLength="1" style={{ "--i": 8 + j }} />
+            ))
+          )}
+        </svg>
 
         <header className="turn-head">
           <p className="turn-kicker">The Formula</p>
@@ -172,23 +262,40 @@ export default function SerumTurn() {
           <canvas ref={canvasRef} className="turn-canvas" width={720} height={1680} aria-hidden="true" />
         </div>
 
-        <ol className="turn-notes">
-          {NOTES.map((c, i) => (
-            <li key={c.n} className={`turn-note turn-note--${c.side}`} style={{ "--y": c.y, "--e": c.e, "--i": i }}>
-              <span className="turn-note-n">{c.n}</span>
-              <span className="turn-note-t">{c.title}</span>
-              <span className="turn-note-d">{c.body}</span>
+        <ul className="turn-nodes">
+          {NODES.map((n) => (
+            <li
+              key={n.id}
+              className={`turn-node turn-node--${n.d[0] < HUB.d[0] ? "l" : "r"}`}
+              data-node={n.id}
+              data-d={n.d.join(",")}
+              data-m={n.m.join(",")}
+              style={{ "--i": order++ }}
+            >
+              <span className="turn-node-dot" aria-hidden="true" />
+              <span className="turn-node-label">
+                <span className="turn-node-t">{n.title}</span>
+                <span className="turn-node-d">{n.body}</span>
+              </span>
             </li>
           ))}
-        </ol>
+          {NODES.flatMap((n) =>
+            n.sats.map((s, j) => (
+              <li key={n.id + j} className="turn-node turn-node--sat" data-node={`${n.id}-${j}`} data-d={s.d.join(",")} aria-hidden="true" style={{ "--i": 7 + j }}>
+                <span className="turn-node-dot" />
+                <span className="turn-node-label"><span className="turn-node-t">{s.label}</span></span>
+              </li>
+            ))
+          )}
+        </ul>
 
         <div className="turn-buy">
           <p className="turn-meta">10 mL · $55.00 CAD</p>
-          <Link href="/product" className="turn-link" tabIndex={live && !blueprint ? -1 : undefined}>
+          <Link href="/product" className="turn-link" tabIndex={live && !graph ? -1 : undefined}>
             Discover the serum
             <span className="turn-link-arrow"><Arrow /></span>
           </Link>
-          <Link href="/science" className="turn-sublink" tabIndex={live && !blueprint ? -1 : undefined}>
+          <Link href="/science" className="turn-sublink" tabIndex={live && !graph ? -1 : undefined}>
             Full ingredient list
           </Link>
         </div>

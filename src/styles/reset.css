@@ -30,6 +30,14 @@ body {
   min-height: 100vh;
 }
 
+/* clip (not hidden) keeps the page from widening without turning body into a scroll container,
+   which would stop position: sticky from working further down the tree */
+@supports (overflow: clip) {
+  body {
+    overflow-x: clip;
+  }
+}
+
 img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
