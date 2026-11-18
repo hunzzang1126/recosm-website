@@ -117,7 +117,7 @@
 
 .hero--film .hero-media::after {
   background:
-    linear-gradient(to bottom, rgba(27, 26, 24, 0.32) 0%, rgba(27, 26, 24, 0) 20%, rgba(27, 26, 24, 0) 42%, rgba(27, 26, 24, 0.62) 100%);
+    linear-gradient(to bottom, rgba(27, 26, 24, 0.2) 0%, rgba(27, 26, 24, 0) 16%, rgba(27, 26, 24, 0) 55%, rgba(60, 22, 6, 0.26) 100%);
 }
 
 .hero--film .hero-inner {
@@ -129,7 +129,11 @@
 
 .hero--film .hero-title {
   font-size: var(--display-lg);
-  text-shadow: 0 2px 30px rgba(27, 26, 24, 0.35);
+  text-shadow: 0 2px 26px rgba(90, 30, 4, 0.45);
+}
+
+.hero--film .hero-overline {
+  text-shadow: 0 1px 14px rgba(90, 30, 4, 0.5);
 }
 
 .hero--film .hero-overline {
@@ -139,7 +143,7 @@
 .hero--film .hero-description {
   margin-top: var(--space-4);
   max-width: 40ch;
-  text-shadow: 0 1px 18px rgba(27, 26, 24, 0.4);
+  text-shadow: 0 1px 16px rgba(90, 30, 4, 0.55);
 }
 
 /* ============ 02 Pillars — diagonal ellipse scene ============ */

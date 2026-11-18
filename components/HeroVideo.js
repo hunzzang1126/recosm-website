@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 // People who ask for reduced motion keep the still poster.
 const SOURCES = {
   desktop: { video: "/videos/hero-desktop-v2.mp4", poster: "/images/hero-poster-desktop-v2.jpg" },
-  mobile: { video: "/videos/hero-mobile-v4.mp4", poster: "/images/hero-poster-mobile-v4.jpg" },
+  mobile: { video: "/videos/hero-mobile-v5.mp4", poster: "/images/hero-poster-mobile-v5.jpg" },
 };
 
 export default function HeroVideo() {
