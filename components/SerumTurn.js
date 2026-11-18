@@ -20,12 +20,12 @@ const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3
 
 // y = where the part sits in the final frame (fraction of its height); e = half-width of that part (fraction of frame width)
 const NOTES = [
-  { side: "l", y: 0.14, e: 0.0925, n: "01", title: "Made in Korea, by Kolmar", body: "Formulated and manufactured by Kolmar Korea, the lab behind the world's leading K-beauty brands." },
-  { side: "r", y: 0.33, e: 0.019, n: "02", title: "One minute, every night", body: "Cleanse, apply, brush. Fuller-looking lashes in 4 to 6 weeks." },
-  { side: "l", y: 0.475, e: 0.027, n: "03", title: "Spoolie brush", body: "Brush through from root to tip." },
-  { side: "r", y: 0.535, e: 0.025, n: "04", title: "Rounded tip", body: "A thin line of serum along the upper lash line, close to the roots." },
-  { side: "l", y: 0.705, e: 0.091, n: "05", title: "Prostaglandin-free", body: "No prostaglandin analogs, the ingredient class linked to iris darkening and orbital fat loss. Ever." },
-  { side: "r", y: 0.8, e: 0.091, n: "06", title: "Capixyl™ peptide complex", body: "With biotin, panthenol and centella. We disclose our full formula." },
+  { side: "l", y: 0.14, e: 0.0925, n: "01", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free." },
+  { side: "r", y: 0.475, e: 0.027, n: "02", title: "Capixyl™ peptide complex", body: "Acetyl tetrapeptide-3 with red clover extract, for fuller-looking lashes." },
+  { side: "l", y: 0.535, e: 0.025, n: "03", title: "Biotin", body: "A B-vitamin and building block of keratin, for stronger-looking lashes." },
+  { side: "r", y: 0.66, e: 0.091, n: "04", title: "Panthenol", body: "A humectant for flexible, less brittle lashes." },
+  { side: "l", y: 0.745, e: 0.091, n: "05", title: "Centella asiatica", body: "Tiger grass extract that soothes the delicate lash line." },
+  { side: "r", y: 0.845, e: 0.091, n: "06", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture." },
 ];
 
 const Arrow = () => (
@@ -154,7 +154,7 @@ export default function SerumTurn() {
         <div className="turn-scrim" aria-hidden="true" />
 
         <header className="turn-head">
-          <p className="turn-kicker">The Serum</p>
+          <p className="turn-kicker">The Formula</p>
           <h2 className="turn-title">Re:<em>define</em> Lash Conditioning Serum</h2>
         </header>
 
@@ -187,6 +187,9 @@ export default function SerumTurn() {
           <Link href="/product" className="turn-link" tabIndex={live && !blueprint ? -1 : undefined}>
             Discover the serum
             <span className="turn-link-arrow"><Arrow /></span>
+          </Link>
+          <Link href="/science" className="turn-sublink" tabIndex={live && !blueprint ? -1 : undefined}>
+            Full ingredient list
           </Link>
         </div>
       </div>
