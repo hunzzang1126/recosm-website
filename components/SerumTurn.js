@@ -16,8 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
 // A phone's address bar sliding away changes the viewport height; do not recalculate (and jump) on that.
 ScrollTrigger.config({ ignoreMobileResize: true });
 
-// frames per set: the phone set is already the dense one (1.5 degrees a frame)
-const COUNT = { d: 160, m: 300 };
+// frames per set: 240 for the turn (1.5 degrees a frame) and 60 for the cap lift
+const COUNT = { d: 300, m: 300 };
 // One scroll track for the whole scene (from the section's top edge 92% down the screen to its end):
 //   0 .. PLAY        the tube turns, grows and opens
 //   PLAY .. EXIT     the ingredient notes are up, to be read
