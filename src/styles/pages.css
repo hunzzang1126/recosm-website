@@ -1820,7 +1820,14 @@
   height: 14px;
 }
 
-/* ---- Live scene: one screen tall, moving at the page's own speed. Nothing is pinned, held or slowed. ---- */
+/* ---- Live scene. The stage travels with the visitor for about one extra screen of scrolling (CSS sticky,
+   so it is the browser doing it, with no script and no jump), and the move keeps playing across that whole
+   distance: the tube is still turning and opening while it follows, and the ingredient notes arrive with
+   scroll left to read them. It never sits still waiting. ---- */
+.turn.is-live {
+  height: 235vh;
+  height: 235svh;
+}
 .turn.is-live .turn-stage {
   /* --rx: where the tube stands; --rh: its full height; --rw: the frame's width at that height */
   --rx: 69%;
@@ -1828,7 +1835,8 @@
   --rw: calc(var(--rh) * 0.42857);
   --ry: calc(50% + 34px);  /* where the rig's anchor sits on the stage */
   --oy: 50%;               /* the anchor inside the rig: the point it grows around */
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100%;
   height: 100vh;
   /* the small-viewport unit does not change when a phone's address bar slides away, so nothing jumps */
@@ -2210,12 +2218,14 @@
   /* rises over the hero as a rounded sheet; a sliver shows on the first screen */
   margin-top: -3.5vh;
   border-radius: 34px 34px 34px 34px;
+  /* clip, not hidden: hidden would make this a scroll container and switch off the sticky stage inside */
   overflow: hidden;
+  overflow: clip;
   box-shadow: 0 -30px 60px rgba(60, 18, 0, 0.28);
   color: var(--color-bg-white);
   /* the scene's own orange for as long as the scene runs, then it deepens gradually so the smaller type
      further down has more contrast */
-  background: linear-gradient(to bottom, #E45A32 0, #EE6334 60vh, #EE6334 100svh, #E4531C calc(100svh + 70vh), #CF4712 calc(100svh + 240vh), #C64311 100%);
+  background: linear-gradient(to bottom, #E45A32 0, #EE6334 60vh, #EE6334 235svh, #E4531C calc(235svh + 70vh), #CF4712 calc(235svh + 240vh), #C64311 100%);
 }
 
 /* drafting grid, very faint, across the whole world */
@@ -2227,8 +2237,8 @@
     linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
   background-size: 64px 64px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 90svh, #000 calc(90svh + 60vh));
-  mask-image: linear-gradient(to bottom, transparent 0, transparent 90svh, #000 calc(90svh + 60vh));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 220svh, #000 calc(220svh + 60vh));
+  mask-image: linear-gradient(to bottom, transparent 0, transparent 220svh, #000 calc(220svh + 60vh));
   pointer-events: none;
 }
 
@@ -2606,7 +2616,7 @@
 
 @media (max-width: 880px) {
   .world {
-    background: linear-gradient(to bottom, #E8551E 0, #E8551E 100svh, #DE4E18 calc(100svh + 70vh), #CC4611 calc(100svh + 260vh), #C64311 100%);
+    background: linear-gradient(to bottom, #E8551E 0, #E8551E 100svh, #DE4E18 calc(100svh + 70vh), #CC4611 calc(235svh + 260vh), #C64311 100%);
   }
 
   .world-rest {

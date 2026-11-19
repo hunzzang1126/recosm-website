@@ -17,10 +17,10 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 const FRAMES = 160;
-// The move plays while the section rises into view: it starts when the section's top edge is 92% down the
-// screen and is finished a little before the section fills the screen. Nothing is pinned, held or slowed:
-// the section is one screen tall and moves at the page's own speed.
-const PLAY = 0.86;
+// The move is spread over the whole time the scene is with the visitor: it starts when the section's top edge
+// is 92% down the screen, keeps playing while the stage follows the scroll, and is finished with roughly half a
+// screen of following still to go, which is when the ingredient notes are read.
+const PLAY = 0.66;
 const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
 
@@ -209,7 +209,7 @@ export default function SerumTurn() {
     const st = ScrollTrigger.create({
       trigger: section,
       start: "top 92%",
-      end: "top top",
+      end: "bottom bottom",
       onUpdate: (self) => {
         target = Math.min(1, self.progress / PLAY) * (FRAMES - 1);
         // once the scroll rests, ease onto the nearest whole frame (no half-blended print)
