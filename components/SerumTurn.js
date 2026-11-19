@@ -16,18 +16,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FRAMES = 160;
 const PLAY = 0.66; // share of the scroll track the move takes; the graph holds for the rest
-const START_SCALE = 0.44;
+const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
 
 // Positions are percentages of the stage: d = wide screens (tube stands at 69%), m = phones (tube centred).
-const HUB = { d: [69, 60], m: [50, 56] };
+const HUB = { d: [69, 60], m: [50, 50] };
 const NODES = [
-  { id: "pg", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free.", d: [58, 22], m: [22, 23], sats: [{ label: "Fragrance-free", d: [62, 11] }] },
-  { id: "cap", title: "Capixyl™ peptide complex", body: "For fuller-looking lashes.", d: [80.5, 27], m: [78, 28], sats: [{ label: "Acetyl tetrapeptide-3", d: [89, 15] }, { label: "Red clover extract", d: [77.5, 12] }] },
-  { id: "bio", title: "Biotin", body: "A B-vitamin and building block of keratin.", d: [57.5, 47], m: [21, 44], sats: [{ label: "Keratin", d: [61.5, 37] }] },
-  { id: "pan", title: "Panthenol", body: "A humectant for flexible, less brittle lashes.", d: [81.5, 52], m: [79, 49], sats: [{ label: "Flexibility", d: [90, 42] }] },
-  { id: "cen", title: "Centella asiatica", body: "Tiger grass extract that soothes the lash line.", d: [58, 72], m: [22, 65], sats: [{ label: "Tiger grass", d: [61.5, 84] }] },
-  { id: "ha", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture.", d: [80.5, 78], m: [78, 70], sats: [{ label: "Moisture", d: [89, 89] }] },
+  { id: "pg", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free.", d: [58, 22], m: [18, 24], sats: [{ label: "Fragrance-free", d: [62, 11] }] },
+  { id: "cap", title: "Capixyl™ peptide complex", body: "For fuller-looking lashes.", d: [80.5, 27], m: [82, 30], sats: [{ label: "Acetyl tetrapeptide-3", d: [89, 15] }, { label: "Red clover extract", d: [77.5, 12] }] },
+  { id: "bio", title: "Biotin", body: "A B-vitamin and building block of keratin.", d: [57.5, 47], m: [18, 46], sats: [{ label: "Keratin", d: [61.5, 37] }] },
+  { id: "pan", title: "Panthenol", body: "A humectant for flexible, less brittle lashes.", d: [81.5, 52], m: [82, 52], sats: [{ label: "Flexibility", d: [90, 42] }] },
+  { id: "cen", title: "Centella asiatica", body: "Tiger grass extract that soothes the lash line.", d: [58, 72], m: [18, 68], sats: [{ label: "Tiger grass", d: [61.5, 84] }] },
+  { id: "ha", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture.", d: [80.5, 78], m: [82, 73], sats: [{ label: "Moisture", d: [89, 89] }] },
 ];
 // links between neighbours, so it reads as a web and not a list
 const CROSS = [["pg", "bio"], ["bio", "cen"], ["cap", "pan"], ["pan", "ha"]];
@@ -47,6 +47,7 @@ export default function SerumTurn() {
   const rigRef = useRef(null);
   const [live, setLive] = useState(false);
   const [graph, setGraph] = useState(false);
+  const [hold, setHold] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -57,8 +58,9 @@ export default function SerumTurn() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const phone = window.matchMedia("(max-width: 880px)").matches;
-    // one frame set for every screen: 720 x 1680 matches a phone at 3x as well as a laptop at 2x
-    const set = "d";
+    // Phones draw a light frame set while the tube is moving (cheap to decode, so the scroll stays smooth) and
+    // show a high-resolution still of the last frame once it has come to rest. Wide screens draw the full set.
+    const set = phone ? "m" : "d";
     const key = phone ? "m" : "d";
     const ctx2d = canvas.getContext("2d");
     const imgs = new Array(FRAMES);
@@ -69,6 +71,7 @@ export default function SerumTurn() {
     let raf = 0;
     let started = false;
     let settle = 0;
+    let held = false;
 
     const draw = (cur) => {
       let i = Math.floor(cur);
@@ -85,8 +88,8 @@ export default function SerumTurn() {
       ctx2d.globalAlpha = 1;
       ctx2d.clearRect(0, 0, canvas.width, canvas.height);
       ctx2d.drawImage(im, 0, 0);
-      // blend toward the next frame for the in-between positions
-      if (k === i && f > 0.02 && i + 1 < FRAMES && ready(i + 1)) {
+      // blend toward the next frame for the in-between positions (wide screens only: one draw per tick on phones)
+      if (!phone && k === i && f > 0.02 && i + 1 < FRAMES && ready(i + 1)) {
         ctx2d.globalAlpha = f;
         ctx2d.drawImage(imgs[i + 1], 0, 0);
         ctx2d.globalAlpha = 1;
@@ -96,8 +99,15 @@ export default function SerumTurn() {
 
     const apply = () => {
       const t = current / (FRAMES - 1);
-      rig.style.setProperty("--s", (START_SCALE + (1 - START_SCALE) * ease(Math.min(1, t / 0.82))).toFixed(4));
+      const s0 = START_SCALE[key];
+      rig.style.setProperty("--s", (s0 + (1 - s0) * ease(Math.min(1, t / 0.82))).toFixed(4));
       if (Math.abs(current - drawn) > 0.01) draw(current);
+      // at the end of the move the crisp still takes over from the canvas
+      const atEnd = current >= FRAMES - 1.001;
+      if (atEnd !== held) {
+        held = atEnd;
+        setHold(atEnd);
+      }
     };
 
     const tick = () => {
@@ -219,7 +229,7 @@ export default function SerumTurn() {
     };
   }, []);
 
-  const cls = ["turn", live ? "is-live" : "", graph ? "is-graph" : ""].filter(Boolean).join(" ");
+  const cls = ["turn", live ? "is-live" : "", graph ? "is-graph" : "", hold ? "is-hold" : ""].filter(Boolean).join(" ");
   let order = 0;
 
   return (
@@ -250,6 +260,8 @@ export default function SerumTurn() {
         </header>
 
         <div className="turn-rig" ref={rigRef}>
+          <span className="turn-glow" aria-hidden="true" />
+          <span className="turn-floor" aria-hidden="true" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="turn-still"
@@ -261,6 +273,8 @@ export default function SerumTurn() {
             decoding="async"
           />
           <canvas ref={canvasRef} className="turn-canvas" width={720} height={1680} aria-hidden="true" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="turn-final" src="/images/serum-turn/final.webp" alt="" width={1440} height={3360} loading="lazy" decoding="async" aria-hidden="true" />
         </div>
 
         <ul className="turn-nodes">
