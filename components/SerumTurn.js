@@ -27,12 +27,12 @@ const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3
 // Positions are percentages of the stage: d = wide screens (tube stands at 69%), m = phones (tube centred).
 const HUB = { d: [69, 60], m: [50, 50] };
 const NODES = [
-  { id: "pg", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free.", d: [58, 22], m: [17, 30], sats: [{ label: "Fragrance-free", d: [62, 11] }] },
-  { id: "cap", title: "Capixyl™ peptide complex", body: "For fuller-looking lashes.", d: [80.5, 27], m: [83, 30], sats: [{ label: "Acetyl tetrapeptide-3", d: [89, 15] }, { label: "Red clover extract", d: [77.5, 12] }] },
-  { id: "bio", title: "Biotin", body: "A B-vitamin and building block of keratin.", d: [57.5, 47], m: [17, 50], sats: [{ label: "Keratin", d: [61.5, 37] }] },
-  { id: "pan", title: "Panthenol", body: "A humectant for flexible, less brittle lashes.", d: [81.5, 52], m: [83, 50], sats: [{ label: "Flexibility", d: [90, 42] }] },
-  { id: "cen", title: "Centella asiatica", body: "Tiger grass extract that soothes the lash line.", d: [58, 72], m: [17, 70], sats: [{ label: "Tiger grass", d: [61.5, 84] }] },
-  { id: "ha", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture.", d: [80.5, 78], m: [83, 70], sats: [{ label: "Moisture", d: [89, 89] }] },
+  { id: "pg", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free.", d: [58, 22], m: [15, 30], sats: [{ label: "Fragrance-free", d: [62, 11] }] },
+  { id: "cap", title: "Capixyl™ peptide complex", body: "For fuller-looking lashes.", d: [80.5, 27], m: [85, 30], sats: [{ label: "Acetyl tetrapeptide-3", d: [89, 15] }, { label: "Red clover extract", d: [77.5, 12] }] },
+  { id: "bio", title: "Biotin", body: "A B-vitamin and building block of keratin.", d: [57.5, 47], m: [15, 50], sats: [{ label: "Keratin", d: [61.5, 37] }] },
+  { id: "pan", title: "Panthenol", body: "A humectant for flexible, less brittle lashes.", d: [81.5, 52], m: [85, 50], sats: [{ label: "Flexibility", d: [90, 42] }] },
+  { id: "cen", title: "Centella asiatica", body: "Tiger grass extract that soothes the lash line.", d: [58, 72], m: [15, 70], sats: [{ label: "Tiger grass", d: [61.5, 84] }] },
+  { id: "ha", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture.", d: [80.5, 78], m: [85, 70], sats: [{ label: "Moisture", d: [89, 89] }] },
 ];
 // links between neighbours, so it reads as a web and not a list
 const CROSS = [["pg", "bio"], ["bio", "cen"], ["cap", "pan"], ["pan", "ha"]];
@@ -60,6 +60,7 @@ export default function SerumTurn() {
     const rig = rigRef.current;
     const stage = section && section.querySelector(".turn-stage");
     const follow = section && section.querySelector(".turn-follow");
+    const finalImg = section && section.querySelector(".turn-final");
     if (!section || !canvas || !rig || !stage || !follow) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -111,18 +112,24 @@ export default function SerumTurn() {
       rig.style.setProperty("--s", phone ? "1" : (s0 + (1 - s0) * ease(Math.min(1, t / 0.82))).toFixed(4));
       if (Math.abs(current - drawn) > 0.01) draw(current);
       // at the end of the move the crisp still takes over from the canvas
-      const atEnd = current >= FRAMES - 1.001;
+      // (and only once that still has itself arrived, so there is never an empty moment between the two)
+      const atEnd = current >= FRAMES - 1.001 && !!finalImg && finalImg.complete && finalImg.naturalWidth > 0;
       if (atEnd !== held) {
         held = atEnd;
         setHold(atEnd);
       }
     };
 
+    // The tube only ever advances through frames that have already arrived, in order. Before, a frame that
+    // was still downloading was replaced by a much earlier one and then popped in when it landed; on phones,
+    // where the zoom is part of the frames, that showed as the tube suddenly jumping in size.
+    let ahead = 0; // how many frames from the start are ready, without a gap
     const tick = () => {
-      current += (target - current) * 0.16;
-      if (Math.abs(target - current) < 0.01) current = target;
+      const goal = Math.min(target, Math.max(0, ahead - 1));
+      current += (goal - current) * 0.16;
+      if (Math.abs(goal - current) < 0.01) current = goal;
       apply();
-      raf = current === target ? 0 : requestAnimationFrame(tick);
+      raf = current === goal ? 0 : requestAnimationFrame(tick);
     };
 
     const load = () => {
@@ -133,7 +140,9 @@ export default function SerumTurn() {
         im.decoding = "async";
         im.src = frameSrc(set, i);
         im.onload = () => {
-          if (drawn < 0 || Math.abs(i - current) < 1.5) draw(current);
+          while (ahead < FRAMES && ready(ahead)) ahead++;
+          if (drawn < 0) draw(current);
+          if (!raf) raf = requestAnimationFrame(tick);
         };
         imgs[i] = im;
       }
@@ -300,7 +309,7 @@ export default function SerumTurn() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <picture>
             <source media="(max-width: 880px)" srcSet="/images/serum-turn/final-m.webp" />
-            <img className="turn-final" src="/images/serum-turn/final.webp" alt="" width={1440} height={3360} loading="lazy" decoding="async" aria-hidden="true" />
+            <img className="turn-final" src="/images/serum-turn/final.webp" alt="" width={1440} height={3360} decoding="async" aria-hidden="true" />
           </picture>
         </div>
 

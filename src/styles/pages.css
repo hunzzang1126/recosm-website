@@ -2184,9 +2184,9 @@
   .turn.is-live .turn-node--l .turn-node-label,
   .turn.is-live .turn-node--r .turn-node-label {
     top: 14px;
-    left: -16vw;
+    left: -13.5vw;
     right: auto;
-    width: 32vw;
+    width: 27vw;
     text-align: center;
   }
 
