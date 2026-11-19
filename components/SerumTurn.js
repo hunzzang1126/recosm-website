@@ -18,29 +18,27 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 
 // frames per set: 240 for the turn (1.5 degrees a frame) and 60 for the cap lift
 const COUNT = { d: 300, m: 300 };
-// One scroll track for the whole scene (from the section's top edge 92% down the screen to its end):
-//   0 .. PLAY        the tube turns, grows and opens
-//   PLAY .. EXIT     the ingredient notes are up, to be read
+// One scroll track for the whole scene (from the section's top edge 92% down the screen to its end).
+// The section is 4.1 screens tall, so the track is 4.02 screens long:
+//   0 .. PLAY        the tube turns, grows and opens (done 0.6 of a screen after the scene fills the view)
+//   meanwhile        the notes scroll past the tube, one every 0.3 of a screen
 //   EXIT .. EXIT_END the tube and the model sweep out and the statement comes in, tied to the scroll
-// The next block of the page is part of this same scene, so nothing is cut at a block edge.
-const PLAY = 0.5;
-const EXIT = 0.7;
-const EXIT_END = 0.93;
+const PLAY = 0.38;
+const EXIT = 0.84;
+const EXIT_END = 0.975;
 const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
 
-// Positions are percentages of the stage: d = wide screens (tube stands at 69%), m = phones (tube centred).
-const HUB = { d: [69, 60], m: [50, 50] };
-const NODES = [
-  { id: "pg", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free.", d: [58, 22], m: [15, 30], sats: [{ label: "Fragrance-free", d: [62, 11] }] },
-  { id: "cap", title: "Capixyl™ peptide complex", body: "For fuller-looking lashes.", d: [80.5, 27], m: [85, 30], sats: [{ label: "Acetyl tetrapeptide-3", d: [89, 15] }, { label: "Red clover extract", d: [77.5, 12] }] },
-  { id: "bio", title: "Biotin", body: "A B-vitamin and building block of keratin.", d: [57.5, 47], m: [15, 50], sats: [{ label: "Keratin", d: [61.5, 37] }] },
-  { id: "pan", title: "Panthenol", body: "A humectant for flexible, less brittle lashes.", d: [81.5, 52], m: [85, 50], sats: [{ label: "Flexibility", d: [90, 42] }] },
-  { id: "cen", title: "Centella asiatica", body: "Tiger grass extract that soothes the lash line.", d: [58, 72], m: [15, 70], sats: [{ label: "Tiger grass", d: [61.5, 84] }] },
-  { id: "ha", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture.", d: [80.5, 78], m: [85, 70], sats: [{ label: "Moisture", d: [89, 89] }] },
+// The ingredient notes are ordinary page content laid out down the section: they scroll past the tube at the
+// page's own speed, alternating sides, each hanging off the tube by a short hairline.
+const NOTES = [
+  { title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free." },
+  { title: "Capixyl™ peptide complex", body: "Acetyl tetrapeptide-3 with red clover extract, for fuller-looking lashes." },
+  { title: "Biotin", body: "A B-vitamin and building block of keratin, for stronger-looking lashes." },
+  { title: "Panthenol", body: "A humectant for flexible, less brittle lashes." },
+  { title: "Centella asiatica", body: "Tiger grass extract that soothes the delicate lash line." },
+  { title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture." },
 ];
-// links between neighbours, so it reads as a web and not a list
-const CROSS = [["pg", "bio"], ["bio", "cen"], ["cap", "pan"], ["pan", "ha"]];
 
 const Arrow = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -56,7 +54,6 @@ export default function SerumTurn() {
   const canvasRef = useRef(null);
   const rigRef = useRef(null);
   const [live, setLive] = useState(false);
-  const [graph, setGraph] = useState(false);
   const [hold, setHold] = useState(false);
 
   useEffect(() => {
@@ -232,64 +229,15 @@ export default function SerumTurn() {
     );
     io.observe(section);
 
-    /* ---- ingredient graph: nodes drift a little, links follow ---- */
-    const nodeEls = Array.from(stage.querySelectorAll("[data-node]"));
-    const lineEls = Array.from(stage.querySelectorAll("[data-line]"));
-    const svg = stage.querySelector(".turn-links");
-    const base = { hub: HUB[key] };
-    nodeEls.forEach((el, n) => {
-      const xy = (el.dataset[key] || el.dataset.d).split(",").map(Number);
-      base[el.dataset.node] = { xy, phase: n * 1.7, el };
-    });
-    let graphRaf = 0;
-    let graphOn = false;
-    // once the move is done the graph shows
-    let moveDone = false;
-    let leaving = false;
+    /* ---- notes: the one passing the middle of the screen is at full strength ---- */
     let enterT = 0;
     let exitT = 0;
-    const sync = () => {
-      const g = moveDone && !leaving;
-      if (g !== graphOn) {
-        graphOn = g;
-        setGraph(g);
-        if (g && inView && !graphRaf) graphRaf = requestAnimationFrame(loop);
-      }
-    };
-    const place = (time) => {
-      const w = follow.clientWidth;
-      const h = follow.clientHeight;
-      const amp = phone ? 0 : 7; // px of drift (phones keep the notes still)
-      // links are drawn in real pixels, so their draw-on animation measures correctly
-      if (svg.getAttribute("viewBox") !== `0 0 ${w} ${h}`) svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
-      const pos = { hub: base.hub };
-      nodeEls.forEach((el) => {
-        const b = base[el.dataset.node];
-        const x = b.xy[0] + (Math.sin(time * 0.00042 + b.phase) * amp * 100) / w;
-        const y = b.xy[1] + (Math.cos(time * 0.00035 + b.phase * 1.3) * amp * 100) / h;
-        pos[el.dataset.node] = [x, y];
-        el.style.left = x + "%";
-        el.style.top = y + "%";
-      });
-      lineEls.forEach((ln) => {
-        const a = pos[ln.dataset.a];
-        const b = pos[ln.dataset.b];
-        if (!a || !b) return;
-        ln.setAttribute("d", `M${((a[0] * w) / 100).toFixed(1)} ${((a[1] * h) / 100).toFixed(1)}L${((b[0] * w) / 100).toFixed(1)} ${((b[1] * h) / 100).toFixed(1)}`);
-      });
-    };
-    // the drift only runs while the graph is showing and the scene is on screen
-    let inView = false;
-    const loop = (time) => {
-      place(time);
-      graphRaf = graphOn && inView ? requestAnimationFrame(loop) : 0;
-    };
-    const watch = new IntersectionObserver((entries) => {
-      inView = entries[0].isIntersecting;
-      if (inView && graphOn && !graphRaf) graphRaf = requestAnimationFrame(loop);
-    });
-    watch.observe(follow);
-    place(0);
+    const noteEls = Array.from(stage.querySelectorAll(".turn-note"));
+    const lit = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.target.classList.toggle("is-on", e.isIntersecting)),
+      { rootMargin: "-30% 0px -30% 0px" }
+    );
+    noteEls.forEach((el) => lit.observe(el));
 
     setLive(true);
     apply();
@@ -305,7 +253,6 @@ export default function SerumTurn() {
         exitT = x;
         stage.style.setProperty("--x", x.toFixed(4));
         stage.style.setProperty("--w", (enterT * (1 - x)).toFixed(4));
-        leaving = p >= EXIT - 0.02;
         // Only after the scroll has truly come to rest, drift onto the nearest whole frame so the print is
         // crisp. The wait is long on purpose: a short one fired between the small steps of a slow scroll and
         // snapped the tube back and forth, which read as stutter.
@@ -314,8 +261,6 @@ export default function SerumTurn() {
           target = Math.round(target);
           if (!raf) raf = requestAnimationFrame(tick);
         }, 700);
-        moveDone = p >= PLAY + 0.02;
-        sync();
         if (!raf) raf = requestAnimationFrame(tick);
       },
     });
@@ -335,20 +280,17 @@ export default function SerumTurn() {
       clearTimeout(refresh);
       clearTimeout(settle);
       io.disconnect();
-      watch.disconnect();
+      lit.disconnect();
       st.kill();
       enter.kill();
-      graphOn = false;
       dead = true;
       for (const bm of bitmaps.values()) if (bm.close) bm.close();
       bitmaps.clear();
       if (raf) cancelAnimationFrame(raf);
-      if (graphRaf) cancelAnimationFrame(graphRaf);
     };
   }, []);
 
-  const cls = ["turn", live ? "is-live" : "", graph ? "is-graph" : "", hold ? "is-hold" : ""].filter(Boolean).join(" ");
-  let order = 0;
+  const cls = ["turn", live ? "is-live" : "", hold ? "is-hold" : ""].filter(Boolean).join(" ");
 
   return (
     <section ref={sectionRef} className={cls} id="home-serum" aria-label="The formula">
@@ -360,19 +302,6 @@ export default function SerumTurn() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/model/turn-tall.jpg" alt="" loading="lazy" decoding="async" />
           </div>
-        <svg className="turn-links" viewBox="0 0 100 100" aria-hidden="true">
-          {NODES.map((n, i) => (
-            <path key={n.id} data-line data-a="hub" data-b={n.id} pathLength="1" style={{ "--i": i }} />
-          ))}
-          {CROSS.map(([a, b], i) => (
-            <path key={a + b} className="turn-link-cross" data-line data-a={a} data-b={b} pathLength="1" style={{ "--i": 6 + i }} />
-          ))}
-          {NODES.flatMap((n) =>
-            n.sats.map((s, j) => (
-              <path key={n.id + j} className="turn-link-sat" data-line data-a={n.id} data-b={`${n.id}-${j}`} pathLength="1" style={{ "--i": 8 + j }} />
-            ))
-          )}
-        </svg>
 
         <header className="turn-head">
           <p className="turn-kicker">The Formula</p>
@@ -400,32 +329,6 @@ export default function SerumTurn() {
           </picture>
         </div>
 
-        <ul className="turn-nodes">
-          {NODES.map((n) => (
-            <li
-              key={n.id}
-              className={`turn-node turn-node--${n.d[0] < HUB.d[0] ? "l" : "r"}`}
-              data-node={n.id}
-              data-d={n.d.join(",")}
-              data-m={n.m.join(",")}
-              style={{ "--i": order++ }}
-            >
-              <span className="turn-node-dot" aria-hidden="true" />
-              <span className="turn-node-label">
-                <span className="turn-node-t">{n.title}</span>
-                <span className="turn-node-d">{n.body}</span>
-              </span>
-            </li>
-          ))}
-          {NODES.flatMap((n) =>
-            n.sats.map((s, j) => (
-              <li key={n.id + j} className="turn-node turn-node--sat" data-node={`${n.id}-${j}`} data-d={s.d.join(",")} aria-hidden="true" style={{ "--i": 7 + j }}>
-                <span className="turn-node-dot" />
-                <span className="turn-node-label"><span className="turn-node-t">{s.label}</span></span>
-              </li>
-            ))
-          )}
-        </ul>
 
         <p className="turn-say" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
           <span>No prostaglandins.</span>
@@ -435,15 +338,25 @@ export default function SerumTurn() {
 
         <div className="turn-buy">
           <p className="turn-meta">10 mL · $55.00 CAD</p>
-          <Link href="/product" className="turn-link" tabIndex={live && !graph ? -1 : undefined}>
+          <Link href="/product" className="turn-link">
             Discover the serum
             <span className="turn-link-arrow"><Arrow /></span>
           </Link>
-          <Link href="/science" className="turn-sublink" tabIndex={live && !graph ? -1 : undefined}>
+          <Link href="/science" className="turn-sublink">
             Full ingredient list
           </Link>
         </div>
         </div>
+
+        <ol className="turn-track">
+          {NOTES.map((n, i) => (
+            <li key={n.title} className={`turn-note turn-note--${i % 2 ? "r" : "l"}`} style={{ "--n": i }}>
+              <span className="turn-note-n">{String(i + 1).padStart(2, "0")}</span>
+              <span className="turn-note-t">{n.title}</span>
+              <span className="turn-note-d">{n.body}</span>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
