@@ -1821,8 +1821,28 @@
   height: 14px;
 }
 
-/* ---- Live scene: an ordinary one-screen section. Nothing is pinned: it scrolls with the page, and the
-   move plays as the section comes into view, so the page reads as one continuous scroll. ---- */
+/* ---- Live scene. Nothing is pinned. The move plays as the section comes into view; then, while the visitor
+   keeps scrolling, the stage keeps travelling (more slowly than the page) and the camera pushes in on the
+   tube, and the next section rises over it. One continuous scroll, no stop. ---- */
+.turn.is-live {
+  height: 185vh;
+  /* every scene on this page hands over the same way: the next one rises over it as a rounded sheet.
+     A sliver of this one already shows at the foot of the hero, so it is clear there is more below. */
+  z-index: 1;
+  margin-top: -3.5vh;
+  border-radius: 34px 34px 0 0;
+  overflow: hidden;
+  box-shadow: 0 -30px 60px rgba(60, 18, 0, 0.28);
+}
+
+/* the next section slides up over the end of the scene, timed with the push-in */
+.turn.is-live + .ethos {
+  z-index: 2;
+  will-change: transform;
+  margin-top: -26vh;
+  border-radius: 34px 34px 0 0;
+  box-shadow: 0 -30px 60px rgba(96, 28, 0, 0.22);
+}
 
 .turn.is-live .turn-stage {
   /* --rx: where the tube stands; --rh: its full height; --rw: the frame's width at that height */
@@ -1835,6 +1855,8 @@
   width: 100%;
   height: 100vh;
   min-height: 620px;
+  transform: translate3d(0, var(--drift, 0px), 0);
+  will-change: transform;
   max-width: none;
   padding: 0;
   overflow: hidden;
@@ -1879,7 +1901,7 @@
   width: var(--rw);
   height: var(--rh);
   margin: 0;
-  transform: translate3d(-50%, calc(var(--oy) * -1), 0) scale(var(--s, 0.44));
+  transform: translate3d(-50%, calc(var(--oy) * -1), 0) scale(calc(var(--s, 0.44) * var(--z, 1)));
   transform-origin: 50% var(--oy);
   will-change: transform;
   /* no CSS filter here: a filter on a scaling layer is re-rasterised every frame and stutters on phones.
@@ -2103,15 +2125,36 @@
 }
 
 @media (max-width: 880px) {
+  .turn {
+    background: #E8551E;
+  }
+
   .turn.is-live .turn-stage {
     --rx: 50%;
-    /* much larger than the screen: at rest the body with its logo and the brush fill the view, the cap is above it */
-    --rh: min(150vh, 330vw);
-    --ry: 50%;
-    --oy: 69%;
     background:
       radial-gradient(90% 60% at 50% 45%, #F47B45 0%, rgba(244, 123, 69, 0) 70%),
       #E8551E;
+  }
+
+  /* phones: the frames are rendered for this screen shape with the zoom in the camera, so the canvas simply
+     fills the stage; only the gentle push-in afterwards is a CSS scale */
+  .turn.is-live .turn-rig {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(var(--z, 1));
+    transform-origin: 50% 50%;
+  }
+
+  .turn.is-live .turn-canvas,
+  .turn.is-live .turn-final {
+    object-fit: cover;
+  }
+
+  .turn.is-live .turn-glow,
+  .turn.is-live .turn-floor {
+    display: none;
   }
 
   /* phones: no model photo, the tube and the graph have the whole screen */

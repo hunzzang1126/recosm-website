@@ -60,9 +60,25 @@ export default function HeroVideo() {
     };
     attach();
 
+    // The film only decodes while the hero is on screen: once it has scrolled away it is paused, which
+    // frees the phone for the scroll scenes below, and it resumes when the hero comes back.
+    let onScreen = true;
+    const seen = new IntersectionObserver(
+      (entries) => {
+        onScreen = entries[0].isIntersecting;
+        if (onScreen) {
+          if (el.paused && el.getAttribute("src")) tryPlay();
+        } else if (!el.paused) {
+          el.pause();
+        }
+      },
+      { threshold: 0.02 }
+    );
+    seen.observe(el);
+
     // a tab that was in the background, or a phone that was locked, comes back paused
     const resume = () => {
-      if (!document.hidden && el.paused) tryPlay();
+      if (!document.hidden && onScreen && el.paused) tryPlay();
     };
     document.addEventListener("visibilitychange", resume);
 
@@ -70,6 +86,7 @@ export default function HeroVideo() {
     if (portrait.addEventListener) portrait.addEventListener("change", attach);
     else if (portrait.addListener) portrait.addListener(attach);
     return () => {
+      seen.disconnect();
       document.removeEventListener("visibilitychange", resume);
       if (portrait.removeEventListener) portrait.removeEventListener("change", attach);
       else if (portrait.removeListener) portrait.removeListener(attach);

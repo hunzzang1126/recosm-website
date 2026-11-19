@@ -16,7 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FRAMES = 160;
 // The move plays while the section rises into view: it starts when the section's top edge is 92% down the
-// screen and is finished a little before the section fills the screen. Nothing is pinned.
+// screen and is finished a little before the section fills the screen. Nothing is pinned; see `through` below
+// for what happens after it.
 const PLAY = 0.86;
 const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
@@ -60,8 +61,8 @@ export default function SerumTurn() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const phone = window.matchMedia("(max-width: 880px)").matches;
-    // Phones draw a light frame set while the tube is moving (cheap to decode, so the scroll stays smooth) and
-    // show a high-resolution still of the last frame once it has come to rest. Wide screens draw the full set.
+    // Phones get their own render: phone-shaped frames (600 x 1300) that fill the screen, zoom included, and a
+    // 1170 x 2535 still of the last frame once it has come to rest. Wide screens draw the 720 x 1680 set.
     const set = phone ? "m" : "d";
     const key = phone ? "m" : "d";
     const ctx2d = canvas.getContext("2d");
@@ -101,8 +102,9 @@ export default function SerumTurn() {
 
     const apply = () => {
       const t = current / (FRAMES - 1);
+      // wide screens grow the tube with CSS; the phone frames are rendered with that zoom already in the camera
       const s0 = START_SCALE[key];
-      rig.style.setProperty("--s", (s0 + (1 - s0) * ease(Math.min(1, t / 0.82))).toFixed(4));
+      rig.style.setProperty("--s", phone ? "1" : (s0 + (1 - s0) * ease(Math.min(1, t / 0.82))).toFixed(4));
       if (Math.abs(current - drawn) > 0.01) draw(current);
       // at the end of the move the crisp still takes over from the canvas
       const atEnd = current >= FRAMES - 1.001;
@@ -178,10 +180,17 @@ export default function SerumTurn() {
         ln.setAttribute("d", `M${((a[0] * w) / 100).toFixed(1)} ${((a[1] * h) / 100).toFixed(1)}L${((b[0] * w) / 100).toFixed(1)} ${((b[1] * h) / 100).toFixed(1)}`);
       });
     };
+    // the drift only runs while the graph is showing and the scene is on screen
+    let inView = false;
     const loop = (time) => {
       place(time);
-      graphRaf = graphOn ? requestAnimationFrame(loop) : 0;
+      graphRaf = graphOn && inView ? requestAnimationFrame(loop) : 0;
     };
+    const watch = new IntersectionObserver((entries) => {
+      inView = entries[0].isIntersecting;
+      if (inView && graphOn && !graphRaf) graphRaf = requestAnimationFrame(loop);
+    });
+    watch.observe(stage);
     place(0);
 
     setLive(true);
@@ -202,7 +211,7 @@ export default function SerumTurn() {
         if (on !== graphOn) {
           graphOn = on;
           setGraph(on);
-          if (on && !graphRaf) graphRaf = requestAnimationFrame(loop);
+          if (on && inView && !graphRaf) graphRaf = requestAnimationFrame(loop);
         }
         if (!raf) raf = requestAnimationFrame(tick);
       },
@@ -217,14 +226,44 @@ export default function SerumTurn() {
         stage.style.setProperty("--w", (1 - Math.pow(1 - t, 3)).toFixed(4));
       },
     });
+    // After the move: no stop. While the page keeps scrolling the stage keeps travelling, only more slowly
+    // (DRIFT of the page speed is taken back), and the camera pushes in on the tube; the next section rises
+    // over the end of it.
+    const DRIFT = 0.72;
+    const PUSH = phone ? 0.16 : 0.3;
+    const next = section.nextElementSibling;
+    const follow = (p) => {
+      const room = section.offsetHeight - stage.offsetHeight;
+      stage.style.setProperty("--drift", (p * room * DRIFT).toFixed(1) + "px");
+      rig.style.setProperty("--z", (1 + PUSH * ease(p)).toFixed(4));
+      // the next section rides on the stage's bottom edge (a sliver showing), so no empty ground ever opens
+      // between them; it lands in its natural place exactly when the scene has passed
+      if (next) {
+        const overlap = -parseFloat(getComputedStyle(next).marginTop) || 0;
+        const peek = window.innerHeight * 0.02;
+        const y = Math.min(0, -room + overlap - peek + p * room * DRIFT);
+        next.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
+      }
+    };
+    follow(0);
+    const through = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => follow(self.progress),
+      onRefresh: (self) => follow(self.progress),
+    });
     const refresh = setTimeout(() => ScrollTrigger.refresh(), 60);
 
     return () => {
       clearTimeout(refresh);
       clearTimeout(settle);
       io.disconnect();
+      watch.disconnect();
       st.kill();
       enter.kill();
+      through.kill();
+      if (next) next.style.transform = "";
       graphOn = false;
       if (raf) cancelAnimationFrame(raf);
       if (graphRaf) cancelAnimationFrame(graphRaf);
@@ -276,7 +315,10 @@ export default function SerumTurn() {
           />
           <canvas ref={canvasRef} className="turn-canvas" width={720} height={1680} aria-hidden="true" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="turn-final" src="/images/serum-turn/final.webp" alt="" width={1440} height={3360} loading="lazy" decoding="async" aria-hidden="true" />
+          <picture>
+            <source media="(max-width: 880px)" srcSet="/images/serum-turn/final-m.webp" />
+            <img className="turn-final" src="/images/serum-turn/final.webp" alt="" width={1440} height={3360} loading="lazy" decoding="async" aria-hidden="true" />
+          </picture>
         </div>
 
         <ul className="turn-nodes">
