@@ -1836,39 +1836,45 @@
   min-height: 600px;
   max-width: none;
   padding: 0;
-  overflow: hidden;
+  /* visible: the model's figure runs on below the stage; the world clips at the page edges */
+  overflow: visible;
 }
 
-/* the model slides in as the scene arrives, at full colour, then stays */
+/* The model: a tall figure that starts in the scene and carries on down past it, behind the next block, so she
+   is never cut off at the scene's edge. She slides in as the scene arrives. Her picture's own backdrop is
+   feathered into the ground on the right and at the very bottom (well below her face). */
 .turn.is-live .turn-bg {
   display: block;
   position: absolute;
-  inset: 0;
+  left: -2vw;
+  top: 0;
+  width: 44vw;
+  aspect-ratio: 3072 / 5504;
+  pointer-events: none;
 }
 
 .turn.is-live .turn-bg img {
   position: absolute;
-  top: 0;
-  left: -26%;
-  width: 126%;
+  inset: 0;
+  width: 100%;
   max-width: none;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 30%;
-  -webkit-mask-image: linear-gradient(to right, #000 78%, transparent 97%);
-  mask-image: linear-gradient(to right, #000 78%, transparent 97%);
-  /* far enough that the whole picture, backdrop included, is off the stage when she is out */
-  transform: translate3d(calc((1 - var(--w, 0)) * -84%), 0, 0);
+  -webkit-mask-image: linear-gradient(to right, #000 70%, transparent 99%), linear-gradient(to bottom, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 70%, transparent 99%), linear-gradient(to bottom, #000 84%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  transform: translate3d(calc((1 - var(--w, 0)) * -108%), 0, 0);
   will-change: transform;
 }
 
 .turn.is-live .turn-head {
   position: absolute;
-  left: var(--container-pad);
-  bottom: clamp(32px, 7vh, 72px);
-  max-width: 24rem;
-  text-shadow: 0 1px 24px rgba(110, 32, 0, 0.5);
-  transition: opacity 0.4s ease;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .turn.is-live .turn-rig {
@@ -2328,6 +2334,29 @@
   line-height: var(--leading-relaxed);
   color: rgba(255, 255, 255, 0.94);
   max-width: 40ch;
+}
+
+/* --- statement: sits to the right of the model's figure, which carries on down behind this block --- */
+@media (min-width: 881px) {
+  .w-say {
+    padding-left: 34vw;
+    min-height: 44vw;
+    display: flex;
+    align-items: center;
+  }
+
+  .w-say-lines {
+    font-size: clamp(2.2rem, 4.7vw, 4.3rem);
+  }
+
+  .w-say-lines span {
+    white-space: nowrap;
+  }
+
+  /* the spine starts below her figure */
+  .world-rest::before {
+    top: 46vw;
+  }
 }
 
 /* --- statement --- */
