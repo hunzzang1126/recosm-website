@@ -16,7 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
 // A phone's address bar sliding away changes the viewport height; do not recalculate (and jump) on that.
 ScrollTrigger.config({ ignoreMobileResize: true });
 
-const FRAMES = 160;
+// frames per set: the phone set is already the dense one (1.5 degrees a frame)
+const COUNT = { d: 160, m: 300 };
 // The move is spread over the whole time the scene is with the visitor: it starts when the section's top edge
 // is 92% down the screen, keeps playing while the stage follows the scroll, and is finished with roughly half a
 // screen of following still to go, which is when the ingredient notes are read.
@@ -69,6 +70,7 @@ export default function SerumTurn() {
     // 1170 x 2535 still of the last frame once it has come to rest. Wide screens draw the 720 x 1680 set.
     const set = phone ? "m" : "d";
     const key = phone ? "m" : "d";
+    const FRAMES = COUNT[set];
     const ctx2d = canvas.getContext("2d");
     const imgs = new Array(FRAMES);
     const ready = (k) => imgs[k] && imgs[k].complete && imgs[k].naturalWidth;
