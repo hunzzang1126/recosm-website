@@ -235,7 +235,8 @@ export default function SerumTurn() {
     const noteEls = Array.from(stage.querySelectorAll(".turn-note"));
     const lit = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.target.classList.toggle("is-on", e.isIntersecting)),
-      { rootMargin: "-30% 0px -30% 0px" }
+      // a narrow band across the middle of the screen, so one note has its moment at a time
+      { rootMargin: "-38% 0px -38% 0px" }
     );
     noteEls.forEach((el) => lit.observe(el));
 
