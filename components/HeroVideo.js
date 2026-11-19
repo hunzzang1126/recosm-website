@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 // Brand film behind the home hero. The poster paints first (it is the LCP image),
 // then the right cut for the screen shape is attached and played, muted and looping.
-// People who ask for reduced motion keep the still poster.
+// If the phone refuses autoplay, it starts on the visitor's first touch or scroll.
 const SOURCES = {
   desktop: { video: "/videos/hero-desktop-v2.mp4", poster: "/images/hero-poster-desktop-v2.jpg" },
   mobile: { video: "/videos/hero-mobile-v5.mp4", poster: "/images/hero-poster-mobile-v5.jpg" },
@@ -17,7 +17,37 @@ export default function HeroVideo() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // iOS only autoplays a video that is muted and inline as real attributes, not just as properties
+    el.muted = true;
+    el.defaultMuted = true;
+    el.setAttribute("muted", "");
+    el.setAttribute("playsinline", "");
+    el.setAttribute("webkit-playsinline", "");
+
+    let waiting = false;
+    const tryPlay = () => {
+      const p = el.play();
+      if (p && p.catch) {
+        p.catch(() => {
+          // Autoplay was refused (iPhone Low Power Mode, data saver, some in-app browsers).
+          // Those allow playback after any touch, so start on the visitor's first one.
+          if (waiting) return;
+          waiting = true;
+          const go = () => {
+            waiting = false;
+            window.removeEventListener("touchend", go);
+            window.removeEventListener("click", go);
+            window.removeEventListener("scroll", go);
+            const again = el.play();
+            if (again && again.catch) again.catch(() => {});
+          };
+          window.addEventListener("touchend", go, { passive: true });
+          window.addEventListener("click", go);
+          window.addEventListener("scroll", go, { passive: true });
+        });
+      }
+    };
 
     const portrait = window.matchMedia("(max-aspect-ratio: 4/5)");
     const attach = () => {
@@ -26,12 +56,24 @@ export default function HeroVideo() {
       setPlaying(false);
       el.setAttribute("src", next);
       el.load();
-      const p = el.play();
-      if (p && p.catch) p.catch(() => {});
+      tryPlay();
     };
     attach();
-    portrait.addEventListener("change", attach);
-    return () => portrait.removeEventListener("change", attach);
+
+    // a tab that was in the background, or a phone that was locked, comes back paused
+    const resume = () => {
+      if (!document.hidden && el.paused) tryPlay();
+    };
+    document.addEventListener("visibilitychange", resume);
+
+    // older Safari has addListener only
+    if (portrait.addEventListener) portrait.addEventListener("change", attach);
+    else if (portrait.addListener) portrait.addListener(attach);
+    return () => {
+      document.removeEventListener("visibilitychange", resume);
+      if (portrait.removeEventListener) portrait.removeEventListener("change", attach);
+      else if (portrait.removeListener) portrait.removeListener(attach);
+    };
   }, []);
 
   return (
