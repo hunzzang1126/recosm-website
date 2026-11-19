@@ -57,7 +57,8 @@ export default function SerumTurn() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const phone = window.matchMedia("(max-width: 880px)").matches;
-    const set = phone ? "m" : "d";
+    // one frame set for every screen: 720 x 1680 matches a phone at 3x as well as a laptop at 2x
+    const set = "d";
     const key = phone ? "m" : "d";
     const ctx2d = canvas.getContext("2d");
     const imgs = new Array(FRAMES);
