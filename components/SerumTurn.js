@@ -51,6 +51,7 @@ export default function SerumTurn() {
   const [live, setLive] = useState(false);
   const [graph, setGraph] = useState(false);
   const [hold, setHold] = useState(false);
+  const [say, setSay] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -158,6 +159,25 @@ export default function SerumTurn() {
     });
     let graphRaf = 0;
     let graphOn = false;
+    // the scene's states: the move is done -> the graph shows; later the statement replaces it
+    let moveDone = false;
+    let sayOn = false;
+    let enterT = 0;
+    let leaveT = 0;
+    const sync = () => {
+      const g = moveDone && !sayOn;
+      if (g !== graphOn) {
+        graphOn = g;
+        setGraph(g);
+        if (g && inView && !graphRaf) graphRaf = requestAnimationFrame(loop);
+      }
+      const y = moveDone && sayOn;
+      if (y !== saying) {
+        saying = y;
+        setSay(y);
+      }
+    };
+    let saying = false;
     const place = (time) => {
       const w = stage.clientWidth;
       const h = stage.clientHeight;
@@ -207,12 +227,8 @@ export default function SerumTurn() {
           target = Math.round(target);
           if (!raf) raf = requestAnimationFrame(tick);
         }, 140);
-        const on = self.progress >= PLAY + 0.02;
-        if (on !== graphOn) {
-          graphOn = on;
-          setGraph(on);
-          if (on && inView && !graphRaf) graphRaf = requestAnimationFrame(loop);
-        }
+        moveDone = self.progress >= PLAY + 0.02;
+        sync();
         if (!raf) raf = requestAnimationFrame(tick);
       },
     });
@@ -222,28 +238,26 @@ export default function SerumTurn() {
       start: "top 100%",
       end: "top 30%",
       onUpdate: (self) => {
-        const t = self.progress;
-        stage.style.setProperty("--w", (1 - Math.pow(1 - t, 3)).toFixed(4));
+        enterT = 1 - Math.pow(1 - self.progress, 3);
+        stage.style.setProperty("--w", (enterT * (1 - leaveT)).toFixed(4));
       },
     });
     // After the move: no stop. While the page keeps scrolling the stage keeps travelling, only more slowly
-    // (DRIFT of the page speed is taken back), and the camera pushes in on the tube; the next section rises
-    // over the end of it.
+    // (DRIFT of the page speed is taken back) and the camera eases in on the tube. Part-way through, the
+    // graph clears, the model slides back out and the brand's statement takes her place: the next part of
+    // the page comes out of this same scene, on the same ground.
     const DRIFT = 0.72;
-    const PUSH = phone ? 0.16 : 0.3;
-    const next = section.nextElementSibling;
+    const PUSH = phone ? 0.1 : 0.1;
+    const SAY_AT = 0.3;
     const follow = (p) => {
       const room = section.offsetHeight - stage.offsetHeight;
       stage.style.setProperty("--drift", (p * room * DRIFT).toFixed(1) + "px");
       rig.style.setProperty("--z", (1 + PUSH * ease(p)).toFixed(4));
-      // the next section rides on the stage's bottom edge (a sliver showing), so no empty ground ever opens
-      // between them; it lands in its natural place exactly when the scene has passed
-      if (next) {
-        const overlap = -parseFloat(getComputedStyle(next).marginTop) || 0;
-        const peek = window.innerHeight * 0.02;
-        const y = Math.min(0, -room + overlap - peek + p * room * DRIFT);
-        next.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
-      }
+      const out = Math.min(1, Math.max(0, (p - (SAY_AT - 0.1)) / 0.22));
+      leaveT = out * out;
+      stage.style.setProperty("--w", (enterT * (1 - leaveT)).toFixed(4));
+      sayOn = p >= SAY_AT;
+      sync();
     };
     follow(0);
     const through = ScrollTrigger.create({
@@ -263,14 +277,13 @@ export default function SerumTurn() {
       st.kill();
       enter.kill();
       through.kill();
-      if (next) next.style.transform = "";
       graphOn = false;
       if (raf) cancelAnimationFrame(raf);
       if (graphRaf) cancelAnimationFrame(graphRaf);
     };
   }, []);
 
-  const cls = ["turn", live ? "is-live" : "", graph ? "is-graph" : "", hold ? "is-hold" : ""].filter(Boolean).join(" ");
+  const cls = ["turn", live ? "is-live" : "", graph ? "is-graph" : "", hold ? "is-hold" : "", say ? "is-say" : ""].filter(Boolean).join(" ");
   let order = 0;
 
   return (
@@ -294,6 +307,12 @@ export default function SerumTurn() {
             ))
           )}
         </svg>
+
+        <p className="turn-say" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
+          <span style={{ "--i": 0 }}>No prostaglandins.</span>
+          <span style={{ "--i": 1 }}>No black boxes.</span>
+          <span style={{ "--i": 2 }}><em>Nothing</em> to hide.</span>
+        </p>
 
         <header className="turn-head">
           <p className="turn-kicker">The Formula</p>
