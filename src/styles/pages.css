@@ -1820,9 +1820,9 @@
   height: 14px;
 }
 
-/* ---- Live scene. The screen is never held: the ground, the grid and the model scroll past at the page's
-   own speed. Only the tube with its notes travels down with the reader for a while (a small transparent layer),
-   and the move keeps playing across that distance. ---- */
+/* ---- Live scene. The model, the tube, its notes and the price travel down with the reader as one group
+   (a transparent layer), and the move keeps playing across that distance. The ground and its grid are not
+   part of that layer: they scroll past behind the group, so the page is visibly moving the whole time. ---- */
 .turn.is-live {
   height: 235vh;
   height: 235svh;
@@ -2249,8 +2249,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.075) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.075) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.11) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.11) 1px, transparent 1px);
   background-size: 64px 64px;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 50svh, #000 110svh);
   mask-image: linear-gradient(to bottom, transparent 0, transparent 50svh, #000 110svh);

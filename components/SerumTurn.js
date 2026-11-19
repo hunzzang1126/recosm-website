@@ -257,13 +257,13 @@ export default function SerumTurn() {
   return (
     <section ref={sectionRef} className={cls} id="home-serum" aria-label="The formula">
       <div className="turn-stage">
-        <div className="turn-bg" aria-hidden="true">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/model/turn-tall.jpg" alt="" loading="lazy" decoding="async" />
-        </div>
-
-        {/* only this layer travels with the reader; the ground, the grid and the model scroll past as usual */}
+        {/* this layer travels with the reader as one group: the model, the tube, its notes and the price.
+            The ground and its grid scroll past behind them, so the page is visibly moving the whole time. */}
         <div className="turn-follow">
+          <div className="turn-bg" aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/model/turn-tall.jpg" alt="" loading="lazy" decoding="async" />
+          </div>
         <svg className="turn-links" viewBox="0 0 100 100" aria-hidden="true">
           {NODES.map((n, i) => (
             <path key={n.id} data-line data-a="hub" data-b={n.id} pathLength="1" style={{ "--i": i }} />
