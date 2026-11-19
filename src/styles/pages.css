@@ -1821,10 +1821,8 @@
   height: 14px;
 }
 
-/* ---- Live scene: the stage is held by CSS sticky while the section scrolls past ---- */
-.turn.is-live {
-  height: 440vh;
-}
+/* ---- Live scene: an ordinary one-screen section. Nothing is pinned: it scrolls with the page, and the
+   move plays as the section comes into view, so the page reads as one continuous scroll. ---- */
 
 .turn.is-live .turn-stage {
   /* --rx: where the tube stands; --rh: its full height; --rw: the frame's width at that height */
@@ -1833,10 +1831,10 @@
   --rw: calc(var(--rh) * 0.42857);
   --ry: calc(50% + 34px);  /* where the rig's anchor sits on the stage */
   --oy: 50%;               /* the anchor inside the rig: the point it grows around */
-  position: sticky;
-  top: 0;
+  position: relative;
   width: 100%;
   height: 100vh;
+  min-height: 620px;
   max-width: none;
   padding: 0;
   overflow: hidden;
@@ -2122,6 +2120,7 @@
   }
 
   /* the tube now runs the full height of the screen, so the heading is kept for screen readers only */
+  /* the tube runs the full height of the screen here, so the heading is kept for screen readers only */
   .turn.is-live .turn-head {
     position: absolute;
     width: 1px;

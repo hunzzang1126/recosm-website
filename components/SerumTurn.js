@@ -4,7 +4,7 @@
 // turns once on its axis while it grows to fill the screen, the cap lifts to show the applicator, and then the
 // formula appears around it as a linked graph of ingredients.
 // 160 pre-rendered frames (transparent WebP, 3 degrees apart) are drawn to a canvas and cross-blended while
-// moving, so the turn is continuous at any scroll speed; at rest it settles on a whole frame, so it stays crisp. The stage is held with CSS sticky, not a script. Without JavaScript,
+// moving, so the turn is continuous at any scroll speed; at rest it settles on a whole frame, so it stays crisp. The section is not pinned: it scrolls with the page and the move plays as it comes into view. Without JavaScript,
 // or with reduced motion, the same ingredients read as an ordinary list beside a still tube.
 
 import { useEffect, useRef, useState } from "react";
@@ -15,7 +15,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const FRAMES = 160;
-const PLAY = 0.66; // share of the scroll track the move takes; the graph holds for the rest
+// The move plays while the section rises into view: it starts when the section's top edge is 92% down the
+// screen and is finished a little before the section fills the screen. Nothing is pinned.
+const PLAY = 0.86;
 const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
 
@@ -111,7 +113,7 @@ export default function SerumTurn() {
     };
 
     const tick = () => {
-      current += (target - current) * 0.12;
+      current += (target - current) * 0.16;
       if (Math.abs(target - current) < 0.01) current = target;
       apply();
       raf = current === target ? 0 : requestAnimationFrame(tick);
@@ -186,8 +188,8 @@ export default function SerumTurn() {
     apply();
     const st = ScrollTrigger.create({
       trigger: section,
-      start: "top top",
-      end: "bottom bottom",
+      start: "top 92%",
+      end: "top top",
       onUpdate: (self) => {
         target = Math.min(1, self.progress / PLAY) * (FRAMES - 1);
         // once the scroll rests, ease onto the nearest whole frame (no half-blended print)
@@ -196,7 +198,7 @@ export default function SerumTurn() {
           target = Math.round(target);
           if (!raf) raf = requestAnimationFrame(tick);
         }, 140);
-        const on = self.progress >= PLAY + 0.03;
+        const on = self.progress >= PLAY + 0.02;
         if (on !== graphOn) {
           graphOn = on;
           setGraph(on);
@@ -208,8 +210,8 @@ export default function SerumTurn() {
     // the model comes in as the scene arrives
     const enter = ScrollTrigger.create({
       trigger: section,
-      start: "top 80%",
-      end: "top -30%",
+      start: "top 100%",
+      end: "top 30%",
       onUpdate: (self) => {
         const t = self.progress;
         stage.style.setProperty("--w", (1 - Math.pow(1 - t, 3)).toFixed(4));
