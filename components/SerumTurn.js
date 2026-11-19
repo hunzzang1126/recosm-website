@@ -23,13 +23,14 @@ const COUNT = { d: 480, m: 480 };
 const MOVE = 300;
 const LOOP = 180;
 // One scroll track for the whole scene (from the section's top edge 92% down the screen to its end).
-// The section is 4.1 screens tall, so the track is 4.02 screens long:
+// The section is 4.6 screens tall, so the track is 4.52 screens long (about one screen of it comes after
+// EXIT, which is the room the last chapter needs to play out):
 //   0 .. PLAY        the tube turns, grows and opens (done 0.6 of a screen after the scene fills the view)
 //   meanwhile        the notes scroll past the tube, one every 0.3 of a screen
 //   EXIT .. EXIT_END the tube and the model sweep out and the statement comes in, tied to the scroll
-const PLAY = 0.38;
-const EXIT = 0.84;
-const EXIT_END = 0.975;
+const PLAY = 0.336;
+const EXIT = 0.748;
+const EXIT_END = 0.867;
 const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
 
@@ -265,7 +266,7 @@ export default function SerumTurn() {
     let spinStart = 0;
     let spinRaf = 0;
     const spinTick = (now) => {
-      const k = Math.min(1, (now - spinStart) / 950);
+      const k = Math.min(1, (now - spinStart) / (gone ? 2400 : 900));
       spin = spinFrom + (spinTo - spinFrom) * (k * k * (3 - 2 * k));
       warm();
       apply();
@@ -294,7 +295,7 @@ export default function SerumTurn() {
           gone = out;
           stage.classList.toggle("is-out", out);
           spinFrom = spin;
-          spinTo = out ? LOOP * 1.5 : 0;
+          spinTo = out ? LOOP * 2 : 0;
           spinStart = performance.now();
           if (!spinRaf) spinRaf = requestAnimationFrame(spinTick);
         }
