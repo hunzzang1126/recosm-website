@@ -1824,8 +1824,8 @@
    (a transparent layer), and the move keeps playing across that distance. The ground and its grid are not
    part of that layer: they scroll past behind the group, so the page is visibly moving the whole time. ---- */
 .turn.is-live {
-  height: 235vh;
-  height: 235svh;
+  height: 300vh;
+  height: 300svh;
 }
 .turn.is-live .turn-stage {
   /* --rx: where the tube stands; --rh: its full height; --rw: the frame's width at that height */
@@ -1888,6 +1888,8 @@
   height: var(--rh);
   margin: 0;
   transform: translate3d(-50%, calc(var(--oy) * -1), 0) scale(var(--s, 0.44));
+  /* the sweep out at the end of the scene, tied to the scroll */
+  translate: 0 calc(var(--x, 0) * -125vh);
   transform-origin: 50% var(--oy);
   will-change: transform;
   /* no CSS filter here: a filter on a scaling layer is re-rasterised every frame and stutters on phones.
@@ -1978,6 +1980,44 @@
 
 .turn.is-live .turn-follow a {
   pointer-events: auto;
+}
+
+/* The statement: part of the scene. It rises in as the tube sweeps out, both driven by the scroll. */
+.turn-say {
+  display: none;
+}
+
+.turn.is-live .turn-say {
+  display: block;
+  position: absolute;
+  left: var(--container-pad);
+  right: var(--container-pad);
+  top: 50%;
+  margin: 0;
+  text-align: center;
+  font-size: var(--display-lg);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.04;
+  color: #fff;
+  opacity: calc(var(--x, 0) * 1.6 - 0.45);
+  transform: translate3d(0, calc(-50% + (1 - var(--x, 0)) * 46vh), 0);
+  will-change: transform, opacity;
+}
+
+.turn.is-live .turn-say span {
+  display: block;
+}
+
+.turn.is-live .turn-say em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
+}
+
+.turn.is-live .turn-buy {
+  /* leaves with the tube */
+  translate: 0 calc(var(--x, 0) * -60vh);
 }
 
 /* ---- ingredient graph ---- */
@@ -2144,6 +2184,7 @@
     width: 100%;
     height: 100%;
     transform: none;
+    translate: 0 calc(var(--x, 0) * -125vh);
   }
 
   .turn.is-live .turn-canvas,
@@ -2188,6 +2229,10 @@
     right: auto;
     width: 27vw;
     text-align: center;
+  }
+
+  .turn.is-live .turn-say {
+    font-size: clamp(1.9rem, 9vw, 2.8rem);
   }
 
   .turn.is-live .turn-node-t {
@@ -2240,7 +2285,7 @@
   color: var(--color-bg-white);
   /* the scene's own orange for as long as the scene runs, then it deepens gradually so the smaller type
      further down has more contrast */
-  background: linear-gradient(to bottom, #E45A32 0, #EE6334 60vh, #EE6334 235svh, #E4531C calc(235svh + 70vh), #CF4712 calc(235svh + 240vh), #C64311 100%);
+  background: linear-gradient(to bottom, #E45A32 0, #EE6334 60vh, #EE6334 300svh, #E4531C calc(300svh + 70vh), #CF4712 calc(300svh + 240vh), #C64311 100%);
 }
 
 /* drafting grid, very faint, across the whole world */
@@ -2359,49 +2404,6 @@
   line-height: var(--leading-relaxed);
   color: rgba(255, 255, 255, 0.94);
   max-width: 40ch;
-}
-
-/* --- statement: sits to the right of the model's figure, which carries on down behind this block --- */
-@media (min-width: 881px) {
-  .w-say {
-    padding-left: 34vw;
-    min-height: 44vw;
-    display: flex;
-    align-items: center;
-  }
-
-  .w-say-lines {
-    font-size: clamp(2.2rem, 4.7vw, 4.3rem);
-  }
-
-  .w-say-lines span {
-    white-space: nowrap;
-  }
-
-  /* the spine starts below her figure */
-  .world-rest::before {
-    top: 46vw;
-  }
-}
-
-/* --- statement --- */
-.w-say-lines {
-  margin: 0;
-  font-size: var(--display-lg);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.02;
-  color: #fff;
-}
-
-.w-say-lines span {
-  display: block;
-}
-
-.w-say-lines em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: var(--font-weight-regular);
 }
 
 /* --- principles: three points on one hairline --- */
@@ -2631,7 +2633,7 @@
 
 @media (max-width: 880px) {
   .world {
-    background: linear-gradient(to bottom, #E8551E 0, #E8551E 100svh, #DE4E18 calc(100svh + 70vh), #CC4611 calc(235svh + 260vh), #C64311 100%);
+    background: linear-gradient(to bottom, #E8551E 0, #E8551E 100svh, #DE4E18 calc(100svh + 70vh), #CC4611 calc(300svh + 260vh), #C64311 100%);
   }
 
   .world-rest {

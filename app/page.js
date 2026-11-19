@@ -76,15 +76,6 @@ export default function HomePage() {
         <SerumTurn />
 
         <div className="world-rest">
-          {/* Statement */}
-          <section className="w-sec w-say" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
-            <p className="w-say-lines">
-              <span className="reveal">No prostaglandins.</span>
-              <span className="reveal delay-1">No black boxes.</span>
-              <span className="reveal delay-2"><em>Nothing</em> to hide.</span>
-            </p>
-          </section>
-
           {/* Principles */}
           <section className="w-sec w-principles" id="home-ethos">
             <p className="w-kicker reveal">Ethos</p>

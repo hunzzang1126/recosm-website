@@ -18,10 +18,14 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 
 // frames per set: the phone set is already the dense one (1.5 degrees a frame)
 const COUNT = { d: 160, m: 300 };
-// The move is spread over the whole time the scene is with the visitor: it starts when the section's top edge
-// is 92% down the screen, keeps playing while the stage follows the scroll, and is finished with roughly half a
-// screen of following still to go, which is when the ingredient notes are read.
-const PLAY = 0.66;
+// One scroll track for the whole scene (from the section's top edge 92% down the screen to its end):
+//   0 .. PLAY        the tube turns, grows and opens
+//   PLAY .. EXIT     the ingredient notes are up, to be read
+//   EXIT .. EXIT_END the tube and the model sweep out and the statement comes in, tied to the scroll
+// The next block of the page is part of this same scene, so nothing is cut at a block edge.
+const PLAY = 0.5;
+const EXIT = 0.7;
+const EXIT_END = 0.93;
 const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
 
@@ -175,11 +179,15 @@ export default function SerumTurn() {
     let graphOn = false;
     // once the move is done the graph shows
     let moveDone = false;
+    let leaving = false;
+    let enterT = 0;
+    let exitT = 0;
     const sync = () => {
-      if (moveDone !== graphOn) {
-        graphOn = moveDone;
-        setGraph(moveDone);
-        if (moveDone && inView && !graphRaf) graphRaf = requestAnimationFrame(loop);
+      const g = moveDone && !leaving;
+      if (g !== graphOn) {
+        graphOn = g;
+        setGraph(g);
+        if (g && inView && !graphRaf) graphRaf = requestAnimationFrame(loop);
       }
     };
     const place = (time) => {
@@ -224,7 +232,14 @@ export default function SerumTurn() {
       start: "top 92%",
       end: "bottom bottom",
       onUpdate: (self) => {
-        target = Math.min(1, self.progress / PLAY) * (FRAMES - 1);
+        const p = self.progress;
+        target = Math.min(1, p / PLAY) * (FRAMES - 1);
+        // the hand-over is scrubbed straight from the scroll position: no timers, no transitions to catch up
+        const x = Math.min(1, Math.max(0, (p - EXIT) / (EXIT_END - EXIT)));
+        exitT = x;
+        stage.style.setProperty("--x", x.toFixed(4));
+        stage.style.setProperty("--w", (enterT * (1 - x)).toFixed(4));
+        leaving = p >= EXIT - 0.02;
         // Only after the scroll has truly come to rest, drift onto the nearest whole frame so the print is
         // crisp. The wait is long on purpose: a short one fired between the small steps of a slow scroll and
         // snapped the tube back and forth, which read as stutter.
@@ -233,7 +248,7 @@ export default function SerumTurn() {
           target = Math.round(target);
           if (!raf) raf = requestAnimationFrame(tick);
         }, 700);
-        moveDone = self.progress >= PLAY + 0.02;
+        moveDone = p >= PLAY + 0.02;
         sync();
         if (!raf) raf = requestAnimationFrame(tick);
       },
@@ -244,7 +259,8 @@ export default function SerumTurn() {
       start: "top 100%",
       end: "top 30%",
       onUpdate: (self) => {
-        stage.style.setProperty("--w", (1 - Math.pow(1 - self.progress, 3)).toFixed(4));
+        enterT = 1 - Math.pow(1 - self.progress, 3);
+        stage.style.setProperty("--w", (enterT * (1 - exitT)).toFixed(4));
       },
     });
     const refresh = setTimeout(() => ScrollTrigger.refresh(), 60);
@@ -341,6 +357,12 @@ export default function SerumTurn() {
             ))
           )}
         </ul>
+
+        <p className="turn-say" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
+          <span>No prostaglandins.</span>
+          <span>No black boxes.</span>
+          <span><em>Nothing</em> to hide.</span>
+        </p>
 
         <div className="turn-buy">
           <p className="turn-meta">10 mL · $55.00 CAD</p>
