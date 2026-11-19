@@ -1820,13 +1820,7 @@
   height: 14px;
 }
 
-/* ---- Live scene. Nothing is pinned. The move plays as the section comes into view; then, while the visitor
-   keeps scrolling, the stage keeps travelling (more slowly than the page) and the camera pushes in on the
-   tube, and the next section rises over it. One continuous scroll, no stop. ---- */
-.turn.is-live {
-  height: 205vh;
-}
-
+/* ---- Live scene: one screen tall, moving at the page's own speed. Nothing is pinned, held or slowed. ---- */
 .turn.is-live .turn-stage {
   /* --rx: where the tube stands; --rh: its full height; --rw: the frame's width at that height */
   --rx: 69%;
@@ -1837,9 +1831,9 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 620px;
-  transform: translate3d(0, var(--drift, 0px), 0);
-  will-change: transform;
+  /* the small-viewport unit does not change when a phone's address bar slides away, so nothing jumps */
+  height: 100svh;
+  min-height: 600px;
   max-width: none;
   padding: 0;
   overflow: hidden;
@@ -1868,49 +1862,6 @@
   will-change: transform;
 }
 
-/* the brand's statement: comes up in the model's place once the graph has cleared */
-.turn-say {
-  display: none;
-}
-
-.turn.is-live .turn-say {
-  display: block;
-  position: absolute;
-  left: var(--container-pad);
-  top: 50%;
-  width: min(52vw, 46rem);
-  margin: 0;
-  transform: translateY(-50%);
-  font-size: var(--display-lg);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.02;
-  pointer-events: none;
-}
-
-.turn.is-live .turn-say span {
-  display: block;
-  opacity: 0;
-  transform: translateY(0.6em);
-  transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.turn.is-live .turn-say em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: var(--font-weight-regular);
-}
-
-.turn.is-live.is-say .turn-say span {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: calc(120ms + var(--i) * 110ms);
-}
-
-.turn.is-live.is-say .turn-head {
-  opacity: 0;
-}
-
 .turn.is-live .turn-head {
   position: absolute;
   left: var(--container-pad);
@@ -1927,7 +1878,7 @@
   width: var(--rw);
   height: var(--rh);
   margin: 0;
-  transform: translate3d(-50%, calc(var(--oy) * -1), 0) scale(calc(var(--s, 0.44) * var(--z, 1)));
+  transform: translate3d(-50%, calc(var(--oy) * -1), 0) scale(var(--s, 0.44));
   transform-origin: 50% var(--oy);
   will-change: transform;
   /* no CSS filter here: a filter on a scaling layer is re-rasterised every frame and stutters on phones.
@@ -2163,38 +2114,12 @@
     top: 0;
     width: 100%;
     height: 100%;
-    transform: scale(var(--z, 1));
-    transform-origin: 50% 50%;
+    transform: none;
   }
 
   .turn.is-live .turn-canvas,
   .turn.is-live .turn-final {
     object-fit: cover;
-  }
-
-  .turn.is-live .turn-rig {
-    transition: translate 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .turn.is-live.is-say .turn-rig {
-    translate: 31% 0;
-  }
-
-  .turn.is-live .turn-say {
-    left: var(--container-pad);
-    top: 46%;
-    width: 60vw;
-    font-size: clamp(1.7rem, 8.4vw, 2.5rem);
-    line-height: 1.06;
-  }
-
-  .turn.is-live.is-say .turn-buy {
-    opacity: 0;
-  }
-
-  .turn.is-live .turn-glow,
-  .turn.is-live .turn-floor {
-    display: none;
   }
 
   /* phones: no model photo, the tube and the graph have the whole screen */
@@ -2284,7 +2209,7 @@
   color: var(--color-bg-white);
   /* the scene's own orange for as long as the scene runs, then it deepens gradually so the smaller type
      further down has more contrast */
-  background: linear-gradient(to bottom, #E45A32 0, #EE6334 60vh, #EE6334 200vh, #E4531C calc(200vh + 70vh), #CF4712 calc(200vh + 240vh), #C64311 100%);
+  background: linear-gradient(to bottom, #E45A32 0, #EE6334 60vh, #EE6334 100svh, #E4531C calc(100svh + 70vh), #CF4712 calc(100svh + 240vh), #C64311 100%);
 }
 
 /* drafting grid, very faint, across the whole world */
@@ -2296,8 +2221,8 @@
     linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
   background-size: 64px 64px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 180vh, #000 calc(180vh + 60vh));
-  mask-image: linear-gradient(to bottom, transparent 0, transparent 180vh, #000 calc(180vh + 60vh));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 90svh, #000 calc(90svh + 60vh));
+  mask-image: linear-gradient(to bottom, transparent 0, transparent 90svh, #000 calc(90svh + 60vh));
   pointer-events: none;
 }
 
@@ -2403,6 +2328,26 @@
   line-height: var(--leading-relaxed);
   color: rgba(255, 255, 255, 0.94);
   max-width: 40ch;
+}
+
+/* --- statement --- */
+.w-say-lines {
+  margin: 0;
+  font-size: var(--display-lg);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.02;
+  color: #fff;
+}
+
+.w-say-lines span {
+  display: block;
+}
+
+.w-say-lines em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
 }
 
 /* --- principles: three points on one hairline --- */
@@ -2541,14 +2486,17 @@
   min-height: 18rem;
 }
 
-.w-card-img img {
+.w-card-img img,
+.w-card-img video {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.w-card:hover .w-card-img img {
+.w-card:hover .w-card-img img,
+.w-card:hover .w-card-img video {
   transform: scale(1.04);
 }
 
@@ -2629,7 +2577,7 @@
 
 @media (max-width: 880px) {
   .world {
-    background: linear-gradient(to bottom, #E8551E 0, #E8551E 200vh, #DE4E18 calc(200vh + 70vh), #CC4611 calc(200vh + 260vh), #C64311 100%);
+    background: linear-gradient(to bottom, #E8551E 0, #E8551E 100svh, #DE4E18 calc(100svh + 70vh), #CC4611 calc(100svh + 260vh), #C64311 100%);
   }
 
   .world-rest {

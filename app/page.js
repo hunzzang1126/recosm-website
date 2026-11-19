@@ -4,6 +4,7 @@ import EmailForm from "@/components/EmailForm";
 import HomeScrollFX from "@/components/HomeScrollFX";
 import HeroVideo from "@/components/HeroVideo";
 import SerumTurn from "@/components/SerumTurn";
+import LoopVideo from "@/components/LoopVideo";
 
 const GUIDES = [
   {
@@ -11,7 +12,8 @@ const GUIDES = [
     title: "Prostaglandin-free lash serums: what it means & why it matters",
     desc: "The side effects behind prostaglandin analogs, what Health Canada prohibits, and how to check any serum's label yourself.",
     date: "Aug 2026",
-    image: "/images/world/journal-lash.jpg",
+    image: "/videos/journal/lash.jpg",
+    video: "/videos/journal/lash.mp4",
     alt: "Macro of an eye as the serum brush combs the upper lashes",
     position: "50% 50%",
   },
@@ -20,8 +22,9 @@ const GUIDES = [
     title: "Lash serum ingredients, explained",
     desc: "Capixyl™, biotin, panthenol, centella: what each one actually does.",
     date: "Aug 2026",
-    image: "/images/world/journal-tube.jpg",
-    alt: "The Re:Cosm lash serum tube floating on an orange backdrop",
+    image: "/videos/journal/drop.jpg",
+    video: "/videos/journal/drop.mp4",
+    alt: "A drop of clear serum forming on the applicator brush",
     position: "50% 50%",
   },
   {
@@ -29,9 +32,10 @@ const GUIDES = [
     title: "Can you use a lash serum with extensions or a lift?",
     desc: "Conditioning natural lashes under extensions, safely.",
     date: "Aug 2026",
-    image: "/images/world/journal-apply.jpg",
-    alt: "Model in profile applying the lash serum to her upper lashes",
-    position: "60% 40%",
+    image: "/videos/journal/look.jpg",
+    video: "/videos/journal/look.mp4",
+    alt: "Model opening her eyes and smiling, long defined lashes",
+    position: "50% 50%",
   },
 ];
 
@@ -72,6 +76,15 @@ export default function HomePage() {
         <SerumTurn />
 
         <div className="world-rest">
+          {/* Statement */}
+          <section className="w-sec w-say" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
+            <p className="w-say-lines">
+              <span className="reveal">No prostaglandins.</span>
+              <span className="reveal delay-1">No black boxes.</span>
+              <span className="reveal delay-2"><em>Nothing</em> to hide.</span>
+            </p>
+          </section>
+
           {/* Principles */}
           <section className="w-sec w-principles" id="home-ethos">
             <p className="w-kicker reveal">Ethos</p>
@@ -115,7 +128,7 @@ export default function HomePage() {
               {GUIDES.map((g, i) => (
                 <Link href={`/guides/${g.slug}`} className={`w-card reveal${i === 0 ? " w-card--lead" : ""}${i ? " delay-" + i : ""}`} key={g.slug}>
                   <span className="w-card-img">
-                    <Image src={g.image} alt={g.alt} width={i === 0 ? 1800 : 1400} height={i === 0 ? 1005 : 781} sizes={i === 0 ? "(max-width: 880px) 92vw, 56vw" : "(max-width: 880px) 92vw, 30vw"} style={{ objectPosition: g.position }} />
+                    <LoopVideo src={g.video} poster={g.image} alt={g.alt} />
                   </span>
                   <span className="w-card-body">
                     <span className="w-card-title">{g.title}</span>

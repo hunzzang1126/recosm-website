@@ -13,11 +13,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+// A phone's address bar sliding away changes the viewport height; do not recalculate (and jump) on that.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const FRAMES = 160;
 // The move plays while the section rises into view: it starts when the section's top edge is 92% down the
-// screen and is finished a little before the section fills the screen. Nothing is pinned; see `through` below
-// for what happens after it.
+// screen and is finished a little before the section fills the screen. Nothing is pinned, held or slowed:
+// the section is one screen tall and moves at the page's own speed.
 const PLAY = 0.86;
 const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
@@ -25,12 +27,12 @@ const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3
 // Positions are percentages of the stage: d = wide screens (tube stands at 69%), m = phones (tube centred).
 const HUB = { d: [69, 60], m: [50, 50] };
 const NODES = [
-  { id: "pg", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free.", d: [58, 22], m: [18, 24], sats: [{ label: "Fragrance-free", d: [62, 11] }] },
-  { id: "cap", title: "Capixyl™ peptide complex", body: "For fuller-looking lashes.", d: [80.5, 27], m: [82, 30], sats: [{ label: "Acetyl tetrapeptide-3", d: [89, 15] }, { label: "Red clover extract", d: [77.5, 12] }] },
-  { id: "bio", title: "Biotin", body: "A B-vitamin and building block of keratin.", d: [57.5, 47], m: [18, 46], sats: [{ label: "Keratin", d: [61.5, 37] }] },
-  { id: "pan", title: "Panthenol", body: "A humectant for flexible, less brittle lashes.", d: [81.5, 52], m: [82, 52], sats: [{ label: "Flexibility", d: [90, 42] }] },
-  { id: "cen", title: "Centella asiatica", body: "Tiger grass extract that soothes the lash line.", d: [58, 72], m: [18, 68], sats: [{ label: "Tiger grass", d: [61.5, 84] }] },
-  { id: "ha", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture.", d: [80.5, 78], m: [82, 73], sats: [{ label: "Moisture", d: [89, 89] }] },
+  { id: "pg", title: "Zero prostaglandins", body: "No prostaglandin analogs. Fragrance-free.", d: [58, 22], m: [17, 30], sats: [{ label: "Fragrance-free", d: [62, 11] }] },
+  { id: "cap", title: "Capixyl™ peptide complex", body: "For fuller-looking lashes.", d: [80.5, 27], m: [83, 30], sats: [{ label: "Acetyl tetrapeptide-3", d: [89, 15] }, { label: "Red clover extract", d: [77.5, 12] }] },
+  { id: "bio", title: "Biotin", body: "A B-vitamin and building block of keratin.", d: [57.5, 47], m: [17, 50], sats: [{ label: "Keratin", d: [61.5, 37] }] },
+  { id: "pan", title: "Panthenol", body: "A humectant for flexible, less brittle lashes.", d: [81.5, 52], m: [83, 50], sats: [{ label: "Flexibility", d: [90, 42] }] },
+  { id: "cen", title: "Centella asiatica", body: "Tiger grass extract that soothes the lash line.", d: [58, 72], m: [17, 70], sats: [{ label: "Tiger grass", d: [61.5, 84] }] },
+  { id: "ha", title: "Hyaluronic acid", body: "Binds to lash fibres and locks in moisture.", d: [80.5, 78], m: [83, 70], sats: [{ label: "Moisture", d: [89, 89] }] },
 ];
 // links between neighbours, so it reads as a web and not a list
 const CROSS = [["pg", "bio"], ["bio", "cen"], ["cap", "pan"], ["pan", "ha"]];
@@ -51,7 +53,6 @@ export default function SerumTurn() {
   const [live, setLive] = useState(false);
   const [graph, setGraph] = useState(false);
   const [hold, setHold] = useState(false);
-  const [say, setSay] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -159,29 +160,19 @@ export default function SerumTurn() {
     });
     let graphRaf = 0;
     let graphOn = false;
-    // the scene's states: the move is done -> the graph shows; later the statement replaces it
+    // once the move is done the graph shows
     let moveDone = false;
-    let sayOn = false;
-    let enterT = 0;
-    let leaveT = 0;
     const sync = () => {
-      const g = moveDone && !sayOn;
-      if (g !== graphOn) {
-        graphOn = g;
-        setGraph(g);
-        if (g && inView && !graphRaf) graphRaf = requestAnimationFrame(loop);
-      }
-      const y = moveDone && sayOn;
-      if (y !== saying) {
-        saying = y;
-        setSay(y);
+      if (moveDone !== graphOn) {
+        graphOn = moveDone;
+        setGraph(moveDone);
+        if (moveDone && inView && !graphRaf) graphRaf = requestAnimationFrame(loop);
       }
     };
-    let saying = false;
     const place = (time) => {
       const w = stage.clientWidth;
       const h = stage.clientHeight;
-      const amp = phone ? 3 : 7; // px of drift
+      const amp = phone ? 0 : 7; // px of drift (phones keep the notes still)
       // links are drawn in real pixels, so their draw-on animation measures correctly
       if (svg.getAttribute("viewBox") !== `0 0 ${w} ${h}`) svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
       const pos = { hub: base.hub };
@@ -238,34 +229,8 @@ export default function SerumTurn() {
       start: "top 100%",
       end: "top 30%",
       onUpdate: (self) => {
-        enterT = 1 - Math.pow(1 - self.progress, 3);
-        stage.style.setProperty("--w", (enterT * (1 - leaveT)).toFixed(4));
+        stage.style.setProperty("--w", (1 - Math.pow(1 - self.progress, 3)).toFixed(4));
       },
-    });
-    // After the move: no stop. While the page keeps scrolling the stage keeps travelling, only more slowly
-    // (DRIFT of the page speed is taken back) and the camera eases in on the tube. Part-way through, the
-    // graph clears, the model slides back out and the brand's statement takes her place: the next part of
-    // the page comes out of this same scene, on the same ground.
-    const DRIFT = 0.72;
-    const PUSH = phone ? 0.1 : 0.1;
-    const SAY_AT = 0.3;
-    const follow = (p) => {
-      const room = section.offsetHeight - stage.offsetHeight;
-      stage.style.setProperty("--drift", (p * room * DRIFT).toFixed(1) + "px");
-      rig.style.setProperty("--z", (1 + PUSH * ease(p)).toFixed(4));
-      const out = Math.min(1, Math.max(0, (p - (SAY_AT - 0.1)) / 0.22));
-      leaveT = out * out;
-      stage.style.setProperty("--w", (enterT * (1 - leaveT)).toFixed(4));
-      sayOn = p >= SAY_AT;
-      sync();
-    };
-    follow(0);
-    const through = ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: (self) => follow(self.progress),
-      onRefresh: (self) => follow(self.progress),
     });
     const refresh = setTimeout(() => ScrollTrigger.refresh(), 60);
 
@@ -276,14 +241,13 @@ export default function SerumTurn() {
       watch.disconnect();
       st.kill();
       enter.kill();
-      through.kill();
       graphOn = false;
       if (raf) cancelAnimationFrame(raf);
       if (graphRaf) cancelAnimationFrame(graphRaf);
     };
   }, []);
 
-  const cls = ["turn", live ? "is-live" : "", graph ? "is-graph" : "", hold ? "is-hold" : "", say ? "is-say" : ""].filter(Boolean).join(" ");
+  const cls = ["turn", live ? "is-live" : "", graph ? "is-graph" : "", hold ? "is-hold" : ""].filter(Boolean).join(" ");
   let order = 0;
 
   return (
@@ -307,12 +271,6 @@ export default function SerumTurn() {
             ))
           )}
         </svg>
-
-        <p className="turn-say" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
-          <span style={{ "--i": 0 }}>No prostaglandins.</span>
-          <span style={{ "--i": 1 }}>No black boxes.</span>
-          <span style={{ "--i": 2 }}><em>Nothing</em> to hide.</span>
-        </p>
 
         <header className="turn-head">
           <p className="turn-kicker">The Formula</p>
