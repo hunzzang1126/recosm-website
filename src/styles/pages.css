@@ -1950,6 +1950,27 @@
   height: 100%;
 }
 
+.turn.is-live .turn-canvas,
+.turn.is-live .turn-final,
+.turn.is-live .turn-floor {
+  animation: turn-float 6s ease-in-out infinite;
+}
+
+.turn.is-live .turn-floor {
+  animation-name: turn-float-shadow;
+}
+
+@keyframes turn-float {
+  0%, 100% { translate: 0 0; rotate: -0.6deg; }
+  50% { translate: 0 -1.4%; rotate: 0.6deg; }
+}
+
+/* the shadow answers the float: smaller and lighter as the tube rises */
+@keyframes turn-float-shadow {
+  0%, 100% { scale: 1; opacity: 1; }
+  50% { scale: 0.86; opacity: 0.7; }
+}
+
 /* high-resolution still of the last frame: takes over once the tube has come to rest */
 .turn.is-live .turn-final {
   display: block;
@@ -2043,28 +2064,31 @@
   width: min(22rem, 22vw);
   padding: 0;
   border: 0;
-  /* waiting: small, dim, a touch soft. Its moment: it grows toward the reader and sharpens. */
-  opacity: 0.34;
-  filter: blur(1.2px);
-  transform: translateY(-50%) scale(0.86);
-  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  /* It comes up out of depth: far back, tipped away and swung out to the side while it is low on the screen,
+     then it flattens and arrives full size at the middle. --d (1 = deep, 0 = arrived) is set from its position
+     on screen, so the move is tied to the scroll. After arriving it keeps that size on the way up. */
+  --d: 1;
+  opacity: calc(1 - var(--d) * 0.8);
+  transform:
+    translateY(-50%)
+    perspective(1100px)
+    translate3d(calc(var(--d) * var(--side) * 9vw), calc(var(--d) * 3vh), calc(var(--d) * -420px))
+    rotateX(calc(var(--d) * -52deg))
+    rotateY(calc(var(--d) * var(--side) * 34deg))
+    scale(1.06);
   text-shadow: 0 2px 24px rgba(110, 32, 0, 0.5);
   will-change: transform, opacity;
 }
 
-.turn.is-live .turn-note.is-on {
-  opacity: 1;
-  filter: none;
-  transform: translateY(-50%) scale(1.06);
-}
-
 .turn.is-live .turn-note--l {
+  --side: -1;
   right: calc(100% - var(--rx) + var(--gap));
   text-align: right;
   transform-origin: 100% 50%;
 }
 
 .turn.is-live .turn-note--r {
+  --side: 1;
   left: calc(var(--rx) + var(--gap));
   transform-origin: 0% 50%;
 }
@@ -2225,12 +2249,13 @@
   .turn.is-live .turn-note {
     --gap: 12.5vw;
     width: 35vw;
-    filter: none;
-    transform: translateY(-50%) scale(0.9);
-  }
-
-  .turn.is-live .turn-note.is-on {
-    transform: translateY(-50%) scale(1.05);
+    transform:
+      translateY(-50%)
+      perspective(700px)
+      translate3d(calc(var(--d) * var(--side) * 7vw), calc(var(--d) * 2vh), calc(var(--d) * -260px))
+      rotateX(calc(var(--d) * -50deg))
+      rotateY(calc(var(--d) * var(--side) * 30deg))
+      scale(1.04);
   }
 
   .turn.is-live .turn-note::before {

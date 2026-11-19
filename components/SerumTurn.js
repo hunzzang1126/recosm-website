@@ -229,16 +229,29 @@ export default function SerumTurn() {
     );
     io.observe(section);
 
-    /* ---- notes: the one passing the middle of the screen is at full strength ---- */
+    /* ---- notes: each comes up out of depth and arrives, flat and full size, at the middle of the screen ---- */
+    // Its position on screen sets how far "back" it still is (--d: 1 = deep below, 0 = arrived). Once it
+    // has arrived it stays as it is on the way up: it does not shrink back.
     let enterT = 0;
     let exitT = 0;
     const noteEls = Array.from(stage.querySelectorAll(".turn-note"));
-    const lit = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.target.classList.toggle("is-on", e.isIntersecting)),
-      // a narrow band across the middle of the screen, so one note has its moment at a time
-      { rootMargin: "-38% 0px -38% 0px" }
-    );
-    noteEls.forEach((el) => lit.observe(el));
+    const noteOn = noteEls.map(() => null);
+    const placeNotes = () => {
+      const vh = window.innerHeight;
+      const unit = follow.clientHeight; // one screen in the section's own unit (svh)
+      const top = stage.getBoundingClientRect().top;
+      noteEls.forEach((el, n) => {
+        const y = top + (1.2 + n * 0.3) * unit; // where its centre line is on screen
+        const d = Math.min(1, Math.max(0, (y - vh * 0.52) / (vh * 0.5)));
+        el.style.setProperty("--d", d.toFixed(3));
+        const on = y <= vh * 0.6;
+        if (on !== noteOn[n]) {
+          noteOn[n] = on;
+          el.classList.toggle("is-on", on);
+        }
+      });
+    };
+    placeNotes();
 
     setLive(true);
     apply();
@@ -248,6 +261,7 @@ export default function SerumTurn() {
       end: "bottom bottom",
       onUpdate: (self) => {
         const p = self.progress;
+        placeNotes();
         target = Math.min(1, p / PLAY) * (FRAMES - 1);
         // the hand-over is scrubbed straight from the scroll position: no timers, no transitions to catch up
         const x = Math.min(1, Math.max(0, (p - EXIT) / (EXIT_END - EXIT)));
@@ -281,7 +295,6 @@ export default function SerumTurn() {
       clearTimeout(refresh);
       clearTimeout(settle);
       io.disconnect();
-      lit.disconnect();
       st.kill();
       enter.kill();
       dead = true;
