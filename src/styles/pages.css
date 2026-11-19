@@ -1820,10 +1820,9 @@
   height: 14px;
 }
 
-/* ---- Live scene. The stage travels with the visitor for about one extra screen of scrolling (CSS sticky,
-   so it is the browser doing it, with no script and no jump), and the move keeps playing across that whole
-   distance: the tube is still turning and opening while it follows, and the ingredient notes arrive with
-   scroll left to read them. It never sits still waiting. ---- */
+/* ---- Live scene. The screen is never held: the ground, the grid and the model scroll past at the page's
+   own speed. Only the tube with its notes travels down with the reader for a while (a small transparent layer),
+   and the move keeps playing across that distance. ---- */
 .turn.is-live {
   height: 235vh;
   height: 235svh;
@@ -1835,13 +1834,9 @@
   --rw: calc(var(--rh) * 0.42857);
   --ry: calc(50% + 34px);  /* where the rig's anchor sits on the stage */
   --oy: 50%;               /* the anchor inside the rig: the point it grows around */
-  position: sticky;
-  top: 0;
+  position: relative;
   width: 100%;
-  height: 100vh;
-  /* the small-viewport unit does not change when a phone's address bar slides away, so nothing jumps */
-  height: 100svh;
-  min-height: 600px;
+  height: 100%;
   max-width: none;
   padding: 0;
   /* visible: the model's figure runs on below the stage; the world clips at the page edges */
@@ -1963,6 +1958,26 @@
 
 .turn.is-live.is-hold .turn-canvas {
   opacity: 0;
+}
+
+/* the travelling layer: one screen tall, transparent, holds the tube, its links and notes and the price */
+.turn-follow {
+  display: contents;
+}
+
+.turn.is-live .turn-follow {
+  display: block;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  /* the small-viewport unit does not change when a phone's address bar slides away, so nothing jumps */
+  height: 100svh;
+  min-height: 600px;
+  pointer-events: none;
+}
+
+.turn.is-live .turn-follow a {
+  pointer-events: auto;
 }
 
 /* ---- ingredient graph ---- */
@@ -2234,11 +2249,11 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.075) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.075) 1px, transparent 1px);
   background-size: 64px 64px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 220svh, #000 calc(220svh + 60vh));
-  mask-image: linear-gradient(to bottom, transparent 0, transparent 220svh, #000 calc(220svh + 60vh));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 50svh, #000 110svh);
+  mask-image: linear-gradient(to bottom, transparent 0, transparent 50svh, #000 110svh);
   pointer-events: none;
 }
 

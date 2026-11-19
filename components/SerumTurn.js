@@ -59,7 +59,8 @@ export default function SerumTurn() {
     const canvas = canvasRef.current;
     const rig = rigRef.current;
     const stage = section && section.querySelector(".turn-stage");
-    if (!section || !canvas || !rig || !stage) return;
+    const follow = section && section.querySelector(".turn-follow");
+    if (!section || !canvas || !rig || !stage || !follow) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const phone = window.matchMedia("(max-width: 880px)").matches;
@@ -93,8 +94,9 @@ export default function SerumTurn() {
       ctx2d.globalAlpha = 1;
       ctx2d.clearRect(0, 0, canvas.width, canvas.height);
       ctx2d.drawImage(im, 0, 0);
-      // blend toward the next frame for the in-between positions (wide screens only: one draw per tick on phones)
-      if (!phone && k === i && f > 0.02 && i + 1 < FRAMES && ready(i + 1)) {
+      // blend toward the next frame for the in-between positions, so a slow scroll turns the tube smoothly
+      // instead of stepping from frame to frame
+      if (k === i && f > 0.02 && i + 1 < FRAMES && ready(i + 1)) {
         ctx2d.globalAlpha = f;
         ctx2d.drawImage(imgs[i + 1], 0, 0);
         ctx2d.globalAlpha = 1;
@@ -170,8 +172,8 @@ export default function SerumTurn() {
       }
     };
     const place = (time) => {
-      const w = stage.clientWidth;
-      const h = stage.clientHeight;
+      const w = follow.clientWidth;
+      const h = follow.clientHeight;
       const amp = phone ? 0 : 7; // px of drift (phones keep the notes still)
       // links are drawn in real pixels, so their draw-on animation measures correctly
       if (svg.getAttribute("viewBox") !== `0 0 ${w} ${h}`) svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
@@ -201,7 +203,7 @@ export default function SerumTurn() {
       inView = entries[0].isIntersecting;
       if (inView && graphOn && !graphRaf) graphRaf = requestAnimationFrame(loop);
     });
-    watch.observe(stage);
+    watch.observe(follow);
     place(0);
 
     setLive(true);
@@ -212,12 +214,14 @@ export default function SerumTurn() {
       end: "bottom bottom",
       onUpdate: (self) => {
         target = Math.min(1, self.progress / PLAY) * (FRAMES - 1);
-        // once the scroll rests, ease onto the nearest whole frame (no half-blended print)
+        // Only after the scroll has truly come to rest, drift onto the nearest whole frame so the print is
+        // crisp. The wait is long on purpose: a short one fired between the small steps of a slow scroll and
+        // snapped the tube back and forth, which read as stutter.
         clearTimeout(settle);
         settle = setTimeout(() => {
           target = Math.round(target);
           if (!raf) raf = requestAnimationFrame(tick);
-        }, 140);
+        }, 700);
         moveDone = self.progress >= PLAY + 0.02;
         sync();
         if (!raf) raf = requestAnimationFrame(tick);
@@ -258,6 +262,8 @@ export default function SerumTurn() {
           <img src="/images/model/turn-tall.jpg" alt="" loading="lazy" decoding="async" />
         </div>
 
+        {/* only this layer travels with the reader; the ground, the grid and the model scroll past as usual */}
+        <div className="turn-follow">
         <svg className="turn-links" viewBox="0 0 100 100" aria-hidden="true">
           {NODES.map((n, i) => (
             <path key={n.id} data-line data-a="hub" data-b={n.id} pathLength="1" style={{ "--i": i }} />
@@ -334,6 +340,7 @@ export default function SerumTurn() {
           <Link href="/science" className="turn-sublink" tabIndex={live && !graph ? -1 : undefined}>
             Full ingredient list
           </Link>
+        </div>
         </div>
       </div>
     </section>
