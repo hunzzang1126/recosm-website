@@ -17,7 +17,11 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 // frames per set: 240 for the turn (1.5 degrees a frame) and 60 for the cap lift
-const COUNT = { d: 300, m: 300 };
+const COUNT = { d: 480, m: 480 };
+// frames 0-299: the closed tube turns once and the cap lifts. Frames 300-479: the open tube turns once more;
+// that last stretch is a loop (frame 479 runs straight on into frame 300).
+const MOVE = 300;
+const LOOP = 180;
 // One scroll track for the whole scene (from the section's top edge 92% down the screen to its end).
 // The section is 4.1 screens tall, so the track is 4.02 screens long:
 //   0 .. PLAY        the tube turns, grows and opens (done 0.6 of a screen after the scene fills the view)
@@ -54,7 +58,6 @@ export default function SerumTurn() {
   const canvasRef = useRef(null);
   const rigRef = useRef(null);
   const [live, setLive] = useState(false);
-  const [hold, setHold] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -92,7 +95,6 @@ export default function SerumTurn() {
     let raf = 0;
     let started = false;
     let settle = 0;
-    let held = false;
     let dead = false;
     let lastDir = 1;
 
@@ -119,13 +121,15 @@ export default function SerumTurn() {
 
     // keep the window of decoded frames centred a little ahead of where the scroll is going
     const warm = () => {
-      const c = Math.round(current);
+      const c = Math.min(FRAMES - 1, Math.round(shown()));
       const from = lastDir >= 0 ? c - WIN_BACK : c - WIN_AHEAD;
       const to = lastDir >= 0 ? c + WIN_AHEAD : c + WIN_BACK;
-      for (let i = Math.max(0, from); i <= Math.min(FRAMES - 1, to); i++) decode(i);
+      for (let k = Math.max(0, from); k <= to; k++) decode(k < FRAMES ? k : MOVE + ((k - MOVE) % LOOP));
       if (bitmaps.size > KEEP + 12) {
         for (const [i, bm] of bitmaps) {
-          if (i < c - KEEP || i > c + KEEP) {
+          // distance around the loop for frames inside it
+          const far = Math.abs(i - c) > KEEP && !(i >= MOVE && c >= MOVE && LOOP - Math.abs(i - c) <= KEEP);
+          if (far) {
             bitmaps.delete(i);
             if (bm.close) bm.close();
           }
@@ -148,7 +152,7 @@ export default function SerumTurn() {
       ctx2d.clearRect(0, 0, w, h);
       ctx2d.drawImage(bm, 0, 0);
       // wide screens blend toward the next frame for in-between positions; phones do a single draw per tick
-      const next = bitmaps.get(i + 1);
+      const next = bitmaps.get(i + 1 >= FRAMES ? MOVE : i + 1);
       if (!phone && f > 0.02 && next) {
         ctx2d.globalAlpha = f;
         ctx2d.drawImage(next, 0, 0);
@@ -157,21 +161,23 @@ export default function SerumTurn() {
       drawn = cur;
     };
 
+    // while the tube spins itself away at the end, `spin` adds extra frames of the open-tube loop on top of
+    // wherever the scroll has put it
+    let spin = 0;
+    const shown = () => {
+      const v = current + spin;
+      return v < FRAMES ? v : MOVE + ((v - MOVE) % LOOP);
+    };
+
     const apply = () => {
-      const t = current / (FRAMES - 1);
+      const t = Math.min(1, current / (MOVE - 1));
       // wide screens grow the tube with CSS; the phone frames are rendered with that zoom already in the camera
       const s0 = START_SCALE[key];
       rig.style.setProperty("--s", phone ? "1" : (s0 + (1 - s0) * ease(Math.min(1, t / 0.82))).toFixed(4));
       // phones show whole frames only (one draw), wide screens the blended in-between
-      const show = phone ? Math.round(current) : current;
+      const v = shown();
+      const show = phone ? Math.min(FRAMES - 1, Math.round(v)) : v;
       if (Math.abs(show - drawn) > 0.01) draw(show);
-      // at the end of the move the crisp still takes over from the canvas
-      // (and only once that still has itself arrived, so there is never an empty moment between the two)
-      const atEnd = current >= FRAMES - 1.001 && !!finalImg && finalImg.complete && finalImg.naturalWidth > 0;
-      if (atEnd !== held) {
-        held = atEnd;
-        setHold(atEnd);
-      }
     };
 
     // how far playback may go from `from` toward `to` without stepping over a frame that is not decoded yet
@@ -253,6 +259,19 @@ export default function SerumTurn() {
     };
     placeNotes();
 
+    let gone = false;
+    let spinFrom = 0;
+    let spinTo = 0;
+    let spinStart = 0;
+    let spinRaf = 0;
+    const spinTick = (now) => {
+      const k = Math.min(1, (now - spinStart) / 950);
+      spin = spinFrom + (spinTo - spinFrom) * (k * k * (3 - 2 * k));
+      warm();
+      apply();
+      spinRaf = k < 1 ? requestAnimationFrame(spinTick) : 0;
+    };
+
     setLive(true);
     apply();
     const st = ScrollTrigger.create({
@@ -262,7 +281,23 @@ export default function SerumTurn() {
       onUpdate: (self) => {
         const p = self.progress;
         placeNotes();
-        target = Math.min(1, p / PLAY) * (FRAMES - 1);
+        // up to PLAY the scroll runs the turn and the cap lift; from there to EXIT it keeps turning the open
+        // tube (one more full turn while the notes go by), so the tube is never a still object
+        target =
+          p <= PLAY
+            ? (p / PLAY) * (MOVE - 1)
+            : MOVE - 1 + Math.min(1, (p - PLAY) / (EXIT - PLAY)) * LOOP;
+        // last chapter: the tube spins itself away. This one plays on its own (a quick extra turn while it
+        // shrinks to nothing) and plays back if the reader scrolls up again.
+        const out = p >= EXIT;
+        if (out !== gone) {
+          gone = out;
+          stage.classList.toggle("is-out", out);
+          spinFrom = spin;
+          spinTo = out ? LOOP * 1.5 : 0;
+          spinStart = performance.now();
+          if (!spinRaf) spinRaf = requestAnimationFrame(spinTick);
+        }
         // the hand-over is scrubbed straight from the scroll position: no timers, no transitions to catch up
         const x = Math.min(1, Math.max(0, (p - EXIT) / (EXIT_END - EXIT)));
         exitT = x;
@@ -301,10 +336,11 @@ export default function SerumTurn() {
       for (const bm of bitmaps.values()) if (bm.close) bm.close();
       bitmaps.clear();
       if (raf) cancelAnimationFrame(raf);
+      if (spinRaf) cancelAnimationFrame(spinRaf);
     };
   }, []);
 
-  const cls = ["turn", live ? "is-live" : "", hold ? "is-hold" : ""].filter(Boolean).join(" ");
+  const cls = ["turn", live ? "is-live" : ""].filter(Boolean).join(" ");
 
   return (
     <section ref={sectionRef} className={cls} id="home-serum" aria-label="The formula">

@@ -1894,12 +1894,24 @@
   height: var(--rh);
   margin: 0;
   transform: translate3d(-50%, calc(var(--oy) * -1), 0) scale(var(--s, 0.44));
-  /* the sweep out at the end of the scene, tied to the scroll */
-  translate: 0 calc(var(--x, 0) * -125vh);
+  /* last chapter: it spins itself away (the extra turn is in the frames) while it shrinks to nothing */
+  scale: 1;
+  opacity: 1;
+  transition: scale 0.95s cubic-bezier(0.55, 0, 0.8, 0.2), opacity 0.4s ease 0.55s;
   transform-origin: 50% var(--oy);
   will-change: transform;
   /* no CSS filter here: a filter on a scaling layer is re-rasterised every frame and stutters on phones.
      The glow and the floor shadow below are plain gradients that scale with the rig for free. */
+}
+
+.turn.is-live .is-out .turn-rig {
+  scale: 0.03;
+  opacity: 0;
+}
+
+/* coming back when the reader scrolls up: grow again, a touch quicker */
+.turn.is-live .turn-stage:not(.is-out) .turn-rig {
+  transition: scale 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
 }
 
 /* warm light pooling behind the tube */
@@ -2222,7 +2234,6 @@
     height: calc(100% - 92px);
     aspect-ratio: 600 / 1300;
     transform: translate3d(-50%, 0, 0);
-    translate: 0 calc(var(--x, 0) * -125vh);
   }
 
   .turn.is-live .turn-canvas,
