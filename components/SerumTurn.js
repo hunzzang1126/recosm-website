@@ -76,8 +76,19 @@ export default function SerumTurn() {
     const key = phone ? "m" : "d";
     const FRAMES = COUNT[set];
     const ctx2d = canvas.getContext("2d");
-    const imgs = new Array(FRAMES);
-    const ready = (k) => imgs[k] && imgs[k].complete && imgs[k].naturalWidth;
+    // How the frames get to the screen without hitching (the usual recipe for scroll-scrubbed sequences):
+    //  1. every frame's file is downloaded once and kept as a blob;
+    //  2. a moving window of frames around the current position is decoded ahead of time, off the main thread
+    //     (createImageBitmap), so by the time a frame is needed it only has to be copied to the canvas;
+    //  3. the canvas gets one cheap draw per tick (two on wide screens, where neighbours are blended);
+    //  4. playback never skips over a frame that is not ready, so nothing pops.
+    const blobs = new Array(FRAMES);
+    const bitmaps = new Map(); // frame index -> decoded bitmap (or a decoded <img> where bitmaps are unavailable)
+    const pending = new Set();
+    const WIN_BACK = phone ? 6 : 8;
+    const WIN_AHEAD = phone ? 16 : 22;
+    const KEEP = phone ? 26 : 36;
+    const canBitmap = typeof createImageBitmap === "function";
     let target = 0;
     let current = 0;
     let drawn = -1;
@@ -85,27 +96,65 @@ export default function SerumTurn() {
     let started = false;
     let settle = 0;
     let held = false;
+    let dead = false;
+    let lastDir = 1;
+
+    const decode = (i) => {
+      if (i < 0 || i >= FRAMES || !blobs[i] || bitmaps.has(i) || pending.has(i)) return;
+      pending.add(i);
+      const done = (bm) => {
+        pending.delete(i);
+        if (dead) return bm && bm.close && bm.close();
+        if (bm) bitmaps.set(i, bm);
+        if (drawn < 0 || Math.abs(i - current) < 2) draw(current);
+        if (!raf) raf = requestAnimationFrame(tick);
+      };
+      if (canBitmap) {
+        createImageBitmap(blobs[i]).then(done, () => done(null));
+      } else {
+        const im = new Image();
+        const url = URL.createObjectURL(blobs[i]);
+        im.src = url;
+        const fin = () => { URL.revokeObjectURL(url); done(im.naturalWidth ? im : null); };
+        (im.decode ? im.decode() : Promise.reject()).then(fin, () => { im.onload = fin; im.onerror = fin; });
+      }
+    };
+
+    // keep the window of decoded frames centred a little ahead of where the scroll is going
+    const warm = () => {
+      const c = Math.round(current);
+      const from = lastDir >= 0 ? c - WIN_BACK : c - WIN_AHEAD;
+      const to = lastDir >= 0 ? c + WIN_AHEAD : c + WIN_BACK;
+      for (let i = Math.max(0, from); i <= Math.min(FRAMES - 1, to); i++) decode(i);
+      if (bitmaps.size > KEEP + 12) {
+        for (const [i, bm] of bitmaps) {
+          if (i < c - KEEP || i > c + KEEP) {
+            bitmaps.delete(i);
+            if (bm.close) bm.close();
+          }
+        }
+      }
+    };
 
     const draw = (cur) => {
-      let i = Math.floor(cur);
+      const i = Math.floor(cur);
       const f = cur - i;
-      // nearest earlier frame that has arrived, so the tube never blanks while the rest load
-      let k = i;
-      while (k > 0 && !ready(k)) k--;
-      if (!ready(k)) return;
-      const im = imgs[k];
-      if (canvas.width !== im.naturalWidth) {
-        canvas.width = im.naturalWidth;
-        canvas.height = im.naturalHeight;
+      const bm = bitmaps.get(i);
+      if (!bm) return; // keep what is on screen; the tick will not have moved past a missing frame anyway
+      const w = bm.width || bm.naturalWidth;
+      const h = bm.height || bm.naturalHeight;
+      if (canvas.width !== w) {
+        canvas.width = w;
+        canvas.height = h;
       }
       ctx2d.globalAlpha = 1;
-      ctx2d.clearRect(0, 0, canvas.width, canvas.height);
-      ctx2d.drawImage(im, 0, 0);
-      // blend toward the next frame for the in-between positions, so a slow scroll turns the tube smoothly
-      // instead of stepping from frame to frame
-      if (k === i && f > 0.02 && i + 1 < FRAMES && ready(i + 1)) {
+      ctx2d.clearRect(0, 0, w, h);
+      ctx2d.drawImage(bm, 0, 0);
+      // wide screens blend toward the next frame for in-between positions; phones do a single draw per tick
+      const next = bitmaps.get(i + 1);
+      if (!phone && f > 0.02 && next) {
         ctx2d.globalAlpha = f;
-        ctx2d.drawImage(imgs[i + 1], 0, 0);
+        ctx2d.drawImage(next, 0, 0);
         ctx2d.globalAlpha = 1;
       }
       drawn = cur;
@@ -116,7 +165,9 @@ export default function SerumTurn() {
       // wide screens grow the tube with CSS; the phone frames are rendered with that zoom already in the camera
       const s0 = START_SCALE[key];
       rig.style.setProperty("--s", phone ? "1" : (s0 + (1 - s0) * ease(Math.min(1, t / 0.82))).toFixed(4));
-      if (Math.abs(current - drawn) > 0.01) draw(current);
+      // phones show whole frames only (one draw), wide screens the blended in-between
+      const show = phone ? Math.round(current) : current;
+      if (Math.abs(show - drawn) > 0.01) draw(show);
       // at the end of the move the crisp still takes over from the canvas
       // (and only once that still has itself arrived, so there is never an empty moment between the two)
       const atEnd = current >= FRAMES - 1.001 && !!finalImg && finalImg.complete && finalImg.naturalWidth > 0;
@@ -126,32 +177,47 @@ export default function SerumTurn() {
       }
     };
 
-    // The tube only ever advances through frames that have already arrived, in order. Before, a frame that
-    // was still downloading was replaced by a much earlier one and then popped in when it landed; on phones,
-    // where the zoom is part of the frames, that showed as the tube suddenly jumping in size.
-    let ahead = 0; // how many frames from the start are ready, without a gap
+    // how far playback may go from `from` toward `to` without stepping over a frame that is not decoded yet
+    const reach = (from, to) => {
+      const dir = to >= from ? 1 : -1;
+      let i = dir > 0 ? Math.floor(from) : Math.ceil(from);
+      const end = dir > 0 ? Math.floor(to) : Math.ceil(to);
+      if (!bitmaps.has(i)) return from;
+      while (i !== end && bitmaps.has(i + dir)) i += dir;
+      return i === end ? to : i;
+    };
+
     const tick = () => {
-      const goal = Math.min(target, Math.max(0, ahead - 1));
-      current += (goal - current) * 0.16;
+      if (Math.abs(target - current) > 0.5) lastDir = target > current ? 1 : -1;
+      warm();
+      const goal = reach(current, target);
+      current += (goal - current) * 0.2;
       if (Math.abs(goal - current) < 0.01) current = goal;
       apply();
-      raf = current === goal ? 0 : requestAnimationFrame(tick);
+      // keep ticking while there is distance to cover, including distance that is waiting on a decode
+      raf = current === target ? 0 : requestAnimationFrame(tick);
     };
 
     const load = () => {
       if (started) return;
       started = true;
-      for (let i = 0; i < FRAMES; i++) {
-        const im = new Image();
-        im.decoding = "async";
-        im.src = frameSrc(set, i);
-        im.onload = () => {
-          while (ahead < FRAMES && ready(ahead)) ahead++;
-          if (drawn < 0) draw(current);
-          if (!raf) raf = requestAnimationFrame(tick);
-        };
-        imgs[i] = im;
-      }
+      // a few at a time, in order, so the first frames are never stuck behind the last ones
+      let nextIndex = 0;
+      const pump = () => {
+        if (dead || nextIndex >= FRAMES) return;
+        const i = nextIndex++;
+        fetch(frameSrc(set, i))
+          .then((r) => (r.ok ? r.blob() : null))
+          .then((blob) => {
+            if (dead) return;
+            blobs[i] = blob;
+            if (Math.abs(i - current) <= WIN_AHEAD) warm();
+            if (!raf) raf = requestAnimationFrame(tick);
+          })
+          .catch(() => {})
+          .finally(pump);
+      };
+      for (let k = 0; k < 8; k++) pump();
     };
 
     // start fetching frames a little before the scene scrolls in
@@ -273,6 +339,9 @@ export default function SerumTurn() {
       st.kill();
       enter.kill();
       graphOn = false;
+      dead = true;
+      for (const bm of bitmaps.values()) if (bm.close) bm.close();
+      bitmaps.clear();
       if (raf) cancelAnimationFrame(raf);
       if (graphRaf) cancelAnimationFrame(graphRaf);
     };
