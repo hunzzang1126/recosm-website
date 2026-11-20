@@ -136,6 +136,16 @@ export default function SerumTurn() {
       }
     };
 
+    // 0..1 while a sweep is passing, -1 between sweeps (one 1.3 s pass every 4.6 s)
+    const SWEEP_EVERY = 4600;
+    const SWEEP_LASTS = 1300;
+    const sweepAt = () => {
+      const t = performance.now() % SWEEP_EVERY;
+      if (t > SWEEP_LASTS) return -1;
+      const x = t / SWEEP_LASTS;
+      return x * x * (3 - 2 * x);
+    };
+
     const draw = (cur) => {
       const i = Math.floor(cur);
       const f = cur - i;
@@ -157,10 +167,31 @@ export default function SerumTurn() {
         ctx2d.drawImage(next, 0, 0);
         ctx2d.globalAlpha = 1;
       }
+      // light sweep: every few seconds a soft band of light travels down the tube. It is painted only where
+      // the tube already is (source-atop), so it follows the tube's shape and never touches the background.
+      const k = sweepAt();
+      if (k >= 0) {
+        const band = h * 0.16;
+        const c = -band + (h + band * 2) * k;
+        const g = ctx2d.createLinearGradient(0, c - band, w * 0.35, c + band);
+        // a white tube cannot get much whiter, so the glint is a bright core between two soft warm shadows:
+        // the eye reads the contrast as light passing over a glossy surface
+        g.addColorStop(0, "rgba(150,64,20,0)");
+        g.addColorStop(0.3, "rgba(150,64,20,0.2)");
+        g.addColorStop(0.46, "rgba(255,255,255,0.95)");
+        g.addColorStop(0.54, "rgba(255,255,255,0.95)");
+        g.addColorStop(0.7, "rgba(150,64,20,0.2)");
+        g.addColorStop(1, "rgba(150,64,20,0)");
+        ctx2d.globalCompositeOperation = "source-atop";
+        ctx2d.fillStyle = g;
+        ctx2d.fillRect(0, Math.max(0, c - band * 2), w, band * 4);
+        ctx2d.globalCompositeOperation = "source-over";
+      }
       drawn = cur;
     };
 
     // position inside the open-tube loop (frames, 0..LOOP), advanced by time once the cap is off
+    let wasSweeping = false;
     let phase = 0;
     let boost = 0; // extra loop frames per second from recent scrolling, decays
     const shown = () => (phase > 0 || current >= MOVE - 1 ? MOVE + (phase % LOOP) : current);
@@ -174,7 +205,10 @@ export default function SerumTurn() {
       const v = shown();
       let show = phone ? Math.round(v) : v;
       if (show >= FRAMES) show = MOVE;
-      if (Math.abs(show - drawn) > 0.01) draw(show);
+      // redraw when the frame changes, and on every tick while a sweep is passing (and once more to clear it)
+      const sweeping = sweepAt() >= 0;
+      if (Math.abs(show - drawn) > 0.01 || sweeping || wasSweeping) draw(show);
+      wasSweeping = sweeping;
     };
 
     // how far playback may go from `from` toward `to` without stepping over a frame that is not decoded yet
