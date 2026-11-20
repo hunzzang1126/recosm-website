@@ -22,15 +22,13 @@ const COUNT = { d: 480, m: 480 };
 // that last stretch is a loop (frame 479 runs straight on into frame 300).
 const MOVE = 300;
 const LOOP = 180;
-// One scroll track for the whole scene (from the section's top edge 92% down the screen to its end).
-// The section is 4.6 screens tall, so the track is 4.52 screens long (about one screen of it comes after
-// EXIT, which is the room the last chapter needs to play out):
-//   0 .. PLAY        the tube turns, grows and opens (done 0.6 of a screen after the scene fills the view)
-//   meanwhile        the notes scroll past the tube, one every 0.3 of a screen
-//   EXIT .. EXIT_END the tube and the model sweep out and the statement comes in, tied to the scroll
-const PLAY = 0.336;
-const EXIT = 0.748;
-const EXIT_END = 0.867;
+// Scroll track: from the section's top edge 92% down the screen to the section's end (3.62 screens).
+//   0 .. PLAY  the scroll runs the closed turn, the growth and the cap lift
+//   after that the open tube is a turntable: it turns by itself at a steady pace (time, not scroll), so the
+//   turn is always even; scrolling only nudges it faster or backwards for a moment
+// At the end nothing is staged: the travelling layer simply lets go and the tube leaves with the page.
+const PLAY = 0.42;
+const TURN_FPS = 22; // loop frames per second while idling = 44 degrees a second
 const START_SCALE = { d: 0.44, m: 0.36 };
 const frameSrc = (set, i) => `/images/serum-turn/${set}/f_${String(i).padStart(3, "0")}.webp`;
 
@@ -162,13 +160,10 @@ export default function SerumTurn() {
       drawn = cur;
     };
 
-    // while the tube spins itself away at the end, `spin` adds extra frames of the open-tube loop on top of
-    // wherever the scroll has put it
-    let spin = 0;
-    const shown = () => {
-      const v = current + spin;
-      return v < FRAMES ? v : MOVE + ((v - MOVE) % LOOP);
-    };
+    // position inside the open-tube loop (frames, 0..LOOP), advanced by time once the cap is off
+    let phase = 0;
+    let boost = 0; // extra loop frames per second from recent scrolling, decays
+    const shown = () => (phase > 0 || current >= MOVE - 1 ? MOVE + (phase % LOOP) : current);
 
     const apply = () => {
       const t = Math.min(1, current / (MOVE - 1));
@@ -177,7 +172,8 @@ export default function SerumTurn() {
       rig.style.setProperty("--s", phone ? "1" : (s0 + (1 - s0) * ease(Math.min(1, t / 0.82))).toFixed(4));
       // phones show whole frames only (one draw), wide screens the blended in-between
       const v = shown();
-      const show = phone ? Math.min(FRAMES - 1, Math.round(v)) : v;
+      let show = phone ? Math.round(v) : v;
+      if (show >= FRAMES) show = MOVE;
       if (Math.abs(show - drawn) > 0.01) draw(show);
     };
 
@@ -191,16 +187,44 @@ export default function SerumTurn() {
       return i === end ? to : i;
     };
 
-    const tick = () => {
+    let inView = false;
+    let lastNow = 0;
+    let lean = 0;
+    const tick = (now) => {
+      const dt = lastNow ? Math.min(0.05, (now - lastNow) / 1000) : 0.016;
+      lastNow = now;
+      const open = target >= MOVE - 1;
       if (Math.abs(target - current) > 0.5) lastDir = target > current ? 1 : -1;
+      if (!open && phase > 0) {
+        // the reader went back up: finish the turn quickly to the front, then hand back to the scroll
+        phase += Math.max(3, (LOOP - phase) / 10);
+        if (phase >= LOOP) phase = 0;
+      } else {
+        const goal = reach(current, Math.min(target, MOVE - 1));
+        current += (goal - current) * 0.2;
+        if (Math.abs(goal - current) < 0.01) current = goal;
+        if (open && current >= MOVE - 1.01 && inView) {
+          // turntable: steady by the clock; only moves on if the next frame is ready
+          const next = (((phase + (TURN_FPS + boost) * dt) % LOOP) + LOOP) % LOOP;
+          if (bitmaps.has(MOVE + Math.floor(next))) phase = next || 0.0001;
+          lastDir = TURN_FPS + boost >= 0 ? 1 : -1;
+        }
+      }
+      boost *= 0.93;
+      // the tube leans a touch into the scroll, like something with weight
+      lean += (Math.max(-1, Math.min(1, boost / 90)) - lean) * 0.08;
+      rig.style.setProperty("--lean", lean.toFixed(3));
       warm();
-      const goal = reach(current, target);
-      current += (goal - current) * 0.2;
-      if (Math.abs(goal - current) < 0.01) current = goal;
       apply();
-      // keep ticking while there is distance to cover, including distance that is waiting on a decode
-      raf = current === target ? 0 : requestAnimationFrame(tick);
+      const idle = open && inView;
+      raf = current !== target && !(open && current >= MOVE - 1) || idle || phase > 0 || Math.abs(lean) > 0.01 ? requestAnimationFrame(tick) : 0;
+      if (!raf) lastNow = 0;
     };
+    const seen = new IntersectionObserver((entries) => {
+      inView = entries[0].isIntersecting;
+      if (inView && !raf) raf = requestAnimationFrame(tick);
+    });
+    seen.observe(follow);
 
     const load = () => {
       if (started) return;
@@ -240,7 +264,6 @@ export default function SerumTurn() {
     // Its position on screen sets how far "back" it still is (--d: 1 = deep below, 0 = arrived). Once it
     // has arrived it stays as it is on the way up: it does not shrink back.
     let enterT = 0;
-    let exitT = 0;
     const noteEls = Array.from(stage.querySelectorAll(".turn-note"));
     const noteOn = noteEls.map(() => null);
     const placeNotes = () => {
@@ -260,21 +283,9 @@ export default function SerumTurn() {
     };
     placeNotes();
 
-    let gone = false;
-    let spinFrom = 0;
-    let spinTo = 0;
-    let spinStart = 0;
-    let spinRaf = 0;
-    const spinTick = (now) => {
-      const k = Math.min(1, (now - spinStart) / (gone ? 2400 : 900));
-      spin = spinFrom + (spinTo - spinFrom) * (k * k * (3 - 2 * k));
-      warm();
-      apply();
-      spinRaf = k < 1 ? requestAnimationFrame(spinTick) : 0;
-    };
-
     setLive(true);
     apply();
+    let lastP = 0;
     const st = ScrollTrigger.create({
       trigger: section,
       start: "top 92%",
@@ -282,34 +293,16 @@ export default function SerumTurn() {
       onUpdate: (self) => {
         const p = self.progress;
         placeNotes();
-        // up to PLAY the scroll runs the turn and the cap lift; from there to EXIT it keeps turning the open
-        // tube (one more full turn while the notes go by), so the tube is never a still object
-        target =
-          p <= PLAY
-            ? (p / PLAY) * (MOVE - 1)
-            : MOVE - 1 + Math.min(1, (p - PLAY) / (EXIT - PLAY)) * LOOP;
-        // last chapter: the tube spins itself away. This one plays on its own (a quick extra turn while it
-        // shrinks to nothing) and plays back if the reader scrolls up again.
-        const out = p >= EXIT;
-        if (out !== gone) {
-          gone = out;
-          stage.classList.toggle("is-out", out);
-          spinFrom = spin;
-          spinTo = out ? LOOP * 2 : 0;
-          spinStart = performance.now();
-          if (!spinRaf) spinRaf = requestAnimationFrame(spinTick);
-        }
-        // the hand-over is scrubbed straight from the scroll position: no timers, no transitions to catch up
-        const x = Math.min(1, Math.max(0, (p - EXIT) / (EXIT_END - EXIT)));
-        exitT = x;
-        stage.style.setProperty("--x", x.toFixed(4));
-        stage.style.setProperty("--w", (enterT * (1 - x)).toFixed(4));
+        target = Math.min(1, p / PLAY) * (MOVE - 1);
+        // scrolling nudges the turntable: faster going down, backwards for a moment going up
+        boost = Math.max(-160, Math.min(160, boost + (p - lastP) * 1500));
+        lastP = p;
         // Only after the scroll has truly come to rest, drift onto the nearest whole frame so the print is
         // crisp. The wait is long on purpose: a short one fired between the small steps of a slow scroll and
         // snapped the tube back and forth, which read as stutter.
         clearTimeout(settle);
         settle = setTimeout(() => {
-          target = Math.round(target);
+          if (target < MOVE - 1) target = Math.round(target);
           if (!raf) raf = requestAnimationFrame(tick);
         }, 700);
         if (!raf) raf = requestAnimationFrame(tick);
@@ -322,7 +315,7 @@ export default function SerumTurn() {
       end: "top 30%",
       onUpdate: (self) => {
         enterT = 1 - Math.pow(1 - self.progress, 3);
-        stage.style.setProperty("--w", (enterT * (1 - exitT)).toFixed(4));
+        stage.style.setProperty("--w", enterT.toFixed(4));
       },
     });
     const refresh = setTimeout(() => ScrollTrigger.refresh(), 60);
@@ -337,7 +330,7 @@ export default function SerumTurn() {
       for (const bm of bitmaps.values()) if (bm.close) bm.close();
       bitmaps.clear();
       if (raf) cancelAnimationFrame(raf);
-      if (spinRaf) cancelAnimationFrame(spinRaf);
+      seen.disconnect();
     };
   }, []);
 
@@ -381,11 +374,6 @@ export default function SerumTurn() {
         </div>
 
 
-        <p className="turn-say" aria-label="No prostaglandins. No black boxes. Nothing to hide.">
-          <span>No prostaglandins.</span>
-          <span>No black boxes.</span>
-          <span><em>Nothing</em> to hide.</span>
-        </p>
 
         <div className="turn-buy">
           <p className="turn-meta">10 mL · $55.00 CAD</p>

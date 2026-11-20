@@ -1830,8 +1830,8 @@
    (a transparent layer), and the move keeps playing across that distance. The ground and its grid are not
    part of that layer: they scroll past behind the group, so the page is visibly moving the whole time. ---- */
 .turn.is-live {
-  height: 460vh;
-  height: 460svh;
+  height: 370vh;
+  height: 370svh;
 }
 .turn.is-live .turn-stage {
   /* --rx: where the tube stands; --rh: its full height; --rw: the frame's width at that height */
@@ -1894,25 +1894,8 @@
   height: var(--rh);
   margin: 0;
   transform: translate3d(-50%, calc(var(--oy) * -1), 0) scale(var(--s, 0.44));
-  /* last chapter: it spins itself away (the extra turn is in the frames) while it shrinks to nothing */
-  scale: 1;
-  opacity: 1;
-  /* unhurried: about two and a half seconds at an even pace, fading only in the last stretch */
-  transition: scale 2.4s cubic-bezier(0.45, 0, 0.55, 1), opacity 0.6s ease 1.8s;
-  transform-origin: 50% var(--oy);
-  will-change: transform;
-  /* no CSS filter here: a filter on a scaling layer is re-rasterised every frame and stutters on phones.
-     The glow and the floor shadow below are plain gradients that scale with the rig for free. */
-}
-
-.turn.is-live .is-out .turn-rig {
-  scale: 0.03;
-  opacity: 0;
-}
-
-/* coming back when the reader scrolls up: grow again, a touch quicker */
-.turn.is-live .turn-stage:not(.is-out) .turn-rig {
-  transition: scale 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+  /* leans a touch into the scroll */
+  rotate: calc(var(--lean, 0) * 3.5deg);
 }
 
 /* warm light pooling behind the tube */
@@ -2020,53 +2003,6 @@
 
 .turn.is-live .turn-follow a {
   pointer-events: auto;
-}
-
-/* The statement: part of the scene. It rises in as the tube sweeps out, both driven by the scroll. */
-.turn-say {
-  display: none;
-}
-
-.turn.is-live .turn-say {
-  display: block;
-  position: absolute;
-  left: var(--container-pad);
-  right: var(--container-pad);
-  top: 50%;
-  margin: 0;
-  text-align: center;
-  font-size: var(--display-lg);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.04;
-  color: #fff;
-  /* hidden until the tube has gone; leaving (reader scrolls back up) it clears quickly, before the tube returns */
-  opacity: 0;
-  transform: translate3d(0, calc(-50% + 34px), 0);
-  transition: opacity 0.25s ease, transform 0.3s ease;
-  will-change: transform, opacity;
-}
-
-/* it waits for the tube to finish vanishing (2.4 s), then comes in: the two never share the screen */
-.turn.is-live .is-out .turn-say {
-  opacity: 1;
-  transform: translate3d(0, -50%, 0);
-  transition: opacity 0.9s ease 2.45s, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) 2.45s;
-}
-
-.turn.is-live .turn-say span {
-  display: block;
-}
-
-.turn.is-live .turn-say em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: var(--font-weight-regular);
-}
-
-.turn.is-live .turn-buy {
-  /* leaves with the tube */
-  translate: 0 calc(var(--x, 0) * -60vh);
 }
 
 /* ---- ingredient notes: page content laid down the section, passing the tube at the page's own speed ---- */
@@ -2214,9 +2150,8 @@
   text-shadow: none;
 }
 
-/* the price is there from the start and fades as the tube sweeps out */
 .turn.is-live .turn-buy {
-  opacity: calc(1 - var(--x, 0) * 2.2);
+  opacity: 1;
   transform: none;
   transition: none;
 }
@@ -2350,7 +2285,7 @@
   color: var(--color-bg-white);
   /* the scene's own orange for as long as the scene runs, then it deepens gradually so the smaller type
      further down has more contrast */
-  background: linear-gradient(to bottom, #E45A32 0, #EE6334 60vh, #EE6334 460svh, #E4531C calc(460svh + 70vh), #CF4712 calc(460svh + 240vh), #C64311 100%);
+  background: linear-gradient(to bottom, #E45A32 0, #EE6334 60vh, #EE6334 370svh, #E4531C calc(370svh + 70vh), #CF4712 calc(370svh + 240vh), #C64311 100%);
 }
 
 /* drafting grid, very faint, across the whole world */
@@ -2397,9 +2332,7 @@
   padding-block: clamp(4rem, 12vh, 8.5rem);
 }
 
-.w-sec:first-child {
-  padding-top: clamp(1.5rem, 5vh, 3.5rem);
-}
+
 
 .w-kicker {
   position: relative;
@@ -2469,6 +2402,31 @@
   line-height: var(--leading-relaxed);
   color: rgba(255, 255, 255, 0.94);
   max-width: 40ch;
+}
+
+/* --- statement: ordinary page content right under the scene --- */
+.w-sec.w-say {
+  padding-top: clamp(3rem, 10vh, 7rem);
+}
+
+.w-say-lines {
+  margin: 0;
+  text-align: center;
+  font-size: var(--display-lg);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.04;
+  color: #fff;
+}
+
+.w-say-lines span {
+  display: block;
+}
+
+.w-say-lines em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
 }
 
 /* --- principles: three points on one hairline --- */
@@ -2698,7 +2656,7 @@
 
 @media (max-width: 880px) {
   .world {
-    background: linear-gradient(to bottom, #E8551E 0, #E8551E 100svh, #DE4E18 calc(100svh + 70vh), #CC4611 calc(460svh + 260vh), #C64311 100%);
+    background: linear-gradient(to bottom, #E8551E 0, #E8551E 100svh, #DE4E18 calc(100svh + 70vh), #CC4611 calc(370svh + 260vh), #C64311 100%);
   }
 
   .world-rest {
